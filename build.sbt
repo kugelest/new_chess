@@ -1,5 +1,5 @@
 ThisBuild / organization := "htwg.se.new_chess"
-ThisBuild / version := "0.1"
+ThisBuild / version      := "0.1"
 ThisBuild / scalaVersion := "3.2.1"
 // ThisBuild / coverageExcludedPackages := "htwg\\.se\\.chess\\.aview\\.gui;.*FileIOComponent.*;.*Chess"
 
@@ -43,4 +43,3 @@ ThisBuild / scalaVersion := "3.2.1"
 // libraryDependencies += "com.typesafe.play" %% "play-test" % "2.9.0-M3" % Test
 
 //coverageExcludedPackages := "htwg\\.se\\.chess\\.aview\\.gui;.*FileIOComponent.*;.*Chess"
-

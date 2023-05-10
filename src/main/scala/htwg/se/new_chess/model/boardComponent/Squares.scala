@@ -1,6 +1,6 @@
 package htwg.se.new_chess.model.boardComponent
 
-enum SquareColors {
+private enum SquareColors {
   case BLACK, WHITE
 }
 

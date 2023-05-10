@@ -1,11 +1,10 @@
-import htwg.se.new_chess.model.boardComponent.Squares
-import htwg.se.new_chess.model.boardComponent.Cell
+import htwg.se.new_chess.model.boardComponent.Coord
 import htwg.se.new_chess.model.boardComponent.Board
 
-val s: Squares = Squares.A5
+val s: Coord = Coord.A5
 val b: Board = Board()
 
-val print_ready = Squares.values.sortBy(x => x.print_ord)
+val print_ready = Coord.values.sortBy(x => x.print_ord)
 print_ready.mkString(" ")
 val p_poses = print_ready.map(_.print_ord)
 p_poses.mkString(" ")

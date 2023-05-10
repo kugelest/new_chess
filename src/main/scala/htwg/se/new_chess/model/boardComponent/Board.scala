@@ -1,21 +1,27 @@
 package htwg.se.new_chess.model.boardComponent
 
-case class Board(cells: Vector[Cell]) {
+case class Board(cells: Vector[Square]) {
+
+  def isMoveValid(startPos: Coord, endPos: Coord): Boolean = {
+    val pieceOpt: Option[Piece] = cells.find(_.coord == startPos).flatMap(_.piece)
+    pieceOpt match {
+      case Some(piece) => piece.isMoveValid(startPos, endPos)
+      case None        => false // No piece at the starting position
+    }
+  }
 
   override def toString(): String = {
     this.cells
-      .sortBy(_.square.print_ord)
-      .map(_.square.toString)
-      .grouped(Squares.len)
+      .sortBy(_.coord.print_ord)
+      .map(_.coord.toString)
+      .grouped(Coord.len)
       .map(_.mkString(" "))
       .mkString("\n")
-    // this.cells.map(c => c.square.toString).mkString(" ")
   }
 }
 
 object Board {
   def apply() = {
-    new Board(Squares.values.map(Cell(_)).toVector)
+    new Board(Coord.values.map(Square(_, None)).toVector)
   }
-
 }

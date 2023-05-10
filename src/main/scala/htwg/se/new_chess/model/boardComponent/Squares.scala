@@ -4,92 +4,29 @@ private enum SquareColors {
   case BLACK, WHITE
 }
 
-enum Squares(val pos: String) {
-  case A1 extends Squares("A1")
-  case A2 extends Squares("A2")
-  case A3 extends Squares("A3")
-  case A4 extends Squares("A4")
-  case A5 extends Squares("A5")
-  case A6 extends Squares("A6")
-  case A7 extends Squares("A7")
-  case A8 extends Squares("A8")
-  case B1 extends Squares("B1")
-  case B2 extends Squares("B2")
-  case B3 extends Squares("B3")
-  case B4 extends Squares("B4")
-  case B5 extends Squares("B5")
-  case B6 extends Squares("B6")
-  case B7 extends Squares("B7")
-  case B8 extends Squares("B8")
-  case C1 extends Squares("C1")
-  case C2 extends Squares("C2")
-  case C3 extends Squares("C3")
-  case C4 extends Squares("C4")
-  case C5 extends Squares("C5")
-  case C6 extends Squares("C6")
-  case C7 extends Squares("C7")
-  case C8 extends Squares("C8")
-  case D1 extends Squares("D1")
-  case D2 extends Squares("D2")
-  case D3 extends Squares("D3")
-  case D4 extends Squares("D4")
-  case D5 extends Squares("D5")
-  case D6 extends Squares("D6")
-  case D7 extends Squares("D7")
-  case D8 extends Squares("D8")
-  case E1 extends Squares("E1")
-  case E2 extends Squares("E2")
-  case E3 extends Squares("E3")
-  case E4 extends Squares("E4")
-  case E5 extends Squares("E5")
-  case E6 extends Squares("E6")
-  case E7 extends Squares("E7")
-  case E8 extends Squares("E8")
-  case F1 extends Squares("F1")
-  case F2 extends Squares("F2")
-  case F3 extends Squares("F3")
-  case F4 extends Squares("F4")
-  case F5 extends Squares("F5")
-  case F6 extends Squares("F6")
-  case F7 extends Squares("F7")
-  case F8 extends Squares("F8")
-  case G1 extends Squares("G1")
-  case G2 extends Squares("G2")
-  case G3 extends Squares("G3")
-  case G4 extends Squares("G4")
-  case G5 extends Squares("G5")
-  case G6 extends Squares("G6")
-  case G7 extends Squares("G7")
-  case G8 extends Squares("G8")
-  case H1 extends Squares("H1")
-  case H2 extends Squares("H2")
-  case H3 extends Squares("H3")
-  case H4 extends Squares("H4")
-  case H5 extends Squares("H5")
-  case H6 extends Squares("H6")
-  case H7 extends Squares("H7")
-  case H8 extends Squares("H8")
+enum Squares {
+  case A1, B1, C1, D1, E1, F1, G1, H1, A2, B2, C2, D2, E2, F2, G2, H2, A3, B3, C3, D3, E3, F3, G3, H3, A4, B4, C4, D4,
+    E4, F4, G4, H4, A5, B5, C5, D5, E5, F5, G5, H5, A6, B6, C6, D6, E6, F6, G6, H6, A7, B7, C7, D7, E7, F7, G7, H7, A8,
+    B8, C8, D8, E8, F8, G8, H8
 
-  def file: Char = pos.charAt(0)
-  def rank: Char = pos.charAt(1)
-
-  def color: SquareColors =
-    if ((this.file + this.rank) % 2 == 0) SquareColors.WHITE else SquareColors.BLACK
+  def file = this.toString.charAt(0)
+  def rank = this.toString.charAt(1)
+  def color: SquareColors = if ((this.file + this.rank) % 2 == 0) SquareColors.WHITE else SquareColors.BLACK
+  def print_ord: Int = Squares.len * (Squares.len - this.rank.asDigit) + (this.file - 'A')
 
   def neighbor(x: Int, y: Int) = Squares.fromTupel((this.file + x).toChar, (this.rank + y).toChar)
-
-  def left_neighbor: Squares        = this.neighbor(-1, 0)
-  def right_neighbor: Squares       = this.neighbor(1, 0)
-  def upper_neighbor: Squares       = this.neighbor(0, 1)
-  def lower_neighbor: Squares       = this.neighbor(0, -1)
-  def upper_left_neighbor: Squares  = this.neighbor(-1, 1)
-  def lower_left_neighbor: Squares  = this.neighbor(-1, -1)
+  def left_neighbor: Squares = this.neighbor(-1, 0)
+  def right_neighbor: Squares = this.neighbor(1, 0)
+  def upper_neighbor: Squares = this.neighbor(0, 1)
+  def lower_neighbor: Squares = this.neighbor(0, -1)
+  def upper_left_neighbor: Squares = this.neighbor(-1, 1)
+  def lower_left_neighbor: Squares = this.neighbor(-1, -1)
   def upper_right_neighbor: Squares = this.neighbor(1, 1)
   def lower_right_neighbor: Squares = this.neighbor(1, -1)
 }
 
 object Squares {
-  def fromTupel(file: Char, rank: Char): Squares = Squares.valueOf(file.toString + rank)
-
+  def len = 8
+  def fromTupel(file: Char, rank: Char): Squares = Squares.valueOf(file.toString + rank.toString)
   def fromStr(str: String) = Squares.valueOf(str.toUpperCase())
 }

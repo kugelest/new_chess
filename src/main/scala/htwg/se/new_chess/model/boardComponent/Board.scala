@@ -1,12 +1,21 @@
 package htwg.se.new_chess.model.boardComponent
 
 case class Board(cells: Vector[Cell]) {
-  def this() = {
-    this(Squares.values.map(Cell(_)).toVector)
-  }
 
   override def toString(): String = {
-    cells.map(c => c.square.pos).mkString("")
+    this.cells
+      .sortBy(_.square.print_ord)
+      .map(_.square.toString)
+      .grouped(Squares.len)
+      .map(_.mkString(" "))
+      .mkString("\n")
+    // this.cells.map(c => c.square.toString).mkString(" ")
+  }
+}
+
+object Board {
+  def apply() = {
+    new Board(Squares.values.map(Cell(_)).toVector)
   }
 
 }

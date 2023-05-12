@@ -1,9 +1,12 @@
 package htwg.se.new_chess.model.boardComponent
 
 import htwg.se.new_chess.model.boardComponent.pieces.{Pawn, Rook, Knight, Bishop, Queen, King}
-import PieceType.*
-import PieceColor.*
-import Coord.*
+import htwg.se.new_chess.model.boardComponent.Removable._
+import htwg.se.new_chess.model.boardComponent.Addable._
+import htwg.se.new_chess.model.boardComponent.Squareable._
+import htwg.se.new_chess.model.boardComponent.PieceType.*
+import htwg.se.new_chess.model.boardComponent.PieceColor.*
+import htwg.se.new_chess.model.boardComponent.Coord.*
 
 case class Board(squares: Vector[Square]) {
 
@@ -23,17 +26,11 @@ case class Board(squares: Vector[Square]) {
     }
   }
 
-  def startingPoition(): Board = {
-    // val squares = Board.startingPosition.foldLeft(Vector.empty[Square]) {
-    //   case (acc, (pos, piece)) =>
-    //     acc :+ Square(pos, Some(piece))
-    // }
-    val squares = Coord.values.foldLeft(Vector.empty[Square]) { (acc, coord) =>
-      val pieceOpt: Option[Piece] = Board.startingPosition.find(_(0) == coord).map(_(1))
-      // val pieceOpt = Board.startingPosition.find(_(0) == coord).flatMap(_.piece)
-      acc :+ Square(coord, pieceOpt)
-    }
-    Board(squares)
+  def startPos(): Board = {
+    val start_pos = this.squares
+      .remove(Board.start_pos_pieces.map((coord, _) => coord))
+      .add(Board.start_pos_pieces.map(_.toSquare()))
+    Board(start_pos.toVector)
   }
 
   override def toString(): String = {
@@ -51,7 +48,7 @@ object Board {
     new Board(Coord.values.map(Square(_, None)).toVector)
   }
 
-  val startingPosition = List(
+  val start_pos_pieces = List(
     (A1, Piece(ROOK, WHITE)),
     (B1, Piece(KNIGHT, WHITE)),
     (C1, Piece(BISHOP, WHITE)),

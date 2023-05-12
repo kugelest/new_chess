@@ -8,6 +8,7 @@ trait Piece {
   def color: PieceColor
   def char: Char
   def isMoveValid(startPos: Coord, endPos: Coord): Boolean
+  override def toString() = char.toString
 }
 
 object Piece {

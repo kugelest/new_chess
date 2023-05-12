@@ -1,9 +1,10 @@
 package htwg.se.new_chess.model.boardComponent
 
 import htwg.se.new_chess.model.boardComponent.pieces.{Pawn, Rook, Knight, Bishop, Queen, King}
-import htwg.se.new_chess.model.boardComponent.Removable._
-import htwg.se.new_chess.model.boardComponent.Addable._
-import htwg.se.new_chess.model.boardComponent.Squareable._
+import htwg.se.new_chess.model.boardComponent.SquareExtensions._
+import htwg.se.new_chess.model.boardComponent.SquareExtensions.Removable._
+import htwg.se.new_chess.model.boardComponent.SquareExtensions.Addable._
+import htwg.se.new_chess.model.boardComponent.SquareExtensions.Squareable._
 import htwg.se.new_chess.model.boardComponent.PieceType.*
 import htwg.se.new_chess.model.boardComponent.PieceColor.*
 import htwg.se.new_chess.model.boardComponent.Coord.*
@@ -27,9 +28,10 @@ case class Board(squares: Vector[Square]) {
   }
 
   def startPos(): Board = {
-    val start_pos = this.squares
-      .remove(Board.start_pos_pieces.map((coord, _) => coord))
-      .add(Board.start_pos_pieces.map(_.toSquare()))
+    // val start_pos = this.squares
+    //   .remove(Board.start_pos_pieces.map((coord, _) => coord))
+    //   .add(Board.start_pos_pieces.map(_.toSquare()))
+    val start_pos = this.squares.replace(Board.start_pos_pieces.map(_.toSquare()))
     Board(start_pos.toVector)
   }
 

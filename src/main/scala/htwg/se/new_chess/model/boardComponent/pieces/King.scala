@@ -9,5 +9,4 @@ case class King(color: PieceColor, char: Char) extends Piece {
     true
   }
 
-  override def toString() = char.toString
 }

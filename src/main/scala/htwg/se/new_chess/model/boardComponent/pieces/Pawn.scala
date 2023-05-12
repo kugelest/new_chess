@@ -9,5 +9,4 @@ case class Pawn(color: PieceColor, char: Char) extends Piece {
     true
   }
 
-  override def toString() = char.toString
 }

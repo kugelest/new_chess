@@ -5,8 +5,8 @@ import htwg.se.new_chess.model.boardComponent.PieceColor
 import htwg.se.new_chess.model.boardComponent.Coord
 
 case class Pawn(color: PieceColor, char: Char) extends Piece {
-  override def isMoveValid(startPos: Coord, endPos: Coord): Boolean = {
-    true
+  override def getPath(startPos: Coord, endPos: Coord): List[Coord] = {
+    List()
   }
 
 }

@@ -19,13 +19,13 @@ case class Board(squares: Vector[Square]) {
       this // Cell not found, return the current instance
   }
 
-  def isMoveValid(startPos: Coord, endPos: Coord): Boolean = {
-    val pieceOpt: Option[Piece] = squares.find(_.coord == startPos).flatMap(_.piece)
-    pieceOpt match {
-      case Some(piece) => piece.isMoveValid(startPos, endPos)
-      case None        => false // No piece at the starting position
-    }
-  }
+  // def isMoveValid(startPos: Coord, endPos: Coord): Boolean = {
+  //   val pieceOpt: Option[Piece] = squares.find(_.coord == startPos).flatMap(_.piece)
+  //   pieceOpt match {
+  //     case Some(piece) => piece.isMoveValid(startPos, endPos)
+  //     case None        => false // No piece at the starting position
+  //   }
+  // }
 
   def startPos(): Board = {
     // val start_pos = this.squares

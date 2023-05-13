@@ -12,24 +12,24 @@ enum Coord {
   def color: SquareColors = if ((file + rank) % 2 == 0) SquareColors.WHITE else SquareColors.BLACK
   def print_ord: Int = Coord.len * (Coord.len - rank.asDigit) + (file - 'A')
 
-  def neighbor(x: Int, y: Int): Coord = Coord.fromTupel((file + x).toChar, (rank + y).toChar)
-  def leftNeighbor(): Coord = neighbor(-1, 0)
-  def rightNeighbor(): Coord = neighbor(1, 0)
-  def upperNeighbor(): Coord = neighbor(0, 1)
-  def lowerNeighbor(): Coord = neighbor(0, -1)
-  def upperLeftNeighbor(): Coord = neighbor(-1, 1)
-  def lowerLeftNeighbor(): Coord = neighbor(-1, -1)
-  def upperRightNeighbor(): Coord = neighbor(1, 1)
-  def lowerRightNeighbor(): Coord = neighbor(1, -1)
+  def neighbor(x: Int, y: Int): Try[Coord] = Try(Coord.fromTupel((file + x).toChar, (rank + y).toChar))
+  def leftNeighbor(): Try[Coord] = neighbor(-1, 0)
+  def rightNeighbor(): Try[Coord] = neighbor(1, 0)
+  def upperNeighbor(): Try[Coord] = neighbor(0, 1)
+  def lowerNeighbor(): Try[Coord] = neighbor(0, -1)
+  def upperLeftNeighbor(): Try[Coord] = neighbor(-1, 1)
+  def lowerLeftNeighbor(): Try[Coord] = neighbor(-1, -1)
+  def upperRightNeighbor(): Try[Coord] = neighbor(1, 1)
+  def lowerRightNeighbor(): Try[Coord] = neighbor(1, -1)
 
-  def neighbors(f: Coord => Coord)(): List[Coord] = {
+  def neighbors(f: Coord => Try[Coord])(): List[Coord] = {
     def neighborsHelper(current: Coord, coord_acc: List[Coord]): List[Coord] = {
-      Try(f(current)) match {
-        case Success(n) => neighborsHelper(f(current), current :: coord_acc)
-        case Failure(_) => current :: coord_acc
+      f(current) match {
+        case Success(n) => neighborsHelper(n, n :: coord_acc)
+        case Failure(_) => coord_acc
       }
     }
-    neighborsHelper(this, List())
+    neighborsHelper(this, List()).reverse
   }
   def leftNeighbors = neighbors(_.leftNeighbor()) _
   def rightNeighbors = neighbors(_.rightNeighbor()) _
@@ -39,6 +39,29 @@ enum Coord {
   def lowerLeftNeighbors = neighbors(_.lowerLeftNeighbor()) _
   def upperRightNeighbors = neighbors(_.upperRightNeighbor()) _
   def lowerRightNeighbors = neighbors(_.lowerRightNeighbor()) _
+  def upperTwo(): List[Coord] = List(neighbor(0, 1).get, neighbor(0, 2).get)
+  def lowerTwo(): List[Coord] = List(neighbor(0, -1).get, neighbor(0, -2).get)
+  def upperFront(): List[Coord] = List(upperLeftNeighbor(), upperNeighbor(), upperRightNeighbor()).collect {
+    case Success(value) => value
+  }
+  def lowerFront(): List[Coord] = List(lowerLeftNeighbor(), lowerNeighbor(), lowerRightNeighbor()).collect {
+    case Success(value) => value
+  }
+
+  def knightNeighbors() = {
+    List(
+      neighbor(-2, 1),
+      neighbor(-2, -1),
+      neighbor(-1, 2),
+      neighbor(-1, -2),
+      neighbor(1, 2),
+      neighbor(1, -2),
+      neighbor(2, 1),
+      neighbor(2, -1)
+    ).collect { case Success(value) =>
+      value
+    }
+  }
 
 }
 

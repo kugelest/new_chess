@@ -7,6 +7,7 @@ import PieceColor.*
 trait Piece {
   def color: PieceColor
   def char: Char
+  def unmoved: Boolean
   def getPath(startPos: Coord, endPos: Coord): List[Coord]
   override def toString() = char.toString
 }

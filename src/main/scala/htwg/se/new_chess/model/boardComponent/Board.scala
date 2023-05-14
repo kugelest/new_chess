@@ -1,13 +1,14 @@
-package htwg.se.new_chess.model.boardComponent
+package htwg.se.chess.model
+package boardComponent
 
-import htwg.se.new_chess.model.boardComponent.pieces.{Pawn, Rook, Knight, Bishop, Queen, King}
-import htwg.se.new_chess.model.boardComponent.SquareExtensions._
-import htwg.se.new_chess.model.boardComponent.SquareExtensions.Removable._
-import htwg.se.new_chess.model.boardComponent.SquareExtensions.Addable._
-import htwg.se.new_chess.model.boardComponent.SquareExtensions.Squareable._
-import htwg.se.new_chess.model.boardComponent.PieceType.*
-import htwg.se.new_chess.model.boardComponent.PieceColor.*
-import htwg.se.new_chess.model.boardComponent.Coord.*
+import boardComponent.Coord.*
+import boardComponent.SquareExtensions._
+import boardComponent.SquareExtensions.Removable._
+import boardComponent.SquareExtensions.Addable._
+import boardComponent.SquareExtensions.Squareable._
+import boardComponent.pieces.{Piece, Pawn, Rook, Knight, Bishop, Queen, King}
+import boardComponent.pieces.PieceType.*
+import boardComponent.pieces.PieceColor.*
 
 case class Board(squares: Vector[Square]) {
 

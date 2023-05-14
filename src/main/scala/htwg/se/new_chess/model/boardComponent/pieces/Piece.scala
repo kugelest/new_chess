@@ -1,8 +1,9 @@
-package htwg.se.new_chess.model.boardComponent
+package htwg.se.chess.model.boardComponent
+package pieces
 
-import htwg.se.new_chess.model.boardComponent.pieces.{Pawn, Rook, Knight, Bishop, Queen, King}
-import PieceType.*
-import PieceColor.*
+import pieces.{Pawn, Rook, Knight, Bishop, Queen, King}
+import pieces.PieceType.*
+import pieces.PieceColor.*
 
 trait Piece {
   def color: PieceColor

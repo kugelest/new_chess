@@ -1,7 +1,8 @@
-package htwg.se.new_chess.model.boardComponent
+package htwg.se.chess.model
+package boardComponent
 
-import htwg.se.new_chess.model.boardComponent.Coord
-import htwg.se.new_chess.model.boardComponent.pieces.Pawn
+import boardComponent.Coord
+import boardComponent.pieces.Pawn
 
 object MoveValidator {
 

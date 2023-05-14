@@ -1,7 +1,9 @@
-import htwg.se.new_chess.model.boardComponent.Board
-import htwg.se.new_chess.model.boardComponent.Coord.*
-import htwg.se.new_chess.model.boardComponent.Coord
-import htwg.se.new_chess.model.boardComponent.MoveValidator
+package htwg.se.chess
+
+import model.boardComponent.Board
+import model.boardComponent.Coord.*
+import model.boardComponent.Coord
+import model.boardComponent.MoveValidator
 import scala.io.StdIn
 import scala.util.Try
 import scala.util.Success
@@ -10,7 +12,7 @@ import scala.annotation.tailrec
 @main def start: Unit =
   println("Welcome!")
   println("Type 'start' to start a new game.")
-  println("Type 'exit' to exit game.")
+  println("Type 'exit' to quit game.")
   mainLoop(List(Board()))
 
 val movePattern = """move (\w{2}) (\w{2})""".r

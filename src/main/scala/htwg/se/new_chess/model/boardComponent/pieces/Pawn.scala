@@ -1,9 +1,11 @@
-package htwg.se.new_chess.model.boardComponent.pieces
+package htwg.se.chess.model
+package boardComponent
+package pieces
 
-import htwg.se.new_chess.model.boardComponent.Piece
-import htwg.se.new_chess.model.boardComponent.PieceColor
-import htwg.se.new_chess.model.boardComponent.PieceColor.*
-import htwg.se.new_chess.model.boardComponent.Coord
+import pieces.Piece
+import pieces.PieceColor
+import pieces.PieceColor.*
+import boardComponent.Coord
 import scala.util.Success
 
 case class Pawn(color: PieceColor, char: Char, unmoved: Boolean = true) extends Piece {

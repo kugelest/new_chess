@@ -1,22 +1,23 @@
-import htwg.se.new_chess.model.boardComponent.Piece
-import htwg.se.new_chess.model.boardComponent.Coord
-import htwg.se.new_chess.model.boardComponent.Coord.*
-import htwg.se.new_chess.model.boardComponent.Board
-import htwg.se.new_chess.model.boardComponent.Square
-import htwg.se.new_chess.model.boardComponent.MoveValidator
-import htwg.se.new_chess.model.boardComponent.pieces.{Pawn, Rook, Knight, Bishop, Queen, King}
+// package htwg.se.chess.model.
+
+// import pieces.Piece
+import htwg.se.chess.model.boardComponent.Coord
+import htwg.se.chess.model.boardComponent.Coord.*
+import htwg.se.chess.model.boardComponent.Board
+import htwg.se.chess.model.boardComponent.Square
+import htwg.se.chess.model.boardComponent.MoveValidator
+import htwg.se.chess.model.boardComponent.pieces.{Piece, Pawn, Rook, Knight, Bishop, Queen, King}
 // import htwg.se.new_chess.model.boardComponent.SquareExtensions._
-import htwg.se.new_chess.model.boardComponent.SquareExtensions.Removable._
-import htwg.se.new_chess.model.boardComponent.SquareExtensions.Addable._
-import htwg.se.new_chess.model.boardComponent.SquareExtensions.Squareable._
-import htwg.se.new_chess.model.boardComponent.PieceType.*
-import htwg.se.new_chess.model.boardComponent.PieceColor.*
+import htwg.se.chess.model.boardComponent.SquareExtensions.Removable._
+import htwg.se.chess.model.boardComponent.SquareExtensions.Addable._
+import htwg.se.chess.model.boardComponent.SquareExtensions.Squareable._
+import htwg.se.chess.model.boardComponent.pieces.PieceType.*
+import htwg.se.chess.model.boardComponent.pieces.PieceColor.*
 
 val coord: Coord = A5
 val board: Board = Board().startPos()
 // val square: board.squares
-val validator: MoveValidator = MoveValidator(board)
-validator.isMoveValid(A1, A2)
+MoveValidator.isMoveValid(A1, A2, board)
 
 A1.upperNeighbors()
 A1.upperNeighbors().reverse.dropWhile(_ != A4)
@@ -25,7 +26,11 @@ val knightmoves = D4.knightNeighbors()
 knightmoves.find(_ == B5)
 knightmoves.find(_ == B5)
 
-val piece = Piece(KING, WHITE)
+// val piece = Piece(KING, WHITE, true)
+val piece =
+  Piece(KING, WHITE, true)
+
+piece.copy(unmoved = false).unmoved
 
 val square_with_piece = Square(A1, Option(piece))
 val square_opt_with_piece = Option(Square(A1, Option(piece)))

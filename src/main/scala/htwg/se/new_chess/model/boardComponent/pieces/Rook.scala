@@ -6,7 +6,7 @@ import pieces.Piece
 import pieces.PieceColor
 import boardComponent.Coord
 
-case class Rook(color: PieceColor, char: Char, unmoved: Boolean = true) extends Piece {
+case class Rook(color: PieceColor, char: Char, unmoved: Boolean) extends Piece {
 
   override def getPath(start_coord: Coord, end_coord: Coord): List[Coord] = {
     val direction = (start_coord.file, start_coord.rank, end_coord.file, end_coord.rank) match {
@@ -19,4 +19,6 @@ case class Rook(color: PieceColor, char: Char, unmoved: Boolean = true) extends 
     direction.reverse.dropWhile(_ != end_coord)
   }
 
+  override def copy(color: PieceColor, char: Char, unmoved: Boolean): Piece =
+    Rook(color, char, unmoved)
 }

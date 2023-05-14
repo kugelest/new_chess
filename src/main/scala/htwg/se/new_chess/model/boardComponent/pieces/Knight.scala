@@ -15,4 +15,6 @@ case class Knight(color: PieceColor, char: Char, unmoved: Boolean = true) extend
     }
   }
 
+  override def copy(color: PieceColor, char: Char, unmoved: Boolean): Piece =
+    Knight(color, char, unmoved)
 }

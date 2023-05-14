@@ -12,4 +12,7 @@ case class King(color: PieceColor, char: Char, unmoved: Boolean = true) extends 
     List()
   }
 
+  override def copy(color: PieceColor, char: Char, unmoved: Boolean): Piece =
+    King(color, char, unmoved)
+
 }

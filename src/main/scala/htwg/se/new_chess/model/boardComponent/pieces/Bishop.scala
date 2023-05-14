@@ -18,4 +18,6 @@ case class Bishop(color: PieceColor, char: Char, unmoved: Boolean = true) extend
     direction.reverse.dropWhile(_ != end_coord)
   }
 
+  override def copy(color: PieceColor, char: Char, unmoved: Boolean): Piece =
+    Bishop(color, char, unmoved)
 }

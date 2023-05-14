@@ -20,4 +20,7 @@ case class Pawn(color: PieceColor, char: Char, unmoved: Boolean = true) extends 
     }
   }
 
+  override def copy(color: PieceColor, char: Char, unmoved: Boolean): Piece =
+    Pawn(color, char, unmoved)
+
 }

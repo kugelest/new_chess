@@ -10,29 +10,31 @@ trait Piece {
   def char: Char
   def unmoved: Boolean
   def getPath(startPos: Coord, endPos: Coord): List[Coord]
+  // def copy(color: PieceColor = this.color, unmoved: Boolean = this.unmoved): Piece
+  def copy(color: PieceColor = color, char: Char = char, unmoved: Boolean = unmoved): Piece
   override def toString() = char.toString
 }
 
 object Piece {
-  def apply(kind: PieceType, color: PieceColor): Piece = {
+  def apply(kind: PieceType, color: PieceColor, unmoved: Boolean): Piece = {
     color.match {
       case WHITE =>
         kind.match {
-          case PAWN   => Pawn(WHITE, '♙')
-          case ROOK   => Rook(WHITE, '♖')
-          case KNIGHT => Knight(WHITE, '♘')
-          case BISHOP => Bishop(WHITE, '♗')
-          case QUEEN  => Queen(WHITE, '♕')
-          case KING   => King(WHITE, '♔')
+          case PAWN   => Pawn(WHITE, '♙', unmoved)
+          case ROOK   => Rook(WHITE, '♖', unmoved)
+          case KNIGHT => Knight(WHITE, '♘', unmoved)
+          case BISHOP => Bishop(WHITE, '♗', unmoved)
+          case QUEEN  => Queen(WHITE, '♕', unmoved)
+          case KING   => King(WHITE, '♔', unmoved)
         }
       case PieceColor.BLACK =>
         kind.match {
-          case PAWN   => Pawn(BLACK, '♟')
-          case ROOK   => Rook(BLACK, '♜')
-          case KNIGHT => Knight(BLACK, '♞')
-          case BISHOP => Bishop(BLACK, '♝')
-          case QUEEN  => Queen(BLACK, '♛')
-          case KING   => King(BLACK, '♚')
+          case PAWN   => Pawn(BLACK, '♟', unmoved)
+          case ROOK   => Rook(BLACK, '♜', unmoved)
+          case KNIGHT => Knight(BLACK, '♞', unmoved)
+          case BISHOP => Bishop(BLACK, '♝', unmoved)
+          case QUEEN  => Queen(BLACK, '♛', unmoved)
+          case KING   => King(BLACK, '♚', unmoved)
 
         }
     }

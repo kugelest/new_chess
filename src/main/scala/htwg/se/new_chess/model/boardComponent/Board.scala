@@ -44,7 +44,7 @@ case class Board(squares: Vector[Square]) {
   def makeMove(start_coord: Coord, end_coord: Coord): Board = {
     val start_square: Option[Square] = squares.find(_.coord == start_coord)
     val end_set = updateSquare(
-      Square(end_coord, start_square.get.piece)
+      Square(end_coord, start_square.map(s => s.copy(piece = s.piece.map(p => p.copy(unmoved = false)))).get.piece)
     )
     val end_set_and_start_removed = end_set.updateSquare(Square(start_coord, Option.empty))
     end_set_and_start_removed
@@ -66,37 +66,37 @@ object Board {
   }
 
   val start_pos_pieces = List(
-    (A1, Piece(ROOK, WHITE)),
-    (B1, Piece(KNIGHT, WHITE)),
-    (C1, Piece(BISHOP, WHITE)),
-    (D1, Piece(QUEEN, WHITE)),
-    (E1, Piece(KING, WHITE)),
-    (F1, Piece(BISHOP, WHITE)),
-    (G1, Piece(KNIGHT, WHITE)),
-    (H1, Piece(ROOK, WHITE)),
-    (A2, Piece(PAWN, WHITE)),
-    (B2, Piece(PAWN, WHITE)),
-    (C2, Piece(PAWN, WHITE)),
-    (D2, Piece(PAWN, WHITE)),
-    (E2, Piece(PAWN, WHITE)),
-    (F2, Piece(PAWN, WHITE)),
-    (G2, Piece(PAWN, WHITE)),
-    (H2, Piece(PAWN, WHITE)),
-    (A8, Piece(ROOK, BLACK)),
-    (B8, Piece(KNIGHT, BLACK)),
-    (C8, Piece(BISHOP, BLACK)),
-    (D8, Piece(QUEEN, BLACK)),
-    (E8, Piece(KING, BLACK)),
-    (F8, Piece(BISHOP, BLACK)),
-    (G8, Piece(KNIGHT, BLACK)),
-    (H8, Piece(ROOK, BLACK)),
-    (A7, Piece(PAWN, BLACK)),
-    (B7, Piece(PAWN, BLACK)),
-    (C7, Piece(PAWN, BLACK)),
-    (D7, Piece(PAWN, BLACK)),
-    (E7, Piece(PAWN, BLACK)),
-    (F7, Piece(PAWN, BLACK)),
-    (G7, Piece(PAWN, BLACK)),
-    (H7, Piece(PAWN, BLACK))
+    (A1, Piece(ROOK, WHITE, true)),
+    (B1, Piece(KNIGHT, WHITE, true)),
+    (C1, Piece(BISHOP, WHITE, true)),
+    (D1, Piece(QUEEN, WHITE, true)),
+    (E1, Piece(KING, WHITE, true)),
+    (F1, Piece(BISHOP, WHITE, true)),
+    (G1, Piece(KNIGHT, WHITE, true)),
+    (H1, Piece(ROOK, WHITE, true)),
+    (A2, Piece(PAWN, WHITE, true)),
+    (B2, Piece(PAWN, WHITE, true)),
+    (C2, Piece(PAWN, WHITE, true)),
+    (D2, Piece(PAWN, WHITE, true)),
+    (E2, Piece(PAWN, WHITE, true)),
+    (F2, Piece(PAWN, WHITE, true)),
+    (G2, Piece(PAWN, WHITE, true)),
+    (H2, Piece(PAWN, WHITE, true)),
+    (A8, Piece(ROOK, BLACK, true)),
+    (B8, Piece(KNIGHT, BLACK, true)),
+    (C8, Piece(BISHOP, BLACK, true)),
+    (D8, Piece(QUEEN, BLACK, true)),
+    (E8, Piece(KING, BLACK, true)),
+    (F8, Piece(BISHOP, BLACK, true)),
+    (G8, Piece(KNIGHT, BLACK, true)),
+    (H8, Piece(ROOK, BLACK, true)),
+    (A7, Piece(PAWN, BLACK, true)),
+    (B7, Piece(PAWN, BLACK, true)),
+    (C7, Piece(PAWN, BLACK, true)),
+    (D7, Piece(PAWN, BLACK, true)),
+    (E7, Piece(PAWN, BLACK, true)),
+    (F7, Piece(PAWN, BLACK, true)),
+    (G7, Piece(PAWN, BLACK, true)),
+    (H7, Piece(PAWN, BLACK, true))
   )
 }

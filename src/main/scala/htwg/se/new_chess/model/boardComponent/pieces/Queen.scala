@@ -23,4 +23,6 @@ case class Queen(color: PieceColor, char: Char, unmoved: Boolean = true) extends
     direction.reverse.dropWhile(_ != end_coord)
   }
 
+  override def copy(color: PieceColor, char: Char, unmoved: Boolean): Piece =
+    Queen(color, char, unmoved)
 }

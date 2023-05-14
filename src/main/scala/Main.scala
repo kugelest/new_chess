@@ -5,6 +5,7 @@ import htwg.se.new_chess.model.boardComponent.MoveValidator
 import scala.io.StdIn
 import scala.util.Try
 import scala.util.Success
+import scala.annotation.tailrec
 
 @main def start: Unit =
   println("Welcome!")
@@ -59,6 +60,7 @@ def processInput(input: String, board_list: List[Board]): List[Board] = {
 
 }
 
+@tailrec
 def mainLoop(board_list: List[Board]): Unit = {
   val input = StdIn.readLine().toLowerCase()
   println()

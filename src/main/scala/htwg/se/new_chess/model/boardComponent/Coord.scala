@@ -1,6 +1,7 @@
 package htwg.se.new_chess.model.boardComponent
 
 import scala.util.{Try, Success, Failure}
+import scala.annotation.tailrec
 
 enum Coord {
   case A1, B1, C1, D1, E1, F1, G1, H1, A2, B2, C2, D2, E2, F2, G2, H2, A3, B3, C3, D3, E3, F3, G3, H3, A4, B4, C4, D4,
@@ -23,6 +24,7 @@ enum Coord {
   def lowerRightNeighbor(): Try[Coord] = neighbor(1, -1)
 
   def neighbors(f: Coord => Try[Coord])(): List[Coord] = {
+    @tailrec
     def neighborsHelper(current: Coord, coord_acc: List[Coord]): List[Coord] = {
       f(current) match {
         case Success(n) => neighborsHelper(n, n :: coord_acc)

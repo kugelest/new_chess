@@ -25,12 +25,9 @@ case class Board(squares: Vector[Square]) {
   }
 
   def makeMove(start_coord: Coord, end_coord: Coord): Board = {
-    if (MoveValidator.isMoveValid(start_coord, end_coord, this)) {
-      updateSquare(Square(end_coord, squares.find(_.coord == start_coord).get.piece))
-        .updateSquare(Square(start_coord, Option.empty))
-    } else {
-      this
-    }
+    val end_set = updateSquare(Square(end_coord, squares.find(_.coord == start_coord).get.piece))
+    val end_set_and_start_removed = end_set.updateSquare(Square(start_coord, Option.empty))
+    end_set_and_start_removed
   }
 
   override def toString(): String = {
@@ -45,7 +42,7 @@ case class Board(squares: Vector[Square]) {
 
 object Board {
   def apply() = {
-    new Board(Coord.values.map(Square(_, None)).toVector)
+    new Board(Coord.values.map(Square(_, Option.empty)).toVector)
   }
 
   val start_pos_pieces = List(

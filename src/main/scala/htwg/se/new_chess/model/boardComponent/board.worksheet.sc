@@ -17,7 +17,12 @@ import htwg.se.chess.model.boardComponent.pieces.PieceColor.*
 val coord: Coord = A5
 val board: Board = Board().startPos()
 // val square: board.squares
+val piece = Piece(KING, WHITE, true)
+val square_with_piece = Square(A1, Option(piece))
+
 MoveValidator.isMoveValid(A1, A2, board)
+
+board.copy(squares = Vector(square_with_piece))
 
 A1.upperNeighbors()
 A1.upperNeighbors().reverse.dropWhile(_ != A4)
@@ -27,12 +32,9 @@ knightmoves.find(_ == B5)
 knightmoves.find(_ == B5)
 
 // val piece = Piece(KING, WHITE, true)
-val piece =
-  Piece(KING, WHITE, true)
 
-piece.copy(unmoved = false).unmoved
+piece.copy(move_count = 1)
 
-val square_with_piece = Square(A1, Option(piece))
 val square_opt_with_piece = Option(Square(A1, Option(piece)))
 val square_without_piece = Square(A1, None)
 val square_opt_without_piece = Option(Square(A1, None))

@@ -37,4 +37,7 @@ class UndoManager[T] {
       }
     }
   }
+  def noStep(t: T, command: Command[T]): T = {
+    command.noStep(t)
+  }
 }

@@ -20,12 +20,13 @@ class Tui(controller: Controller) extends Observer {
       case Event.Move => println(controller.board.toString)
     }
   }
-  def inputLoop(): Unit =
+  def inputLoop(): Unit = {
     analyseInput(readLine) match
       case None       =>
       case Some(move) => controller.doAndPublish(controller.makeMove, move)
 
     if continue then inputLoop()
+  }
 
   val movePattern = """move (\w{2}) (\w{2})""".r
 

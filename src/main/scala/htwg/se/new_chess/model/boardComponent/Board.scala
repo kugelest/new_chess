@@ -14,19 +14,21 @@ import boardComponent.pieces.PieceColor.*
 import scala.util.Try
 import scala.util.Success
 
-case class Board(squares: Vector[Square]) {
+case class Board(squares: Vector[Square], capture_stack: List[Option[Square]]) {
 
   def updateSquare(new_square: Square): Board = {
     val index = squares.indexWhere(_.coord == new_square.coord)
     if (index >= 0)
-      Board(squares.updated(index, new_square))
+      this.copy(squares = squares.updated(index, new_square))
     else
-      this // Cell not found, return the current instance
+      this
   }
 
+  private def initBoard(): Board = Board()
+
   def startPos(): Board = {
-    val start_pos = this.squares.replace(Board.start_pos_pieces.map(_.toSquare()))
-    Board(start_pos.toVector)
+    val fresh_board = initBoard()
+    fresh_board.copy(squares = fresh_board.squares.replace(Board.start_pos_pieces.map(_.toSquare())).toVector)
   }
 
   def isMoveValid(from: String, to: String): Boolean = {
@@ -37,17 +39,49 @@ case class Board(squares: Vector[Square]) {
     valid_move
   }
 
-  def makeMove(from: String, to: String): Board = {
-    makeMove(Coord.fromStr(from), Coord.fromStr(to))
-  }
-
-  def makeMove(start_coord: Coord, end_coord: Coord): Board = {
+  private def move(n: Int)(start_coord: Coord, end_coord: Coord): Board = {
     val start_square: Option[Square] = squares.find(_.coord == start_coord)
     val end_set = updateSquare(
-      Square(end_coord, start_square.map(s => s.copy(piece = s.piece.map(p => p.copy(unmoved = false)))).get.piece)
+      Square(
+        end_coord,
+        start_square.map(s => s.copy(piece = s.piece.map(p => p.copy(move_count = p.move_count + n)))).get.piece
+      )
     )
     val end_set_and_start_removed = end_set.updateSquare(Square(start_coord, Option.empty))
     end_set_and_start_removed
+  }
+
+  private def makeMove = move(+1) _
+
+  def doMove(from: String, to: String): Board = {
+    val start_coord = Coord.fromStr(from)
+    val end_coord = Coord.fromStr(to)
+    val end_square_opt = this.squares.find(_.coord == end_coord)
+    val capture_square = end_square_opt match {
+      case Some(square) if square.piece.isDefined => Option(square)
+      case _                                      => Option.empty
+    }
+
+    val board = makeMove(start_coord, end_coord)
+    board.copy(capture_stack = capture_square :: capture_stack)
+  }
+
+  private def takeBackMove = move(-1) _
+  // def takeBackMove(from: String, to: String): Board = takeBackMove(Coord.fromStr(from), Coord.fromStr(to))
+
+  def undoMove(from: String, to: String): Board = {
+    val start_coord = Coord.fromStr(from)
+    val end_coord = Coord.fromStr(to)
+    val board = takeBackMove(start_coord, end_coord)
+    val new_board = board.capture_stack match {
+      case head :: tail =>
+        head match {
+          case Some(square) => board.updateSquare(square)
+          case _            => board
+        }
+      case _ => board
+    }
+    new_board.copy(capture_stack = capture_stack.tail)
   }
 
   override def toString(): String = {
@@ -62,41 +96,41 @@ case class Board(squares: Vector[Square]) {
 
 object Board {
   def apply() = {
-    new Board(Coord.values.map(Square(_, Option.empty)).toVector)
+    new Board(Coord.values.map(Square(_, Option.empty)).toVector, List())
   }
 
   val start_pos_pieces = List(
-    (A1, Piece(ROOK, WHITE, true)),
-    (B1, Piece(KNIGHT, WHITE, true)),
-    (C1, Piece(BISHOP, WHITE, true)),
-    (D1, Piece(QUEEN, WHITE, true)),
-    (E1, Piece(KING, WHITE, true)),
-    (F1, Piece(BISHOP, WHITE, true)),
-    (G1, Piece(KNIGHT, WHITE, true)),
-    (H1, Piece(ROOK, WHITE, true)),
-    (A2, Piece(PAWN, WHITE, true)),
-    (B2, Piece(PAWN, WHITE, true)),
-    (C2, Piece(PAWN, WHITE, true)),
-    (D2, Piece(PAWN, WHITE, true)),
-    (E2, Piece(PAWN, WHITE, true)),
-    (F2, Piece(PAWN, WHITE, true)),
-    (G2, Piece(PAWN, WHITE, true)),
-    (H2, Piece(PAWN, WHITE, true)),
-    (A8, Piece(ROOK, BLACK, true)),
-    (B8, Piece(KNIGHT, BLACK, true)),
-    (C8, Piece(BISHOP, BLACK, true)),
-    (D8, Piece(QUEEN, BLACK, true)),
-    (E8, Piece(KING, BLACK, true)),
-    (F8, Piece(BISHOP, BLACK, true)),
-    (G8, Piece(KNIGHT, BLACK, true)),
-    (H8, Piece(ROOK, BLACK, true)),
-    (A7, Piece(PAWN, BLACK, true)),
-    (B7, Piece(PAWN, BLACK, true)),
-    (C7, Piece(PAWN, BLACK, true)),
-    (D7, Piece(PAWN, BLACK, true)),
-    (E7, Piece(PAWN, BLACK, true)),
-    (F7, Piece(PAWN, BLACK, true)),
-    (G7, Piece(PAWN, BLACK, true)),
-    (H7, Piece(PAWN, BLACK, true))
+    (A1, Piece(ROOK, WHITE)),
+    (B1, Piece(KNIGHT, WHITE)),
+    (C1, Piece(BISHOP, WHITE)),
+    (D1, Piece(QUEEN, WHITE)),
+    (E1, Piece(KING, WHITE)),
+    (F1, Piece(BISHOP, WHITE)),
+    (G1, Piece(KNIGHT, WHITE)),
+    (H1, Piece(ROOK, WHITE)),
+    (A2, Piece(PAWN, WHITE)),
+    (B2, Piece(PAWN, WHITE)),
+    (C2, Piece(PAWN, WHITE)),
+    (D2, Piece(PAWN, WHITE)),
+    (E2, Piece(PAWN, WHITE)),
+    (F2, Piece(PAWN, WHITE)),
+    (G2, Piece(PAWN, WHITE)),
+    (H2, Piece(PAWN, WHITE)),
+    (A8, Piece(ROOK, BLACK)),
+    (B8, Piece(KNIGHT, BLACK)),
+    (C8, Piece(BISHOP, BLACK)),
+    (D8, Piece(QUEEN, BLACK)),
+    (E8, Piece(KING, BLACK)),
+    (F8, Piece(BISHOP, BLACK)),
+    (G8, Piece(KNIGHT, BLACK)),
+    (H8, Piece(ROOK, BLACK)),
+    (A7, Piece(PAWN, BLACK)),
+    (B7, Piece(PAWN, BLACK)),
+    (C7, Piece(PAWN, BLACK)),
+    (D7, Piece(PAWN, BLACK)),
+    (E7, Piece(PAWN, BLACK)),
+    (F7, Piece(PAWN, BLACK)),
+    (G7, Piece(PAWN, BLACK)),
+    (H7, Piece(PAWN, BLACK))
   )
 }

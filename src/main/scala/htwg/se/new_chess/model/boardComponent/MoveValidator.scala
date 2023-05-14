@@ -3,9 +3,9 @@ package htwg.se.new_chess.model.boardComponent
 import htwg.se.new_chess.model.boardComponent.Coord
 import htwg.se.new_chess.model.boardComponent.pieces.Pawn
 
-class MoveValidator(board: Board) {
+object MoveValidator {
 
-  def isMoveValid(start_coord: Coord, end_coord: Coord): Boolean = {
+  def isMoveValid(start_coord: Coord, end_coord: Coord, board: Board): Boolean = {
     val start_square = board.squares.find(_.coord == start_coord) match {
       case Some(square) => square
       case None         => return false

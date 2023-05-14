@@ -11,28 +11,26 @@ import htwg.se.new_chess.model.boardComponent.Coord.*
 
 case class Board(squares: Vector[Square]) {
 
-  def updateSquare(newSquare: Square): Board = {
-    val index = squares.indexWhere(_.coord == newSquare.coord)
+  def updateSquare(new_square: Square): Board = {
+    val index = squares.indexWhere(_.coord == new_square.coord)
     if (index >= 0)
-      Board(squares.updated(index, newSquare))
+      Board(squares.updated(index, new_square))
     else
       this // Cell not found, return the current instance
   }
 
-  // def isMoveValid(startPos: Coord, endPos: Coord): Boolean = {
-  //   val pieceOpt: Option[Piece] = squares.find(_.coord == startPos).flatMap(_.piece)
-  //   pieceOpt match {
-  //     case Some(piece) => piece.isMoveValid(startPos, endPos)
-  //     case None        => false // No piece at the starting position
-  //   }
-  // }
-
   def startPos(): Board = {
-    // val start_pos = this.squares
-    //   .remove(Board.start_pos_pieces.map((coord, _) => coord))
-    //   .add(Board.start_pos_pieces.map(_.toSquare()))
     val start_pos = this.squares.replace(Board.start_pos_pieces.map(_.toSquare()))
     Board(start_pos.toVector)
+  }
+
+  def makeMove(start_coord: Coord, end_coord: Coord): Board = {
+    if (MoveValidator.isMoveValid(start_coord, end_coord, this)) {
+      updateSquare(Square(end_coord, squares.find(_.coord == start_coord).get.piece))
+        .updateSquare(Square(start_coord, Option.empty))
+    } else {
+      this
+    }
   }
 
   override def toString(): String = {

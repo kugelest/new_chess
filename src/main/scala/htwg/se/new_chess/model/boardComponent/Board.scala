@@ -1,6 +1,7 @@
 package htwg.se.chess.model
 package boardComponent
 
+import boardComponent.Coord
 import boardComponent.Coord.*
 import boardComponent.SquareExtensions._
 import boardComponent.SquareExtensions.Removable._
@@ -9,6 +10,9 @@ import boardComponent.SquareExtensions.Squareable._
 import boardComponent.pieces.{Piece, Pawn, Rook, Knight, Bishop, Queen, King}
 import boardComponent.pieces.PieceType.*
 import boardComponent.pieces.PieceColor.*
+
+import scala.util.Try
+import scala.util.Success
 
 case class Board(squares: Vector[Square]) {
 
@@ -25,8 +29,23 @@ case class Board(squares: Vector[Square]) {
     Board(start_pos.toVector)
   }
 
+  def isMoveValid(from: String, to: String): Boolean = {
+    val coords_try: List[Try[Coord]] = List(Try(Coord.fromStr(from)), Try(Coord.fromStr(to)))
+    val coords = coords_try.collect { case Success(coord) => coord }
+    val coords_are_valid = coords.length == 2
+    val valid_move = coords_are_valid && MoveValidator.isMoveValid(coords(0), coords(1), this)
+    valid_move
+  }
+
+  def makeMove(from: String, to: String): Board = {
+    makeMove(Coord.fromStr(from), Coord.fromStr(to))
+  }
+
   def makeMove(start_coord: Coord, end_coord: Coord): Board = {
-    val end_set = updateSquare(Square(end_coord, squares.find(_.coord == start_coord).get.piece))
+    val start_square: Option[Square] = squares.find(_.coord == start_coord)
+    val end_set = updateSquare(
+      Square(end_coord, start_square.get.piece)
+    )
     val end_set_and_start_removed = end_set.updateSquare(Square(start_coord, Option.empty))
     end_set_and_start_removed
   }

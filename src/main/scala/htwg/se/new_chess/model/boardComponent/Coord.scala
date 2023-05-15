@@ -74,6 +74,6 @@ object Coord {
   def fromStr(str: String) = Coord.valueOf(str.toUpperCase())
 }
 
-private enum SquareColors {
+enum SquareColors {
   case BLACK, WHITE
 }

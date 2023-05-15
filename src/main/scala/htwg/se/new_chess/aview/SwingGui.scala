@@ -4,9 +4,14 @@ package aview
 import controller.Controller
 import model.boardComponent.Move
 import model.boardComponent.pieces.PieceColor
+import model.boardComponent.SquareColors
+import htwg.se.chess.model.boardComponent.Square
 import util.Event
 import util.Observer
 
+import javax.swing.BorderFactory
+import java.awt.Color
+import java.awt.Dimension
 import scala.swing._
 import scala.swing.event._
 
@@ -19,6 +24,10 @@ class SwingGui(controller: Controller) extends Frame with Observer {
       contents += new MenuItem(Action("Exit") {
         sys.exit(0)
       })
+    }
+    contents += new Menu("Edit") {
+      contents += new MenuItem(Action("Undo")(controller.doAndPublish(controller.undo)))
+      contents += new MenuItem(Action("Redo")(controller.doAndPublish(controller.redo)))
     }
   }
   contents = updateContents
@@ -38,11 +47,47 @@ class SwingGui(controller: Controller) extends Frame with Observer {
     case Event.Move => contents = updateContents; repaint()
 
   class SquarePanel() extends GridPanel(8, 8) {
-    controller.board.squares.sortBy(_.coord.print_ord).foreach(s => contents += SquareButton(s.toString()))
+    // background = Color.LIGHT_GRAY
+    controller.board.squares
+      .sortBy(_.coord.print_ord)
+      .foreach(s => contents += SquareButton(s.coord.toString(), s.toString(), s.coord.color))
 
   }
 
-  class SquareButton(piece: String) extends Button(piece)
+  var fromSet = false
+  var from = ""
+  var to = ""
+
+  class SquareButton(coord: String, piece: String, background_color: SquareColors) extends Button(piece) {
+    background = background_color match {
+      case SquareColors.WHITE => Color.WHITE
+      case SquareColors.BLACK => Color.LIGHT_GRAY
+    }
+    border = BorderFactory.createEmptyBorder()
+    preferredSize = new Dimension(100, 100)
+    font = new Font("Monospace", 0, 75)
+    focusPainted = false
+
+    listenTo(mouse.clicks)
+    reactions += {
+      case MouseClicked(src, pt, mod, clicks, props) => {
+        if (!fromSet) {
+          fromSet = true
+          from = coord
+          background = Color.CYAN
+        } else {
+          fromSet = false
+          to = coord
+          background = background_color match {
+            case SquareColors.WHITE => Color.WHITE
+            case SquareColors.BLACK => Color.LIGHT_GRAY
+          }
+          // controller.move(from, to)
+          controller.doAndPublish(controller.makeMove, Move(from, to))
+        }
+      }
+    }
+  }
 
   // class CellPanel(x: Int, y: Int) extends GridPanel(8, 8) {
   //   (for (

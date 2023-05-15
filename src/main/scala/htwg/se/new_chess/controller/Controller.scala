@@ -38,6 +38,8 @@ case class Controller(var board: Board) extends Observable {
       undoManager.noStep(board, MoveCommand(move))
   }
 
+  def whichTurn(): PieceColor = board.turn
+
   def undo: Board = undoManager.undoStep(board)
   def redo: Board = undoManager.redoStep(board)
   def quit: Unit = notifyObservers(Event.Quit)

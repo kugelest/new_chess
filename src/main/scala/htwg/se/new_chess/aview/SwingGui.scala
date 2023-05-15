@@ -38,9 +38,11 @@ class SwingGui(controller: Controller) extends Frame with Observer {
   open()
 
   def updateContents = {
+    val turn = controller.whichTurn()
     new BorderPanel {
-      // add(new Label("Player: " + controller.PlayerState.player), BorderPanel.Position.North)
+      add(new PlayerPanel(PieceColor.BLACK, turn), BorderPanel.Position.North)
       add(squares, BorderPanel.Position.Center)
+      add(new PlayerPanel(PieceColor.WHITE, turn), BorderPanel.Position.South)
     }
   }
 
@@ -53,7 +55,14 @@ class SwingGui(controller: Controller) extends Frame with Observer {
     controller.board.squares
       .sortBy(_.coord.print_ord)
       .foreach(s => contents += SquareButton(s.coord.toString(), s.toString(), s.coord.color))
+  }
 
+  class PlayerPanel(color: PieceColor, turn: PieceColor) extends Label("Player: " + color.toString()) {
+    opaque = true
+    background = turn match {
+      case t if t == color => Color.CYAN
+      case _               => Color.WHITE
+    }
   }
 
   var fromSet = false

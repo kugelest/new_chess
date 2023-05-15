@@ -22,10 +22,7 @@ object MoveValidator {
 
     // path does not contain start and dest
     val (dest, path) =
-      piece
-        .getPath(start_coord, end_coord)
-        .map(path_coord => board.squares.find(_.coord == path_coord).get)
-        .reverse match {
+      piece.getPath(start_coord, end_coord).map(path_coord => board.squares.find(_.coord == path_coord).get) match {
         case head :: tail => (head, tail)
         case Nil          => return false
       }

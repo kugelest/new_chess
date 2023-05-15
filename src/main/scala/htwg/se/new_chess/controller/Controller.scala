@@ -40,15 +40,14 @@ case class Controller(var board: Board) extends Observable {
 
   override def toString: String = board.toString
 
-}
-
-object PlayerState {
-  var piece_color = PieceColor.WHITE
-  def player = piece_color.toString
-  def next = {
-    if (piece_color == PieceColor.WHITE)
-      piece_color = PieceColor.BLACK
-    else
-      piece_color = PieceColor.WHITE
+  object PlayerState {
+    var piece_color = PieceColor.WHITE
+    def player = piece_color.toString
+    def next = {
+      if (piece_color == PieceColor.WHITE)
+        piece_color = PieceColor.BLACK
+      else
+        piece_color = PieceColor.WHITE
+    }
   }
 }

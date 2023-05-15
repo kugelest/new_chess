@@ -11,6 +11,7 @@ package htwg.se.chess
 import controller.Controller
 import model.boardComponent.Board
 import aview.Tui
+import aview.SwingGui
 
 // @main def start: Unit =
 //   println("Welcome!")
@@ -25,6 +26,7 @@ import aview.Tui
   // controller.add(FxGui)
   // FxGui.start()
   // val swingGui = new SwingGui(controller)
+  val swingGui = new SwingGui(controller)
   val tui = Tui(controller)
   tui.run
 }

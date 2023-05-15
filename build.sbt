@@ -1,7 +1,9 @@
 ThisBuild / organization := "htwg.se.new_chess"
-ThisBuild / version      := "0.1"
+ThisBuild / version := "0.1"
 ThisBuild / scalaVersion := "3.2.1"
 // ThisBuild / coverageExcludedPackages := "htwg\\.se\\.chess\\.aview\\.gui;.*FileIOComponent.*;.*Chess"
+
+libraryDependencies += "org.scala-lang.modules" %% "scala-swing" % "3.0.0"
 
 // lazy val BoardComponent =
 //   (project in file("BoardComponent"))

@@ -65,7 +65,20 @@ enum Coord {
       value
     }
   }
-
+  def surroundingNeighbors() = {
+    List(
+      neighbor(0, 1),
+      neighbor(0, -1),
+      neighbor(1, 0),
+      neighbor(1, 1),
+      neighbor(1, -1),
+      neighbor(-1, 0),
+      neighbor(-1, 1),
+      neighbor(-1, -1)
+    ).collect { case Success(value) =>
+      value
+    }
+  }
 }
 
 object Coord {

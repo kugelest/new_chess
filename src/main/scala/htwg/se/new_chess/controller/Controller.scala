@@ -19,7 +19,6 @@ case class Controller(var board: Board) extends Observable {
 
   def doAndPublish(doThis: Move => Board, move: Move) = {
     board = doThis(move)
-    PlayerState.next
     notifyObservers(Event.Move)
   }
   def doAndPublish(doThis: => Board) = {
@@ -27,31 +26,22 @@ case class Controller(var board: Board) extends Observable {
     notifyObservers(Event.Move)
   }
 
-  // def checkMove(move: Move)
+  def newGame: Board = {
+    undoManager.clear()
+    board.startPos()
+  }
+
   def makeMove(move: Move): Board = {
     if (board.isMoveValid(move.from, move.to))
       undoManager.doStep(board, MoveCommand(move))
     else
       undoManager.noStep(board, MoveCommand(move))
   }
+
   def undo: Board = undoManager.undoStep(board)
   def redo: Board = undoManager.redoStep(board)
   def quit: Unit = notifyObservers(Event.Quit)
-  def newGame: Board = {
-    undoManager.clear()
-    board.startPos()
-  }
 
   override def toString: String = board.toString
 
-  object PlayerState {
-    var piece_color = PieceColor.WHITE
-    def player = piece_color.toString
-    def next = {
-      if (piece_color == PieceColor.WHITE)
-        piece_color = PieceColor.BLACK
-      else
-        piece_color = PieceColor.WHITE
-    }
-  }
 }

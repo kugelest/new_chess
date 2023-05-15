@@ -9,12 +9,13 @@ import boardComponent.SquareExtensions.Addable._
 import boardComponent.SquareExtensions.Squareable._
 import boardComponent.pieces.{Piece, Pawn, Rook, Knight, Bishop, Queen, King}
 import boardComponent.pieces.PieceType.*
+import boardComponent.pieces.PieceColor
 import boardComponent.pieces.PieceColor.*
 
 import scala.util.Try
 import scala.util.Success
 
-case class Board(squares: Vector[Square], capture_stack: List[Option[Square]]) {
+case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], turn: PieceColor) {
 
   def updateSquare(new_square: Square): Board = {
     val index = squares.indexWhere(_.coord == new_square.coord)
@@ -63,7 +64,7 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]]) {
     }
 
     val board = makeMove(start_coord, end_coord)
-    board.copy(capture_stack = capture_square :: capture_stack)
+    board.copy(capture_stack = capture_square :: capture_stack, turn = nextTurn())
   }
 
   private def takeBackMove = move(-1) _
@@ -81,7 +82,14 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]]) {
         }
       case _ => board
     }
-    new_board.copy(capture_stack = capture_stack.tail)
+    new_board.copy(capture_stack = capture_stack.tail, turn = nextTurn())
+  }
+
+  def nextTurn(): PieceColor = {
+    turn match {
+      case WHITE => BLACK
+      case BLACK => WHITE
+    }
   }
 
   override def toString(): String = {
@@ -96,7 +104,7 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]]) {
 
 object Board {
   def apply() = {
-    new Board(Coord.values.map(Square(_, Option.empty)).toVector, List())
+    new Board(Coord.values.map(Square(_, Option.empty)).toVector, List(), WHITE)
   }
 
   val start_pos_pieces = List(

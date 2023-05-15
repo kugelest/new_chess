@@ -20,6 +20,11 @@ object MoveValidator {
       case None        => return false
     }
 
+    piece.color match {
+      case board.turn =>
+      case _          => return false
+    }
+
     // path does not contain start and dest
     val (dest, path) =
       piece.getPath(start_coord, end_coord).map(path_coord => board.squares.find(_.coord == path_coord).get) match {

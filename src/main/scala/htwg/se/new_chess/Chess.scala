@@ -20,8 +20,7 @@ import aview.SwingGui
 //   mainLoop(List(Board()))
 //
 @main def run: Unit = {
-  println("Welcome to Chess")
-  val board = Board().startPos()
+  val board = Board()
   val controller = Controller(board)
   // controller.add(FxGui)
   // FxGui.start()

@@ -37,6 +37,10 @@ case class Controller(var board: Board) extends Observable {
   def undo: Board = undoManager.undoStep(board)
   def redo: Board = undoManager.redoStep(board)
   def quit: Unit = notifyObservers(Event.Quit)
+  def newGame: Board = {
+    undoManager.clear()
+    board.startPos()
+  }
 
   override def toString: String = board.toString
 

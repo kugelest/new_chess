@@ -41,4 +41,9 @@ class UndoManager[T] {
   def noStep(t: T, command: Command[T]): T = {
     command.noStep(t)
   }
+
+  def clear() = {
+    undoStack = Nil
+    redoStack = Nil
+  }
 }

@@ -14,6 +14,7 @@ import scala.util.Try
 import scala.util.Success
 import com.google.inject.{Guice, Inject}
 import net.codingwell.scalaguice.InjectorExtensions._
+import scala.util.Failure
 
 case class Controller @Inject() (var board: BoardInterface) extends Observable {
 
@@ -54,7 +55,8 @@ case class Controller @Inject() (var board: BoardInterface) extends Observable {
   def load: BoardInterface = {
     fileIO.load match {
       case Success(value) => value.get
-      case _              => board
+      case Failure(exception) =>
+        println(s"Failure: ${exception.getMessage}"); board
     }
     // val gridOptionResult = fileIo.load
 

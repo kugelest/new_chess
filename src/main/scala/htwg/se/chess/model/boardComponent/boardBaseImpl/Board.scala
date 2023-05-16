@@ -133,7 +133,7 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], t
             Json.obj(
               "file" -> squares(i).coord.file.toString(),
               "rank" -> squares(i).coord.rank.toString(),
-              "piece" -> squares(i).piece.map(_.getClass.toString.prepended('.').split("\\.").last),
+              "piece" -> squares(i).piece.map(_.getClass.toString.prepended('.').split("\\.").last.toUpperCase()),
               "color" -> squares(i).piece.map(_.color.toString())
             )
           }

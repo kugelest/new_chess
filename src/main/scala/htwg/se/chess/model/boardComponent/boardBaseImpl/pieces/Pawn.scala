@@ -1,15 +1,15 @@
 package htwg.se.chess.model
 package boardComponent
+package boardBaseImpl
 package pieces
 
 import pieces.Piece
 import pieces.PieceColor
 import pieces.PieceColor.*
-import boardComponent.Coord
+import boardBaseImpl.Coord
 import scala.util.Success
 
-case class Pawn(color: PieceColor, char: Char, move_count: Int = 0)
-    extends Piece {
+case class Pawn(color: PieceColor, char: Char, move_count: Int = 0) extends Piece {
 
   override def getPath(start_coord: Coord, end_coord: Coord): List[Coord] = {
     (color, move_count) match {

@@ -6,7 +6,7 @@ import util.UndoManager
 import util.Event
 import model.boardComponent.BoardInterface
 import model.boardComponent.MoveInterface
-import model.boardComponent.PieceColorInterface
+import model.boardComponent.boardBaseImpl.pieces.PieceColor
 import controller.MoveCommand
 
 import scala.util.Try
@@ -37,7 +37,7 @@ case class Controller(var board: BoardInterface) extends Observable {
       undoManager.noStep(board, MoveCommand(move))
   }
 
-  def whichTurn(): PieceColorInterface = board.turn
+  def whichTurn(): PieceColor = board.turn
 
   def undo: BoardInterface = undoManager.undoStep(board)
   def redo: BoardInterface = undoManager.redoStep(board)

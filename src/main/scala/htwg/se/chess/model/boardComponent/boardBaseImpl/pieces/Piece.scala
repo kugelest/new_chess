@@ -1,4 +1,5 @@
 package htwg.se.chess.model.boardComponent
+package boardBaseImpl
 package pieces
 
 import pieces.{Pawn, Rook, Knight, Bishop, Queen, King}

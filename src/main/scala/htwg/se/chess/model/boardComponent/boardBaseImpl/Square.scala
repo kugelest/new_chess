@@ -1,9 +1,10 @@
 package htwg.se.chess.model
 package boardComponent
+package boardBaseImpl
 
-import boardComponent.pieces.Piece
+import boardBaseImpl.pieces.Piece
 
-case class Square(coord: Coord, piece: Option[Piece]) {
+case class Square(coord: Coord, piece: Option[Piece]) extends SquareInterface {
 
   override def toString = {
     piece match {

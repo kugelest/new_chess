@@ -6,7 +6,8 @@ import util.Observer
 import util.Event
 
 import scala.io.StdIn.readLine
-import model.boardComponent.Move
+import model.boardComponent.MoveInterface
+import model.boardComponent.boardBaseImpl.Move
 
 class Tui(controller: Controller) extends Observer {
 

@@ -1,7 +1,8 @@
 package htwg.se.chess.model
 package boardComponent
+package boardBaseImpl
 
-import boardComponent.pieces.Piece
+import boardBaseImpl.pieces.Piece
 
 object SquareExtensions {
 

@@ -1,10 +1,11 @@
 package htwg.se.chess.model
 package boardComponent
+package boardBaseImpl
 package pieces
 
 import pieces.Piece
 import pieces.PieceColor
-import boardComponent.Coord
+import boardBaseImpl.Coord
 
 case class King(color: PieceColor, char: Char, move_count: Int = 0) extends Piece {
 

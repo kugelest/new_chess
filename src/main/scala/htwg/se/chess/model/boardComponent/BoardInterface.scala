@@ -1,11 +1,17 @@
 package htwg.se.chess.model
 package boardComponent
 
+import boardComponent.boardBaseImpl.pieces.PieceColor
+import boardComponent.boardBaseImpl.SquareColors
+
 trait BoardInterface {
-  def turn: PieceColorInterface
+  def squares: Vector[SquareInterface]
+  def turn: PieceColor
 
   def startPos(): BoardInterface
   def isMoveValid(from: String, to: String): Boolean
+  def doMove(from: String, to: String): BoardInterface
+  def undoMove(from: String, to: String): BoardInterface
 }
 
 trait MoveInterface {
@@ -13,4 +19,11 @@ trait MoveInterface {
   def to: String
 }
 
-trait PieceColorInterface {}
+trait SquareInterface {
+  def coord: CoordInterface
+}
+
+trait CoordInterface {
+  def print_ord: Int
+  def color: SquareColors
+}

@@ -9,7 +9,8 @@ package htwg.se.chess
 // import scala.util.Success
 // import scala.annotation.tailrec
 import controller.Controller
-import model.boardComponent.Board
+import model.boardComponent.boardBaseImpl.Board
+import model.boardComponent.BoardInterface
 import aview.Tui
 import aview.SwingGui
 
@@ -20,7 +21,7 @@ import aview.SwingGui
 //   mainLoop(List(Board()))
 //
 @main def run: Unit = {
-  val board = Board()
+  val board: BoardInterface = Board()
   val controller = Controller(board)
   // controller.add(FxGui)
   // FxGui.start()

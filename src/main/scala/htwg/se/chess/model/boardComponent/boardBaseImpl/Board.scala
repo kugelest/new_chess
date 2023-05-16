@@ -1,21 +1,23 @@
 package htwg.se.chess.model
 package boardComponent
+package boardBaseImpl
 
-import boardComponent.Coord
-import boardComponent.Coord.*
-import boardComponent.SquareExtensions._
-import boardComponent.SquareExtensions.Removable._
-import boardComponent.SquareExtensions.Addable._
-import boardComponent.SquareExtensions.Squareable._
-import boardComponent.pieces.{Piece, Pawn, Rook, Knight, Bishop, Queen, King}
-import boardComponent.pieces.PieceType.*
-import boardComponent.pieces.PieceColor
-import boardComponent.pieces.PieceColor.*
+import boardBaseImpl.Coord
+import boardBaseImpl.Coord.*
+import boardBaseImpl.SquareExtensions._
+import boardBaseImpl.SquareExtensions.Removable._
+import boardBaseImpl.SquareExtensions.Addable._
+import boardBaseImpl.SquareExtensions.Squareable._
+import boardBaseImpl.pieces.{Piece, Pawn, Rook, Knight, Bishop, Queen, King}
+import boardBaseImpl.pieces.PieceType.*
+import boardBaseImpl.pieces.PieceColor
+import boardBaseImpl.pieces.PieceColor.*
 
 import scala.util.Try
 import scala.util.Success
 
-case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], turn: PieceColor) {
+case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], turn: PieceColor)
+    extends BoardInterface {
 
   def updateSquare(new_square: Square): Board = {
     val index = squares.indexWhere(_.coord == new_square.coord)

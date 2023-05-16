@@ -9,10 +9,13 @@ package htwg.se.chess
 // import scala.util.Success
 // import scala.annotation.tailrec
 import controller.Controller
-import model.boardComponent.boardBaseImpl.Board
+// import model.boardComponent.boardBaseImpl.Board
 import model.boardComponent.BoardInterface
+// import model.boardComponent.boardBaseImpl.Move
 import aview.Tui
 import aview.SwingGui
+
+import com.google.inject.Guice
 
 // @main def start: Unit =
 //   println("Welcome!")
@@ -21,7 +24,10 @@ import aview.SwingGui
 //   mainLoop(List(Board()))
 //
 @main def run: Unit = {
-  val board: BoardInterface = Board()
+  val injector = Guice.createInjector(new ChessModule)
+  val board = injector.getInstance(classOf[BoardInterface])
+  // val board: BoardInterface = Board()
+  // val controller = Controller()
   val controller = Controller(board)
   // controller.add(FxGui)
   // FxGui.start()

@@ -5,6 +5,9 @@ ThisBuild / scalaVersion := "3.2.1"
 
 libraryDependencies += "org.scala-lang.modules" %% "scala-swing" % "3.0.0"
 
+libraryDependencies += "com.google.inject" % "guice" % "7.0.0"
+libraryDependencies += "net.codingwell" %% "scala-guice" % "7.0.0"
+
 // lazy val BoardComponent =
 //   (project in file("BoardComponent"))
 //     .settings(

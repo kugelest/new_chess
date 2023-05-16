@@ -15,6 +15,8 @@ import boardBaseImpl.pieces.PieceColor.*
 
 import scala.util.Try
 import scala.util.Success
+import com.google.inject.{Guice, Inject}
+import net.codingwell.scalaguice.InjectorExtensions._
 
 case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], turn: PieceColor)
     extends BoardInterface {
@@ -105,6 +107,7 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], t
 }
 
 object Board {
+  // @Inject
   def apply() = {
     new Board(Coord.values.map(Square(_, Option.empty)).toVector, List(), WHITE)
   }

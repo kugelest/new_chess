@@ -11,8 +11,10 @@ import controller.MoveCommand
 
 import scala.util.Try
 import scala.util.Success
+import com.google.inject.{Guice, Inject}
+import net.codingwell.scalaguice.InjectorExtensions._
 
-case class Controller(var board: BoardInterface) extends Observable {
+case class Controller @Inject() (var board: BoardInterface) extends Observable {
 
   val undoManager = new UndoManager[BoardInterface]
 

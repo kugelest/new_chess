@@ -14,8 +14,11 @@ import java.awt.Color
 import java.awt.Dimension
 import scala.swing._
 import scala.swing.event._
+import com.google.inject.{Guice, Inject}
+import net.codingwell.scalaguice.InjectorExtensions._
 
 class SwingGui(controller: Controller) extends Frame with Observer {
+  val injector = Guice.createInjector(new ChessModule)
 
   controller.add(this)
   def squares = new SquarePanel()

@@ -51,6 +51,32 @@ case class Controller @Inject() (var board: BoardInterface) extends Observable {
     fileIO.save(board)
     // notifyObservers()
   }
+  def load: BoardInterface = {
+    fileIO.load match {
+      case Success(value) => value.get
+      case _              => board
+    }
+    // val gridOptionResult = fileIo.load
+
+    // gridOptionResult match {
+    //   case Success(gridOption) =>
+    //     gridOption match {
+    //       case Some(_grid) =>
+    //         grid = _grid
+    //         gameStatus = LOADED
+    //       case None =>
+    //         createEmptyGrid
+    //         gameStatus = COULD_NOT_LOAD
+    //     }
+    //   case Failure(e) =>
+    //     logger.error(
+    //       "Error occured while loading game: " + e.getMessage)
+    //     createEmptyGrid
+    //     gameStatus = COULD_NOT_LOAD
+    // }
+
+    // (new CellChanged)
+  }
 
   override def toString: String = board.toString
 

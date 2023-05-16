@@ -4,6 +4,13 @@ package fileIoComponent
 package fileIoJsonImpl
 
 import boardComponent.BoardInterface
+import boardComponent.boardBaseImpl.Coord
+import boardComponent.boardBaseImpl.Board
+import boardComponent.boardBaseImpl.Square
+import boardComponent.boardBaseImpl.SquareExtensions
+import boardComponent.boardBaseImpl.pieces.Piece
+import boardComponent.boardBaseImpl.pieces.PieceType
+import util.PieceColor
 
 import play.api.libs.json._
 import com.google.inject.Guice
@@ -16,15 +23,29 @@ class FileIO extends FileIOInterface {
   final val FILE_NAME: String = "board.json"
 
   override def load: Try[Option[BoardInterface]] = {
-    var boardOpt: Option[BoardInterface] = None
+    // var boardOpt: Option[BoardInterface] = None
     Try {
       val source: String = Source.fromFile(FILE_NAME).getLines.mkString
 
       val json: JsValue = Json.parse(source)
-      // val size = (json \ "grid" \ "size").get.toString.toInt
       val injector: ScalaInjector = Guice.createInjector(new ChessModule)
 
-      boardOpt = Some(injector.instance[BoardInterface])
+      val board = injector.instance[BoardInterface]
+
+      val turn = PieceColor.valueOf((json \ "board" \ "turn").get.toString)
+
+      val squares = for {
+        i <- 0 until 64
+      } yield {
+        val file = (json \\ "file")(i).as[String]
+        val rank = (json \\ "rank")(i).as[String]
+        val piece_type = Try(PieceType.valueOf((json \\ "piece")(i).as[String].toUpperCase()))
+        val color = Try(PieceColor.valueOf((json \\ "color")(i).as[String]))
+        val piece = if (piece_type.isSuccess) Option(Piece(piece_type.get, color.get)) else Option.empty
+        Square(Coord.valueOf(file + "" + rank), piece)
+      }
+
+      Option(Board(squares.toVector, List(), turn))
 
       // size match {
       //   case 1 =>
@@ -56,7 +77,7 @@ class FileIO extends FileIOInterface {
       //   }
       //   case None =>
       // }
-      boardOpt
+      // Option(board)
     }
   }
 

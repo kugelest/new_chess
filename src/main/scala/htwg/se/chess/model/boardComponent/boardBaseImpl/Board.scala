@@ -32,6 +32,10 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], t
       this
   }
 
+  // def repl(square_list: List[Square]): Board = {
+  //   square_list.map(_.updateSquare(1))
+  // }
+
   private def initBoard(): Board = Board()
 
   def startPos(): Board = {
@@ -129,7 +133,8 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], t
             Json.obj(
               "file" -> squares(i).coord.file.toString(),
               "rank" -> squares(i).coord.rank.toString(),
-              "piece" -> squares(i).piece.map(_.getClass.toString.prepended('.').split("\\.").last)
+              "piece" -> squares(i).piece.map(_.getClass.toString.prepended('.').split("\\.").last),
+              "color" -> squares(i).piece.map(_.color.toString())
             )
           }
         )

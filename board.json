@@ -1,262 +1,326 @@
 {
   "board" : {
-    "turn" : "WHITE",
+    "turn" : "BLACK",
     "squares" : [ {
       "file" : "A",
       "rank" : "3",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "B",
       "rank" : "3",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "C",
       "rank" : "3",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "D",
       "rank" : "3",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "E",
       "rank" : "3",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "F",
       "rank" : "3",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "G",
       "rank" : "3",
-      "piece" : null
+      "piece" : "Pawn",
+      "color" : "WHITE"
     }, {
       "file" : "H",
       "rank" : "3",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "A",
       "rank" : "4",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "B",
       "rank" : "4",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "C",
       "rank" : "4",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "D",
       "rank" : "4",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "E",
       "rank" : "4",
-      "piece" : null
+      "piece" : "Pawn",
+      "color" : "WHITE"
     }, {
       "file" : "F",
       "rank" : "4",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "G",
       "rank" : "4",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "H",
       "rank" : "4",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "A",
       "rank" : "5",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "B",
       "rank" : "5",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "C",
       "rank" : "5",
-      "piece" : null
+      "piece" : "Pawn",
+      "color" : "BLACK"
     }, {
       "file" : "D",
       "rank" : "5",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "E",
       "rank" : "5",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "F",
       "rank" : "5",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "G",
       "rank" : "5",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "H",
       "rank" : "5",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "A",
       "rank" : "6",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "B",
       "rank" : "6",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "C",
       "rank" : "6",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "D",
       "rank" : "6",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "E",
       "rank" : "6",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "F",
       "rank" : "6",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "G",
       "rank" : "6",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "H",
       "rank" : "6",
-      "piece" : null
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "A",
       "rank" : "1",
-      "piece" : "Rook"
+      "piece" : "Rook",
+      "color" : "WHITE"
     }, {
       "file" : "B",
       "rank" : "1",
-      "piece" : "Knight"
+      "piece" : "Knight",
+      "color" : "WHITE"
     }, {
       "file" : "C",
       "rank" : "1",
-      "piece" : "Bishop"
+      "piece" : "Bishop",
+      "color" : "WHITE"
     }, {
       "file" : "D",
       "rank" : "1",
-      "piece" : "Queen"
+      "piece" : "Queen",
+      "color" : "WHITE"
     }, {
       "file" : "E",
       "rank" : "1",
-      "piece" : "King"
+      "piece" : "King",
+      "color" : "WHITE"
     }, {
       "file" : "F",
       "rank" : "1",
-      "piece" : "Bishop"
+      "piece" : "Bishop",
+      "color" : "WHITE"
     }, {
       "file" : "G",
       "rank" : "1",
-      "piece" : "Knight"
+      "piece" : "Knight",
+      "color" : "WHITE"
     }, {
       "file" : "H",
       "rank" : "1",
-      "piece" : "Rook"
+      "piece" : "Rook",
+      "color" : "WHITE"
     }, {
       "file" : "A",
       "rank" : "2",
-      "piece" : "Pawn"
+      "piece" : "Pawn",
+      "color" : "WHITE"
     }, {
       "file" : "B",
       "rank" : "2",
-      "piece" : "Pawn"
+      "piece" : "Pawn",
+      "color" : "WHITE"
     }, {
       "file" : "C",
       "rank" : "2",
-      "piece" : "Pawn"
+      "piece" : "Pawn",
+      "color" : "WHITE"
     }, {
       "file" : "D",
       "rank" : "2",
-      "piece" : "Pawn"
+      "piece" : "Pawn",
+      "color" : "WHITE"
     }, {
       "file" : "E",
       "rank" : "2",
-      "piece" : "Pawn"
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "F",
       "rank" : "2",
-      "piece" : "Pawn"
+      "piece" : "Pawn",
+      "color" : "WHITE"
     }, {
       "file" : "G",
       "rank" : "2",
-      "piece" : "Pawn"
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "H",
       "rank" : "2",
-      "piece" : "Pawn"
+      "piece" : "Pawn",
+      "color" : "WHITE"
     }, {
       "file" : "A",
       "rank" : "8",
-      "piece" : "Rook"
+      "piece" : "Rook",
+      "color" : "BLACK"
     }, {
       "file" : "B",
       "rank" : "8",
-      "piece" : "Knight"
+      "piece" : "Knight",
+      "color" : "BLACK"
     }, {
       "file" : "C",
       "rank" : "8",
-      "piece" : "Bishop"
+      "piece" : "Bishop",
+      "color" : "BLACK"
     }, {
       "file" : "D",
       "rank" : "8",
-      "piece" : "Queen"
+      "piece" : "Queen",
+      "color" : "BLACK"
     }, {
       "file" : "E",
       "rank" : "8",
-      "piece" : "King"
+      "piece" : "King",
+      "color" : "BLACK"
     }, {
       "file" : "F",
       "rank" : "8",
-      "piece" : "Bishop"
+      "piece" : "Bishop",
+      "color" : "BLACK"
     }, {
       "file" : "G",
       "rank" : "8",
-      "piece" : "Knight"
+      "piece" : "Knight",
+      "color" : "BLACK"
     }, {
       "file" : "H",
       "rank" : "8",
-      "piece" : "Rook"
+      "piece" : "Rook",
+      "color" : "BLACK"
     }, {
       "file" : "A",
       "rank" : "7",
-      "piece" : "Pawn"
+      "piece" : "Pawn",
+      "color" : "BLACK"
     }, {
       "file" : "B",
       "rank" : "7",
-      "piece" : "Pawn"
+      "piece" : "Pawn",
+      "color" : "BLACK"
     }, {
       "file" : "C",
       "rank" : "7",
-      "piece" : "Pawn"
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "D",
       "rank" : "7",
-      "piece" : "Pawn"
+      "piece" : "Pawn",
+      "color" : "BLACK"
     }, {
       "file" : "E",
       "rank" : "7",
-      "piece" : "Pawn"
+      "piece" : "Pawn",
+      "color" : "BLACK"
     }, {
       "file" : "F",
       "rank" : "7",
-      "piece" : "Pawn"
+      "piece" : "Pawn",
+      "color" : "BLACK"
     }, {
       "file" : "G",
       "rank" : "7",
-      "piece" : "Pawn"
+      "piece" : "Pawn",
+      "color" : "BLACK"
     }, {
       "file" : "H",
       "rank" : "7",
-      "piece" : "Pawn"
+      "piece" : "Pawn",
+      "color" : "BLACK"
     } ]
   }
 }

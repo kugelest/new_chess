@@ -1,6 +1,6 @@
 {
   "board" : {
-    "turn" : "WHITE",
+    "turn" : "BLACK",
     "squares" : [ {
       "file" : "A",
       "rank" : "3",
@@ -59,8 +59,8 @@
     }, {
       "file" : "D",
       "rank" : "4",
-      "piece" : "PAWN",
-      "color" : "WHITE"
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "E",
       "rank" : "4",
@@ -104,8 +104,8 @@
     }, {
       "file" : "E",
       "rank" : "5",
-      "piece" : "PAWN",
-      "color" : "BLACK"
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "F",
       "rank" : "5",
@@ -124,8 +124,8 @@
     }, {
       "file" : "A",
       "rank" : "6",
-      "piece" : null,
-      "color" : null
+      "piece" : "KNIGHT",
+      "color" : "BLACK"
     }, {
       "file" : "B",
       "rank" : "6",
@@ -149,8 +149,8 @@
     }, {
       "file" : "F",
       "rank" : "6",
-      "piece" : null,
-      "color" : null
+      "piece" : "PAWN",
+      "color" : "BLACK"
     }, {
       "file" : "G",
       "rank" : "6",
@@ -159,8 +159,8 @@
     }, {
       "file" : "H",
       "rank" : "6",
-      "piece" : null,
-      "color" : null
+      "piece" : "KNIGHT",
+      "color" : "BLACK"
     }, {
       "file" : "A",
       "rank" : "1",
@@ -249,8 +249,8 @@
     }, {
       "file" : "B",
       "rank" : "8",
-      "piece" : "KNIGHT",
-      "color" : "BLACK"
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "C",
       "rank" : "8",
@@ -269,13 +269,13 @@
     }, {
       "file" : "F",
       "rank" : "8",
-      "piece" : "BISHOP",
-      "color" : "BLACK"
+      "piece" : "PAWN",
+      "color" : "WHITE"
     }, {
       "file" : "G",
       "rank" : "8",
-      "piece" : "KNIGHT",
-      "color" : "BLACK"
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "H",
       "rank" : "8",
@@ -309,8 +309,8 @@
     }, {
       "file" : "F",
       "rank" : "7",
-      "piece" : "PAWN",
-      "color" : "BLACK"
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "G",
       "rank" : "7",

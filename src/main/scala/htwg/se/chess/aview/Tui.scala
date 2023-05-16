@@ -36,6 +36,7 @@ class Tui(controller: Controller) extends Observer {
       case "quit" | "exit"       => controller.quit
       case "redo"                => controller.doAndPublish(controller.redo)
       case "undo"                => controller.doAndPublish(controller.undo)
+      case "save"                => controller.save
       case movePattern(from, to) => controller.doAndPublish(controller.makeMove, Move(from, to))
       case _                     =>
     }

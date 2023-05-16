@@ -4,7 +4,6 @@ package aview
 import controller.Controller
 import model.boardComponent.MoveInterface
 import model.boardComponent.boardBaseImpl.Move
-// import model.boardComponent.boardBaseImpl.pieces.PieceColor
 import model.boardComponent.boardBaseImpl.SquareColors
 import util.Event
 import util.Observer

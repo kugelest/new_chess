@@ -1,0 +1,262 @@
+{
+  "board" : {
+    "turn" : "WHITE",
+    "squares" : [ {
+      "file" : "A",
+      "rank" : "3",
+      "piece" : null
+    }, {
+      "file" : "B",
+      "rank" : "3",
+      "piece" : null
+    }, {
+      "file" : "C",
+      "rank" : "3",
+      "piece" : null
+    }, {
+      "file" : "D",
+      "rank" : "3",
+      "piece" : null
+    }, {
+      "file" : "E",
+      "rank" : "3",
+      "piece" : null
+    }, {
+      "file" : "F",
+      "rank" : "3",
+      "piece" : null
+    }, {
+      "file" : "G",
+      "rank" : "3",
+      "piece" : null
+    }, {
+      "file" : "H",
+      "rank" : "3",
+      "piece" : null
+    }, {
+      "file" : "A",
+      "rank" : "4",
+      "piece" : null
+    }, {
+      "file" : "B",
+      "rank" : "4",
+      "piece" : null
+    }, {
+      "file" : "C",
+      "rank" : "4",
+      "piece" : null
+    }, {
+      "file" : "D",
+      "rank" : "4",
+      "piece" : null
+    }, {
+      "file" : "E",
+      "rank" : "4",
+      "piece" : null
+    }, {
+      "file" : "F",
+      "rank" : "4",
+      "piece" : null
+    }, {
+      "file" : "G",
+      "rank" : "4",
+      "piece" : null
+    }, {
+      "file" : "H",
+      "rank" : "4",
+      "piece" : null
+    }, {
+      "file" : "A",
+      "rank" : "5",
+      "piece" : null
+    }, {
+      "file" : "B",
+      "rank" : "5",
+      "piece" : null
+    }, {
+      "file" : "C",
+      "rank" : "5",
+      "piece" : null
+    }, {
+      "file" : "D",
+      "rank" : "5",
+      "piece" : null
+    }, {
+      "file" : "E",
+      "rank" : "5",
+      "piece" : null
+    }, {
+      "file" : "F",
+      "rank" : "5",
+      "piece" : null
+    }, {
+      "file" : "G",
+      "rank" : "5",
+      "piece" : null
+    }, {
+      "file" : "H",
+      "rank" : "5",
+      "piece" : null
+    }, {
+      "file" : "A",
+      "rank" : "6",
+      "piece" : null
+    }, {
+      "file" : "B",
+      "rank" : "6",
+      "piece" : null
+    }, {
+      "file" : "C",
+      "rank" : "6",
+      "piece" : null
+    }, {
+      "file" : "D",
+      "rank" : "6",
+      "piece" : null
+    }, {
+      "file" : "E",
+      "rank" : "6",
+      "piece" : null
+    }, {
+      "file" : "F",
+      "rank" : "6",
+      "piece" : null
+    }, {
+      "file" : "G",
+      "rank" : "6",
+      "piece" : null
+    }, {
+      "file" : "H",
+      "rank" : "6",
+      "piece" : null
+    }, {
+      "file" : "A",
+      "rank" : "1",
+      "piece" : "Rook"
+    }, {
+      "file" : "B",
+      "rank" : "1",
+      "piece" : "Knight"
+    }, {
+      "file" : "C",
+      "rank" : "1",
+      "piece" : "Bishop"
+    }, {
+      "file" : "D",
+      "rank" : "1",
+      "piece" : "Queen"
+    }, {
+      "file" : "E",
+      "rank" : "1",
+      "piece" : "King"
+    }, {
+      "file" : "F",
+      "rank" : "1",
+      "piece" : "Bishop"
+    }, {
+      "file" : "G",
+      "rank" : "1",
+      "piece" : "Knight"
+    }, {
+      "file" : "H",
+      "rank" : "1",
+      "piece" : "Rook"
+    }, {
+      "file" : "A",
+      "rank" : "2",
+      "piece" : "Pawn"
+    }, {
+      "file" : "B",
+      "rank" : "2",
+      "piece" : "Pawn"
+    }, {
+      "file" : "C",
+      "rank" : "2",
+      "piece" : "Pawn"
+    }, {
+      "file" : "D",
+      "rank" : "2",
+      "piece" : "Pawn"
+    }, {
+      "file" : "E",
+      "rank" : "2",
+      "piece" : "Pawn"
+    }, {
+      "file" : "F",
+      "rank" : "2",
+      "piece" : "Pawn"
+    }, {
+      "file" : "G",
+      "rank" : "2",
+      "piece" : "Pawn"
+    }, {
+      "file" : "H",
+      "rank" : "2",
+      "piece" : "Pawn"
+    }, {
+      "file" : "A",
+      "rank" : "8",
+      "piece" : "Rook"
+    }, {
+      "file" : "B",
+      "rank" : "8",
+      "piece" : "Knight"
+    }, {
+      "file" : "C",
+      "rank" : "8",
+      "piece" : "Bishop"
+    }, {
+      "file" : "D",
+      "rank" : "8",
+      "piece" : "Queen"
+    }, {
+      "file" : "E",
+      "rank" : "8",
+      "piece" : "King"
+    }, {
+      "file" : "F",
+      "rank" : "8",
+      "piece" : "Bishop"
+    }, {
+      "file" : "G",
+      "rank" : "8",
+      "piece" : "Knight"
+    }, {
+      "file" : "H",
+      "rank" : "8",
+      "piece" : "Rook"
+    }, {
+      "file" : "A",
+      "rank" : "7",
+      "piece" : "Pawn"
+    }, {
+      "file" : "B",
+      "rank" : "7",
+      "piece" : "Pawn"
+    }, {
+      "file" : "C",
+      "rank" : "7",
+      "piece" : "Pawn"
+    }, {
+      "file" : "D",
+      "rank" : "7",
+      "piece" : "Pawn"
+    }, {
+      "file" : "E",
+      "rank" : "7",
+      "piece" : "Pawn"
+    }, {
+      "file" : "F",
+      "rank" : "7",
+      "piece" : "Pawn"
+    }, {
+      "file" : "G",
+      "rank" : "7",
+      "piece" : "Pawn"
+    }, {
+      "file" : "H",
+      "rank" : "7",
+      "piece" : "Pawn"
+    } ]
+  }
+}

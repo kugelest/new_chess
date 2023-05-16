@@ -7,6 +7,7 @@ import util.Event
 import util.PieceColor
 import model.boardComponent.BoardInterface
 import model.boardComponent.MoveInterface
+import model.fileIoComponent.FileIOInterface
 import controller.MoveCommand
 
 import scala.util.Try
@@ -17,6 +18,8 @@ import net.codingwell.scalaguice.InjectorExtensions._
 case class Controller @Inject() (var board: BoardInterface) extends Observable {
 
   val undoManager = new UndoManager[BoardInterface]
+  val injector = Guice.createInjector(new ChessModule)
+  val fileIO = injector.instance[FileIOInterface]
 
   def doAndPublish(doThis: MoveInterface => BoardInterface, move: MoveInterface) = {
     board = doThis(move)
@@ -44,6 +47,10 @@ case class Controller @Inject() (var board: BoardInterface) extends Observable {
   def undo: BoardInterface = undoManager.undoStep(board)
   def redo: BoardInterface = undoManager.redoStep(board)
   def quit: Unit = notifyObservers(Event.Quit)
+  def save: Unit = {
+    fileIO.save(board)
+    // notifyObservers()
+  }
 
   override def toString: String = board.toString
 

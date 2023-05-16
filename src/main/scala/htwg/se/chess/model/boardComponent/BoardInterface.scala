@@ -5,6 +5,8 @@ package boardComponent
 import util.PieceColor
 import boardComponent.boardBaseImpl.SquareColors
 
+import play.api.libs.json.JsValue
+
 trait BoardInterface {
   def squares: Vector[SquareInterface]
   def turn: PieceColor
@@ -13,6 +15,7 @@ trait BoardInterface {
   def isMoveValid(from: String, to: String): Boolean
   def doMove(from: String, to: String): BoardInterface
   def undoMove(from: String, to: String): BoardInterface
+  def toJson: JsValue
 }
 
 trait MoveInterface {

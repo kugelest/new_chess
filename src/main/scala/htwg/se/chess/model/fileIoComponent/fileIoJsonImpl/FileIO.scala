@@ -7,7 +7,7 @@ import boardComponent.BoardInterface
 import boardComponent.boardBaseImpl.Coord
 import boardComponent.boardBaseImpl.Board
 import boardComponent.boardBaseImpl.Square
-import boardComponent.boardBaseImpl.SquareExtensions
+// import boardComponent.boardBaseImpl.SquareExtensions
 import boardComponent.boardBaseImpl.pieces.Piece
 import boardComponent.boardBaseImpl.pieces.PieceType
 import util.PieceColor

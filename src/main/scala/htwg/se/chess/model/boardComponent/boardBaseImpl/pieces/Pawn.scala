@@ -1,11 +1,12 @@
-package htwg.se.chess.model
+package htwg.se.chess
+package model
 package boardComponent
 package boardBaseImpl
 package pieces
 
 import pieces.Piece
-import pieces.PieceColor
-import pieces.PieceColor.*
+import util.PieceColor
+import util.PieceColor.*
 import boardBaseImpl.Coord
 import scala.util.Success
 

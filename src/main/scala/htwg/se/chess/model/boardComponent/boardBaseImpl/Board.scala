@@ -1,4 +1,5 @@
-package htwg.se.chess.model
+package htwg.se.chess
+package model
 package boardComponent
 package boardBaseImpl
 
@@ -10,8 +11,8 @@ import boardBaseImpl.SquareExtensions.Addable._
 import boardBaseImpl.SquareExtensions.Squareable._
 import boardBaseImpl.pieces.{Piece, Pawn, Rook, Knight, Bishop, Queen, King}
 import boardBaseImpl.pieces.PieceType.*
-import boardBaseImpl.pieces.PieceColor
-import boardBaseImpl.pieces.PieceColor.*
+import util.PieceColor
+import util.PieceColor.*
 
 import scala.util.Try
 import scala.util.Success

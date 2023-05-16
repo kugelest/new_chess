@@ -4,9 +4,9 @@ package controller
 import util.Observable
 import util.UndoManager
 import util.Event
+import util.PieceColor
 import model.boardComponent.BoardInterface
 import model.boardComponent.MoveInterface
-import model.boardComponent.boardBaseImpl.pieces.PieceColor
 import controller.MoveCommand
 
 import scala.util.Try

@@ -1,7 +1,8 @@
-package htwg.se.chess.model
+package htwg.se.chess
+package model
 package boardComponent
 
-import boardComponent.boardBaseImpl.pieces.PieceColor
+import util.PieceColor
 import boardComponent.boardBaseImpl.SquareColors
 
 trait BoardInterface {

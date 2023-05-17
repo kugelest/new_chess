@@ -44,7 +44,9 @@ object FileIoRestService {
         complete(HttpEntity(ContentTypes.`application/json`, Json.toJson("Board").toString))
       } ~
         path("file_io" / "load") {
-          complete(HttpEntity(ContentTypes.`application/json`, Json.toJson("load").toString))
+          complete(
+            HttpEntity(ContentTypes.`application/json`, Json.toJson(file_io.load.map(_.map(_.toJson)).get.get).toString)
+          )
         } ~
         path("file_io" / "save") {
           complete(HttpEntity(ContentTypes.`application/json`, Json.toJson("save").toString))

@@ -1,6 +1,6 @@
 {
   "board" : {
-    "turn" : "BLACK",
+    "turn" : "WHITE",
     "squares" : [ {
       "file" : "A",
       "rank" : "3",
@@ -44,69 +44,69 @@
     }, {
       "file" : "A",
       "rank" : "4",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "B",
+      "rank" : "4",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "C",
+      "rank" : "4",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "D",
+      "rank" : "4",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "E",
+      "rank" : "4",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "F",
+      "rank" : "4",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "G",
+      "rank" : "4",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "H",
+      "rank" : "4",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "A",
+      "rank" : "5",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "B",
+      "rank" : "5",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "C",
+      "rank" : "5",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "D",
+      "rank" : "5",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "E",
+      "rank" : "5",
       "piece" : "PAWN",
       "color" : "WHITE"
     }, {
-      "file" : "B",
-      "rank" : "4",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "C",
-      "rank" : "4",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "D",
-      "rank" : "4",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "E",
-      "rank" : "4",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "F",
-      "rank" : "4",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "G",
-      "rank" : "4",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "H",
-      "rank" : "4",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "A",
-      "rank" : "5",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "B",
-      "rank" : "5",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "C",
-      "rank" : "5",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "D",
-      "rank" : "5",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "E",
-      "rank" : "5",
-      "piece" : null,
-      "color" : null
-    }, {
       "file" : "F",
       "rank" : "5",
       "piece" : null,
@@ -139,8 +139,8 @@
     }, {
       "file" : "D",
       "rank" : "6",
-      "piece" : null,
-      "color" : null
+      "piece" : "PAWN",
+      "color" : "BLACK"
     }, {
       "file" : "E",
       "rank" : "6",
@@ -204,8 +204,8 @@
     }, {
       "file" : "A",
       "rank" : "2",
-      "piece" : null,
-      "color" : null
+      "piece" : "PAWN",
+      "color" : "WHITE"
     }, {
       "file" : "B",
       "rank" : "2",
@@ -219,8 +219,8 @@
     }, {
       "file" : "D",
       "rank" : "2",
-      "piece" : "PAWN",
-      "color" : "WHITE"
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "E",
       "rank" : "2",
@@ -299,13 +299,13 @@
     }, {
       "file" : "D",
       "rank" : "7",
-      "piece" : "PAWN",
-      "color" : "BLACK"
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "E",
       "rank" : "7",
-      "piece" : "PAWN",
-      "color" : "BLACK"
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "F",
       "rank" : "7",

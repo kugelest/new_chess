@@ -36,47 +36,36 @@ object BoardRestService {
     implicit val executionContext: ExecutionContextExecutor = system.executionContext
 
     val route: Route =
-      concat(
-        get {
-          pathSingleSlash {
-            complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, "<h1>HTWG Chess</h1>"))
-          }
-          path("board") {
-            complete(HttpEntity(ContentTypes.`application/json`, Json.toJson("Board").toString))
-          } ~
-            path("board" / "turn") {
-              complete(HttpEntity(ContentTypes.`application/json`, Json.toJson(board.turn.toString).toString))
-            } ~
-            path("board" / "is_move_valid") {
-              complete(HttpEntity(ContentTypes.`application/json`, Json.toJson(board.isMoveValid("a2", "a4")).toString))
-            } ~
-            path("board" / "to_html") {
-              complete(HttpEntity(ContentTypes.`application/json`, Json.toJson(board.toHtml()).toString))
-            } ~
-            path("board" / "to_json") {
-              complete(HttpEntity(ContentTypes.`application/json`, Json.toJson(board.toHtml()).toString))
-            }
-        },
-        post {
-          pathSingleSlash {
-            complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, "<h1>HTWG Chess</h1>"))
-          }
-          path("board") {
-            complete(HttpEntity(ContentTypes.`application/json`, Json.toJson("Board").toString))
-          } ~
-            path("board" / "do_move") {
-              complete(
-                HttpEntity(ContentTypes.`application/json`, Json.toJson(board.doMove("a2", "a4").toJson).toString)
-              )
-            } ~
-            path("board" / "undo_move") {
-              complete(
-                HttpEntity(ContentTypes.`application/json`, Json.toJson(board.undoMove("a4", "a2").toJson).toString)
-              )
-            }
-
+      get {
+        pathSingleSlash {
+          complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, "<h1>HTWG Chess</h1>"))
         }
-      )
+        path("board") {
+          complete(HttpEntity(ContentTypes.`application/json`, Json.toJson("Board").toString))
+        } ~
+          path("board" / "turn") {
+            complete(HttpEntity(ContentTypes.`application/json`, Json.toJson(board.turn.toString).toString))
+          } ~
+          path("board" / "is_move_valid") {
+            complete(HttpEntity(ContentTypes.`application/json`, Json.toJson(board.isMoveValid("a2", "a4")).toString))
+          } ~
+          path("board" / "to_html") {
+            complete(HttpEntity(ContentTypes.`application/json`, Json.toJson(board.toHtml()).toString))
+          } ~
+          path("board" / "to_json") {
+            complete(HttpEntity(ContentTypes.`application/json`, Json.toJson(board.toHtml()).toString))
+          } ~
+          path("board" / "do_move") {
+            complete(
+              HttpEntity(ContentTypes.`application/json`, Json.toJson(board.doMove("a2", "a4").toJson).toString)
+            )
+          } ~
+          path("board" / "undo_move") {
+            complete(
+              HttpEntity(ContentTypes.`application/json`, Json.toJson(board.undoMove("a4", "a2").toJson).toString)
+            )
+          }
+      }
 
     val bindingFuture = Http().newServerAt("localhost", 8080).bind(route)
 

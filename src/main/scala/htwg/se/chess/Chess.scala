@@ -16,8 +16,8 @@ import com.google.inject.Guice
   val controller = Controller(board)
 
   // val webserver = new HttpServer(controller)
-  val board_service = BoardRestService.main
-  // val file_io_service = FileIoRestService.main
+  // val board_service = BoardRestService.main
+  val file_io_service = FileIoRestService.main
 
   val swingGui = new SwingGui(controller)
   val tui = Tui(controller)

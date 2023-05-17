@@ -1,18 +1,21 @@
-package htwg.se.chess
-package model
-package boardComponent
+// package htwg.se.chess
+// package model
+// package boardComponent
+// package boardBaseImpl
+package htwg.se.chess.model.BoardComponent
 package boardBaseImpl
 
 import boardBaseImpl.Coord
 import boardBaseImpl.Coord.*
+import boardBaseImpl.MoveValidator
 import boardBaseImpl.SquareExtensions._
 import boardBaseImpl.SquareExtensions.Removable._
 import boardBaseImpl.SquareExtensions.Addable._
 import boardBaseImpl.SquareExtensions.Squareable._
 import boardBaseImpl.pieces.{Piece, Pawn, Rook, Knight, Bishop, Queen, King}
 import boardBaseImpl.pieces.PieceType.*
-import util.PieceColor
-import util.PieceColor.*
+import boardBaseImpl.pieces.PieceColor
+import boardBaseImpl.pieces.PieceColor.*
 
 import scala.util.Try
 import scala.util.Success
@@ -98,8 +101,8 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], t
 
   def nextTurn(): PieceColor = {
     turn match {
-      case WHITE => BLACK
-      case BLACK => WHITE
+      case PieceColor.WHITE => PieceColor.BLACK
+      case PieceColor.BLACK => PieceColor.WHITE
     }
   }
 

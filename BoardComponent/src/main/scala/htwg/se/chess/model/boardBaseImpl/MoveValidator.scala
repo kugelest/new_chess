@@ -1,5 +1,4 @@
-package htwg.se.chess.model
-package boardComponent
+package htwg.se.chess.model.BoardComponent
 package boardBaseImpl
 
 import boardBaseImpl.Coord
@@ -17,8 +16,8 @@ object MoveValidator {
       case None         => return false
     }
     val piece = start_square.piece match {
-      case Some(piece) => piece
-      case None        => return false
+      case Some(p) => p
+      case None    => return false
     }
 
     piece.color match {

@@ -1,8 +1,8 @@
 package htwg.se.chess
 package controller
 
-import model.boardComponent.BoardInterface
-import model.boardComponent.MoveInterface
+import model.BoardComponent.BoardInterface
+import model.BoardComponent.MoveInterface
 import util.Command
 import util.UndoManager
 

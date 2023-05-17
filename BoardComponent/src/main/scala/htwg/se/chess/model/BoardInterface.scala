@@ -1,9 +1,9 @@
 package htwg.se.chess
 package model
-package boardComponent
+package BoardComponent
 
-import util.PieceColor
-import boardComponent.boardBaseImpl.SquareColors
+import BoardComponent.boardBaseImpl.pieces.PieceColor
+import BoardComponent.boardBaseImpl.SquareColors
 
 import play.api.libs.json.JsValue
 

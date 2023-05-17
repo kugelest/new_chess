@@ -1,12 +1,9 @@
-package htwg.se.chess
-package model
-package boardComponent
+package htwg.se.chess.model.BoardComponent
 package boardBaseImpl
 package pieces
 
-import pieces.Piece
-import util.PieceColor
-import boardBaseImpl.Coord
+import boardBaseImpl.{Board, Square}
+import boardBaseImpl.pieces.Piece
 
 case class Bishop(color: PieceColor, char: Char, move_count: Int = 0) extends Piece {
   override def getPath(start_coord: Coord, end_coord: Coord): List[Coord] = {

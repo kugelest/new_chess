@@ -1,16 +1,16 @@
 package htwg.se.chess
 package model
-package fileIoComponent
+package FileIOComponent
 package fileIoJsonImpl
 
-import boardComponent.BoardInterface
-import boardComponent.boardBaseImpl.Coord
-import boardComponent.boardBaseImpl.Board
-import boardComponent.boardBaseImpl.Square
-// import boardComponent.boardBaseImpl.SquareExtensions
-import boardComponent.boardBaseImpl.pieces.Piece
-import boardComponent.boardBaseImpl.pieces.PieceType
-import util.PieceColor
+import BoardComponent.BoardInterface
+import BoardComponent.boardBaseImpl.Coord
+import BoardComponent.boardBaseImpl.Board
+import BoardComponent.boardBaseImpl.Square
+// import BoardComponent.boardBaseImpl.SquareExtensions
+import BoardComponent.boardBaseImpl.pieces.Piece
+import BoardComponent.boardBaseImpl.pieces.PieceType
+import BoardComponent.boardBaseImpl.pieces.PieceColor
 
 import play.api.libs.json._
 import com.google.inject.Guice
@@ -24,11 +24,11 @@ class FileIO extends FileIOInterface {
 
   override def load: Try[Option[BoardInterface]] = {
     Try {
-      val injector: ScalaInjector = Guice.createInjector(new ChessModule)
+      // val injector: ScalaInjector = Guice.createInjector(new ChessModule)
       val source: String = Source.fromFile(FILE_NAME).getLines.mkString
       val json: JsValue = Json.parse(source)
 
-      val board = injector.instance[BoardInterface]
+      // val board = injector.instance[BoardInterface]
       val turnStr = (json \ "board" \ "turn").as[String]
       val turn = PieceColor.valueOf(turnStr)
 

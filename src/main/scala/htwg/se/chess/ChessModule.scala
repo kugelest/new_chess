@@ -1,10 +1,10 @@
 package htwg.se.chess
 
-import model.boardComponent.BoardInterface
-import model.boardComponent.boardBaseImpl
-import model.boardComponent.MoveInterface
-import model.fileIoComponent.FileIOInterface
-import model.fileIoComponent.fileIoJsonImpl
+import model.BoardComponent.BoardInterface
+import model.BoardComponent.boardBaseImpl
+import model.BoardComponent.MoveInterface
+import model.FileIOComponent.FileIOInterface
+import model.FileIOComponent.fileIoJsonImpl
 
 import com.google.inject.AbstractModule
 import com.google.inject.Provider

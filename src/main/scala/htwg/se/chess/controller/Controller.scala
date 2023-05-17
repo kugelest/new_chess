@@ -4,10 +4,11 @@ package controller
 import util.Observable
 import util.UndoManager
 import util.Event
-import util.PieceColor
-import model.boardComponent.BoardInterface
-import model.boardComponent.MoveInterface
-import model.fileIoComponent.FileIOInterface
+// import util.PieceColor
+import model.BoardComponent.boardBaseImpl.pieces.PieceColor
+import model.BoardComponent.BoardInterface
+import model.BoardComponent.MoveInterface
+import model.FileIOComponent.FileIOInterface
 import controller.MoveCommand
 
 import scala.util.Try
@@ -58,26 +59,6 @@ case class Controller @Inject() (var board: BoardInterface) extends Observable {
       case Failure(exception) =>
         println(s"Failure: ${exception.getMessage}"); board
     }
-    // val gridOptionResult = fileIo.load
-
-    // gridOptionResult match {
-    //   case Success(gridOption) =>
-    //     gridOption match {
-    //       case Some(_grid) =>
-    //         grid = _grid
-    //         gameStatus = LOADED
-    //       case None =>
-    //         createEmptyGrid
-    //         gameStatus = COULD_NOT_LOAD
-    //     }
-    //   case Failure(e) =>
-    //     logger.error(
-    //       "Error occured while loading game: " + e.getMessage)
-    //     createEmptyGrid
-    //     gameStatus = COULD_NOT_LOAD
-    // }
-
-    // (new CellChanged)
   }
 
   override def toString: String = board.toString

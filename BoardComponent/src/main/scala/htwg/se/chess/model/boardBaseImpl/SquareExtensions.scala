@@ -1,5 +1,7 @@
-package htwg.se.chess.model
-package boardComponent
+// package htwg.se.chess.model
+// package boardComponent
+// package boardBaseImpl
+package htwg.se.chess.model.BoardComponent
 package boardBaseImpl
 
 import boardBaseImpl.pieces.Piece

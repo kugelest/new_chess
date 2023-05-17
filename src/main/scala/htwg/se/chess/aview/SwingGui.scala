@@ -2,12 +2,12 @@ package htwg.se.chess
 package aview
 
 import controller.Controller
-import model.boardComponent.MoveInterface
-import model.boardComponent.boardBaseImpl.Move
-import model.boardComponent.boardBaseImpl.SquareColors
+import model.BoardComponent.MoveInterface
+import model.BoardComponent.boardBaseImpl.Move
+import model.BoardComponent.boardBaseImpl.SquareColors
+import model.BoardComponent.boardBaseImpl.pieces.PieceColor
 import util.Event
 import util.Observer
-import util.PieceColor
 
 import javax.swing.BorderFactory
 import java.awt.Color

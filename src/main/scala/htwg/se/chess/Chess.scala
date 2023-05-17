@@ -1,7 +1,7 @@
 package htwg.se.chess
 
 import controller.Controller
-import model.boardComponent.BoardInterface
+import model.BoardComponent.BoardInterface
 import aview.Tui
 import aview.SwingGui
 

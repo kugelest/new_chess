@@ -1,13 +1,12 @@
-package htwg.se.chess
-package model.boardComponent
+package htwg.se.chess.model.BoardComponent
 package boardBaseImpl
 package pieces
 
+import boardBaseImpl.{Board, Square, Coord}
+import htwg.se.chess.model.BoardComponent.boardBaseImpl.{Board, Square}
 import pieces.{Pawn, Rook, Knight, Bishop, Queen, King}
-import pieces.PieceType.*
-// import pieces.PieceColor.*
-import util.PieceColor.*
-import util.PieceColor
+import PieceType.*
+import PieceColor.*
 
 trait Piece {
   def color: PieceColor
@@ -46,4 +45,8 @@ object Piece {
 
 enum PieceType {
   case PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING
+}
+
+enum PieceColor {
+  case WHITE, BLACK
 }

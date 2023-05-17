@@ -29,24 +29,24 @@
     }, {
       "file" : "F",
       "rank" : "3",
-      "piece" : "KNIGHT",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "G",
+      "rank" : "3",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "H",
+      "rank" : "3",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "A",
+      "rank" : "4",
+      "piece" : "PAWN",
       "color" : "WHITE"
     }, {
-      "file" : "G",
-      "rank" : "3",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "H",
-      "rank" : "3",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "A",
-      "rank" : "4",
-      "piece" : null,
-      "color" : null
-    }, {
       "file" : "B",
       "rank" : "4",
       "piece" : null,
@@ -124,8 +124,8 @@
     }, {
       "file" : "A",
       "rank" : "6",
-      "piece" : "KNIGHT",
-      "color" : "BLACK"
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "B",
       "rank" : "6",
@@ -134,8 +134,8 @@
     }, {
       "file" : "C",
       "rank" : "6",
-      "piece" : "PAWN",
-      "color" : "BLACK"
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "D",
       "rank" : "6",
@@ -149,8 +149,8 @@
     }, {
       "file" : "F",
       "rank" : "6",
-      "piece" : "PAWN",
-      "color" : "BLACK"
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "G",
       "rank" : "6",
@@ -159,8 +159,8 @@
     }, {
       "file" : "H",
       "rank" : "6",
-      "piece" : "KNIGHT",
-      "color" : "BLACK"
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "A",
       "rank" : "1",
@@ -194,8 +194,8 @@
     }, {
       "file" : "G",
       "rank" : "1",
-      "piece" : null,
-      "color" : null
+      "piece" : "KNIGHT",
+      "color" : "WHITE"
     }, {
       "file" : "H",
       "rank" : "1",
@@ -204,8 +204,8 @@
     }, {
       "file" : "A",
       "rank" : "2",
-      "piece" : "PAWN",
-      "color" : "WHITE"
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "B",
       "rank" : "2",
@@ -219,8 +219,8 @@
     }, {
       "file" : "D",
       "rank" : "2",
-      "piece" : null,
-      "color" : null
+      "piece" : "PAWN",
+      "color" : "WHITE"
     }, {
       "file" : "E",
       "rank" : "2",
@@ -249,8 +249,8 @@
     }, {
       "file" : "B",
       "rank" : "8",
-      "piece" : null,
-      "color" : null
+      "piece" : "KNIGHT",
+      "color" : "BLACK"
     }, {
       "file" : "C",
       "rank" : "8",
@@ -269,13 +269,13 @@
     }, {
       "file" : "F",
       "rank" : "8",
-      "piece" : "PAWN",
-      "color" : "WHITE"
+      "piece" : "BISHOP",
+      "color" : "BLACK"
     }, {
       "file" : "G",
       "rank" : "8",
-      "piece" : null,
-      "color" : null
+      "piece" : "KNIGHT",
+      "color" : "BLACK"
     }, {
       "file" : "H",
       "rank" : "8",
@@ -294,8 +294,8 @@
     }, {
       "file" : "C",
       "rank" : "7",
-      "piece" : null,
-      "color" : null
+      "piece" : "PAWN",
+      "color" : "BLACK"
     }, {
       "file" : "D",
       "rank" : "7",
@@ -304,13 +304,13 @@
     }, {
       "file" : "E",
       "rank" : "7",
-      "piece" : null,
-      "color" : null
+      "piece" : "PAWN",
+      "color" : "BLACK"
     }, {
       "file" : "F",
       "rank" : "7",
-      "piece" : null,
-      "color" : null
+      "piece" : "PAWN",
+      "color" : "BLACK"
     }, {
       "file" : "G",
       "rank" : "7",

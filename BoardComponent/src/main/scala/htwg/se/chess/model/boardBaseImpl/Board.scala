@@ -106,6 +106,15 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], t
     }
   }
 
+  def toHtml(): String = {
+    this.squares
+      .sortBy(_.coord.print_ord)
+      .map(_.piece.getOrElse("-"))
+      .grouped(Coord.len)
+      .map(_.mkString("<tr><td>", "</td><td>", "</td></tr>"))
+      .mkString("<table>", "\n", "</table>")
+  }
+
   override def toString(): String = {
     this.squares
       .sortBy(_.coord.print_ord)

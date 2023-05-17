@@ -16,6 +16,7 @@ trait BoardInterface {
   def doMove(from: String, to: String): BoardInterface
   def undoMove(from: String, to: String): BoardInterface
   def toJson: JsValue
+  def toHtml(): String
 }
 
 trait MoveInterface {

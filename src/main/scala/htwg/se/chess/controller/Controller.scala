@@ -61,6 +61,10 @@ case class Controller @Inject() (var board: BoardInterface) extends Observable {
     }
   }
 
+  def boardToHtml: String = {
+    board.toHtml()
+  }
+
   override def toString: String = board.toString
 
 }

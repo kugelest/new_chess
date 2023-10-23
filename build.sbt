@@ -11,6 +11,25 @@ val AkkaHttpVersion = "10.5.2"
 //   "com.typesafe.akka" %% "akka-http" % AkkaHttpVersion
 // )
 
+ThisBuild / assemblyMergeStrategy := {
+  case PathList("javax", "servlet", xs @ _*)         => MergeStrategy.first
+  case PathList(ps @ _*) if ps.last endsWith ".html" => MergeStrategy.first
+  case PathList(ps @ _*) if ps.last endsWith "StaticLoggerBinder.class" =>
+    MergeStrategy.first
+  case PathList(ps @ _*) if ps.last endsWith "StaticMDCBinder.class" =>
+    MergeStrategy.first
+  case PathList(ps @ _*) if ps.last endsWith "StaticMarkerBinder.class" =>
+    MergeStrategy.first
+  case PathList(ps @ _*) if ps.last endsWith "io.netty.versions.properties" =>
+    MergeStrategy.first
+  case PathList(ps @ _*) if ps.last endsWith "BUILD" => MergeStrategy.first
+  case "application.conf"                            => MergeStrategy.concat
+  case "module-info.class"                                => MergeStrategy.discard
+  case x =>
+    val oldStrategy = (assemblyMergeStrategy in assembly).value
+    oldStrategy(x)
+}
+
 lazy val BoardComponent =
   (project in file("BoardComponent"))
     .settings(

@@ -8,7 +8,6 @@ import util.Event
 import model.BoardComponent.boardBaseImpl.pieces.PieceColor
 import model.BoardComponent.BoardInterface
 import model.BoardComponent.MoveInterface
-import model.FileIOComponent.FileIOInterface
 import controller.MoveCommand
 
 import scala.util.Try
@@ -21,7 +20,6 @@ case class Controller @Inject() (var board: BoardInterface) extends Observable {
 
   val undoManager = new UndoManager[BoardInterface]
   val injector = Guice.createInjector(new ChessModule)
-  val fileIO = injector.instance[FileIOInterface]
 
   def doAndPublish(doThis: MoveInterface => BoardInterface, move: MoveInterface) = {
     board = doThis(move)
@@ -50,15 +48,7 @@ case class Controller @Inject() (var board: BoardInterface) extends Observable {
   def redo: BoardInterface = undoManager.redoStep(board)
   def quit: Unit = notifyObservers(Event.Quit)
   def save: Unit = {
-    fileIO.save(board)
     // notifyObservers()
-  }
-  def load: BoardInterface = {
-    fileIO.load match {
-      case Success(value) => value.get
-      case Failure(exception) =>
-        println(s"Failure: ${exception.getMessage}"); board
-    }
   }
 
   def boardToHtml: String = {

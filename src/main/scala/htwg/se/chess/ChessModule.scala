@@ -3,8 +3,6 @@ package htwg.se.chess
 import model.BoardComponent.BoardInterface
 import model.BoardComponent.boardBaseImpl
 import model.BoardComponent.MoveInterface
-import model.FileIOComponent.FileIOInterface
-import model.FileIOComponent.fileIoJsonImpl
 
 import com.google.inject.AbstractModule
 import com.google.inject.Provider
@@ -22,7 +20,6 @@ class ChessModule extends AbstractModule with ScalaModule {
     // bind[BoardInterface].toInstance(boardBaseImpl.Board())
     // bind[BoardInterface].to(boardBaseImpl.Board)
     bind[BoardInterface].toProvider[BoardProvider]
-    bind[FileIOInterface].to[fileIoJsonImpl.FileIO]
     // bind[MoveInterface].to[Move]
     // bind[FileIOInterface].to[FileIOXMLImpl.FileIO]
   }

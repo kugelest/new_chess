@@ -14,8 +14,8 @@
     }, {
       "file" : "C",
       "rank" : "3",
-      "piece" : "PAWN",
-      "color" : "BLACK"
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "D",
       "rank" : "3",
@@ -29,44 +29,44 @@
     }, {
       "file" : "F",
       "rank" : "3",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "G",
+      "rank" : "3",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "H",
+      "rank" : "3",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "A",
+      "rank" : "4",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "B",
+      "rank" : "4",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "C",
+      "rank" : "4",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "D",
+      "rank" : "4",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "E",
+      "rank" : "4",
       "piece" : "PAWN",
       "color" : "WHITE"
     }, {
-      "file" : "G",
-      "rank" : "3",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "H",
-      "rank" : "3",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "A",
-      "rank" : "4",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "B",
-      "rank" : "4",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "C",
-      "rank" : "4",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "D",
-      "rank" : "4",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "E",
-      "rank" : "4",
-      "piece" : null,
-      "color" : null
-    }, {
       "file" : "F",
       "rank" : "4",
       "piece" : null,
@@ -104,29 +104,29 @@
     }, {
       "file" : "E",
       "rank" : "5",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "F",
-      "rank" : "5",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "G",
-      "rank" : "5",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "H",
-      "rank" : "5",
-      "piece" : null,
-      "color" : null
-    }, {
-      "file" : "A",
-      "rank" : "6",
       "piece" : "PAWN",
       "color" : "BLACK"
     }, {
+      "file" : "F",
+      "rank" : "5",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "G",
+      "rank" : "5",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "H",
+      "rank" : "5",
+      "piece" : null,
+      "color" : null
+    }, {
+      "file" : "A",
+      "rank" : "6",
+      "piece" : null,
+      "color" : null
+    }, {
       "file" : "B",
       "rank" : "6",
       "piece" : null,
@@ -149,8 +149,8 @@
     }, {
       "file" : "F",
       "rank" : "6",
-      "piece" : "PAWN",
-      "color" : "BLACK"
+      "piece" : null,
+      "color" : null
     }, {
       "file" : "G",
       "rank" : "6",
@@ -169,8 +169,8 @@
     }, {
       "file" : "B",
       "rank" : "1",
-      "piece" : null,
-      "color" : null
+      "piece" : "KNIGHT",
+      "color" : "WHITE"
     }, {
       "file" : "C",
       "rank" : "1",
@@ -219,8 +219,8 @@
     }, {
       "file" : "D",
       "rank" : "2",
-      "piece" : null,
-      "color" : null
+      "piece" : "PAWN",
+      "color" : "WHITE"
     }, {
       "file" : "E",
       "rank" : "2",
@@ -229,8 +229,8 @@
     }, {
       "file" : "F",
       "rank" : "2",
-      "piece" : null,
-      "color" : null
+      "piece" : "PAWN",
+      "color" : "WHITE"
     }, {
       "file" : "G",
       "rank" : "2",
@@ -284,8 +284,8 @@
     }, {
       "file" : "A",
       "rank" : "7",
-      "piece" : null,
-      "color" : null
+      "piece" : "PAWN",
+      "color" : "BLACK"
     }, {
       "file" : "B",
       "rank" : "7",
@@ -309,13 +309,13 @@
     }, {
       "file" : "F",
       "rank" : "7",
-      "piece" : null,
-      "color" : null
+      "piece" : "PAWN",
+      "color" : "BLACK"
     }, {
       "file" : "G",
       "rank" : "7",
-      "piece" : null,
-      "color" : null
+      "piece" : "PAWN",
+      "color" : "BLACK"
     }, {
       "file" : "H",
       "rank" : "7",

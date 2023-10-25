@@ -33,8 +33,6 @@ class SwingGui(controller: Controller) extends Frame with Observer {
     contents += new Menu("Edit") {
       contents += new MenuItem(Action("Undo")(controller.doAndPublish(controller.undo)))
       contents += new MenuItem(Action("Redo")(controller.doAndPublish(controller.redo)))
-      contents += new MenuItem(Action("save")(controller.save))
-      contents += new MenuItem(Action("load")(controller.doAndPublish(controller.load)))
     }
   }
   contents = updateContents

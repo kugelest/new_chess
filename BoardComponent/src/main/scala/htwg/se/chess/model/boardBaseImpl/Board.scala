@@ -21,8 +21,6 @@ import scala.util.Try
 import scala.util.Success
 import com.google.inject.{Guice, Inject}
 import net.codingwell.scalaguice.InjectorExtensions._
-import play.api.libs.json.{JsNumber, JsValue, Json, Writes}
-import play.api.libs.json.Format
 
 case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], turn: PieceColor)
     extends BoardInterface {
@@ -124,35 +122,6 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], t
       .mkString("\n")
   }
 
-  // given Format[Board] = Json.format[Board]
-
-  val cellWrites = new Writes[BoardInterface] {
-    def writes(board: BoardInterface) = Json.obj(
-      "value" -> "hello"
-      // "given" -> cell.given,
-      // "showCandidates" -> cell.showCandidates
-    )
-  }
-
-  def toJson: JsValue = {
-    Json.obj(
-      "board" -> Json.obj(
-        "turn" -> this.turn.toString(),
-        "squares" -> Json.toJson(
-          for {
-            i <- 0 until squares.length
-          } yield {
-            Json.obj(
-              "file" -> squares(i).coord.file.toString(),
-              "rank" -> squares(i).coord.rank.toString(),
-              "piece" -> squares(i).piece.map(_.getClass.toString.prepended('.').split("\\.").last.toUpperCase()),
-              "color" -> squares(i).piece.map(_.color.toString())
-            )
-          }
-        )
-      )
-    )
-  }
 }
 
 object Board {

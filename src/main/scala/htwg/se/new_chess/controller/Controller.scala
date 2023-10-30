@@ -44,6 +44,10 @@ case class Controller(var board: Board) extends Observable {
   def redo: Board = undoManager.redoStep(board)
   def quit: Unit = notifyObservers(Event.Quit)
 
+  def squareStrList(): List[String] = {
+    board.squares.sortBy(_.coord.print_ord).map(_.toString).toList
+  }
+
   override def toString: String = board.toString
 
 }

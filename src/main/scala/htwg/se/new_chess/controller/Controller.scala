@@ -7,6 +7,7 @@ import util.Event
 import model.boardComponent.Move
 import model.boardComponent.Board
 import model.boardComponent.Coord
+import model.boardComponent.SquareColors
 import model.boardComponent.MoveValidator
 import model.boardComponent.pieces.PieceColor
 
@@ -44,8 +45,8 @@ case class Controller(var board: Board) extends Observable {
   def redo: Board = undoManager.redoStep(board)
   def quit: Unit = notifyObservers(Event.Quit)
 
-  def squareStrList(): List[String] = {
-    board.squares.sortBy(_.coord.print_ord).map(_.toString).toList
+  def squareData(): List[(String, String, String)] = {
+    board.squares.sortBy(_.coord.print_ord).map(square => (square.coord.toString.toLowerCase, square.toString, square.coord.color.toString.toLowerCase)).toList
   }
 
   override def toString: String = board.toString

@@ -32,6 +32,7 @@ case class Controller(var board: Board) extends Observable {
     board.startPos()
   }
 
+
   def makeMove(move: Move): Board = {
     if (board.isMoveValid(move.from, move.to))
       undoManager.doStep(board, MoveCommand(move))
@@ -40,6 +41,11 @@ case class Controller(var board: Board) extends Observable {
   }
 
   def whichTurn(): PieceColor = board.turn
+
+  def captureStacks() = {
+    val (whiteCaptureStack, blackCaptureStack) = board.captureStacks()
+    (whiteCaptureStack, blackCaptureStack)
+  }
 
   def undo: Board = undoManager.undoStep(board)
   def redo: Board = undoManager.redoStep(board)

@@ -53,6 +53,7 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], t
   }
 
   private def makeMove = move(+1) _
+  private def takeBackMove = move(-1) _
 
   def doMove(from: String, to: String): Board = {
     val start_coord = Coord.fromStr(from)
@@ -67,7 +68,6 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], t
     board.copy(capture_stack = capture_square :: capture_stack, turn = nextTurn())
   }
 
-  private def takeBackMove = move(-1) _
   // def takeBackMove(from: String, to: String): Board = takeBackMove(Coord.fromStr(from), Coord.fromStr(to))
 
   def undoMove(from: String, to: String): Board = {
@@ -92,13 +92,26 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], t
     }
   }
 
+  def captureStacks() = {
+    val captured_squares = this.capture_stack.flatten
+    val captured_pieces = captured_squares.map(_.piece).flatten
+    val (whitePieces, blackPieces) = captured_pieces.partition {
+      case piece if piece.color == PieceColor.WHITE => true
+      case piece if piece.color == PieceColor.BLACK => false
+    }
+    (whitePieces.map(_.toString), blackPieces.map(_.toString))
+  }
+
   override def toString(): String = {
-    this.squares
+    val boardStr = this.squares
       .sortBy(_.coord.print_ord)
       .map(_.piece.getOrElse("-"))
       .grouped(Coord.len)
       .map(_.mkString(" "))
       .mkString("\n")
+    val (whiteCaptureStack, blackCaptureStack) = this.captureStacks()
+    val captureStr = whiteCaptureStack.mkString + "\n" + blackCaptureStack.mkString
+    boardStr + "\n\n" + captureStr
   }
 }
 

@@ -17,6 +17,7 @@ import scala.util.Success
 case class Controller(var board: Board) extends Observable {
 
   val undoManager = new UndoManager[Board]
+  var board_tmp = board
 
   def doAndPublish(doThis: Move => Board, move: Move) = {
     board = doThis(move)
@@ -34,8 +35,12 @@ case class Controller(var board: Board) extends Observable {
 
 
   def makeMove(move: Move): Board = {
-    if (board.isMoveValid(move.from, move.to))
-      undoManager.doStep(board, MoveCommand(move))
+    if (board.isMoveConceivable(move.from, move.to))
+      board_tmp = board.doMove(move.from, move.to)
+      if (board_tmp.isValid())
+        undoManager.doStep(board, MoveCommand(move))
+      else
+        undoManager.noStep(board, MoveCommand(move))
     else
       undoManager.noStep(board, MoveCommand(move))
   }

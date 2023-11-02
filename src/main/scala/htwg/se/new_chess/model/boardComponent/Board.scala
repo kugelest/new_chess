@@ -32,12 +32,16 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], t
     fresh_board.copy(squares = fresh_board.squares.replace(Board.start_pos_pieces.map(_.toSquare())).toVector)
   }
 
-  def isMoveValid(from: String, to: String): Boolean = {
+  def isMoveConceivable(from: String, to: String): Boolean = {
     val coords_try: List[Try[Coord]] = List(Try(Coord.fromStr(from)), Try(Coord.fromStr(to)))
     val coords = coords_try.collect { case Success(coord) => coord }
     val coords_are_valid = coords.length == 2
-    val valid_move = coords_are_valid && MoveValidator.isMoveValid(coords(0), coords(1), this)
-    valid_move
+    val conceivable_move = coords_are_valid && MoveValidator.isMoveConceivable(coords(0), coords(1), this)
+    conceivable_move
+  }
+
+  def isValid(): Boolean = {
+    true
   }
 
   private def move(n: Int)(start_coord: Coord, end_coord: Coord): Board = {

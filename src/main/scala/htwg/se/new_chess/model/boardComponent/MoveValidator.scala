@@ -6,7 +6,7 @@ import boardComponent.pieces.Pawn
 
 object MoveValidator {
 
-  def isMoveValid(start_coord: Coord, end_coord: Coord, board: Board): Boolean = {
+  def isMoveConceivable(start_coord: Coord, end_coord: Coord, board: Board): Boolean = {
     val start_square = board.squares.find(_.coord == start_coord) match {
       case Some(square) => square
       case None         => return false

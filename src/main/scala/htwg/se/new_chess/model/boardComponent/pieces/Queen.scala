@@ -6,8 +6,7 @@ import pieces.Piece
 import pieces.PieceColor
 import boardComponent.Coord
 
-case class Queen(color: PieceColor, char: Char, move_count: Int = 0)
-    extends Piece {
+case class Queen(color: PieceColor, char: Char, worth: Int, move_count: Int = 0) extends Piece {
 
   override def getPath(start_coord: Coord, end_coord: Coord): List[Coord] = {
     val direction: List[Coord] = (
@@ -37,6 +36,11 @@ case class Queen(color: PieceColor, char: Char, move_count: Int = 0)
     direction.reverse.dropWhile(_ != end_coord)
   }
 
-  override def copy(color: PieceColor, char: Char, move_count: Int): Piece =
-    Queen(color, char, move_count)
+  override def copy(color: PieceColor, char: Char, worth: Int, move_count: Int): Piece =
+    Queen(color, char, worth, move_count)
+}
+
+
+object Queen {
+  val worth = 9
 }

@@ -44,7 +44,7 @@ case class Controller(var board: Board) extends Observable {
 
   def captureStacks() = {
     val (whiteCaptureStack, blackCaptureStack) = board.captureStacks()
-    (whiteCaptureStack, blackCaptureStack)
+    (whiteCaptureStack.map(_.toString), blackCaptureStack.map(_.toString))
   }
 
   def undo: Board = undoManager.undoStep(board)

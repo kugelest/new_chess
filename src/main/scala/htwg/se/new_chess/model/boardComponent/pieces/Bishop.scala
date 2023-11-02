@@ -6,8 +6,7 @@ import pieces.Piece
 import pieces.PieceColor
 import boardComponent.Coord
 
-case class Bishop(color: PieceColor, char: Char, move_count: Int = 0)
-    extends Piece {
+case class Bishop(color: PieceColor, char: Char, worth: Int, move_count: Int = 0) extends Piece {
   override def getPath(start_coord: Coord, end_coord: Coord): List[Coord] = {
     val direction = (
       start_coord.file,
@@ -28,6 +27,10 @@ case class Bishop(color: PieceColor, char: Char, move_count: Int = 0)
     direction.reverse.dropWhile(_ != end_coord)
   }
 
-  override def copy(color: PieceColor, char: Char, move_count: Int): Piece =
-    Bishop(color, char, move_count)
+  override def copy(color: PieceColor, char: Char, worth: Int, move_count: Int): Piece =
+    Bishop(color, char, worth, move_count)
+}
+
+object Bishop {
+  val worth = 3
 }

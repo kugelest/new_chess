@@ -95,23 +95,34 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], t
   def captureStacks() = {
     val captured_squares = this.capture_stack.flatten
     val captured_pieces = captured_squares.map(_.piece).flatten
-    val (whitePieces, blackPieces) = captured_pieces.partition {
+    val (whiteStack, blackStack) = captured_pieces.partition {
       case piece if piece.color == PieceColor.WHITE => true
       case piece if piece.color == PieceColor.BLACK => false
     }
-    (whitePieces.map(_.toString), blackPieces.map(_.toString))
+    (whiteStack, blackStack)
+  }
+
+  def captureStacksStr() = {
+    val (whiteCaptureStack, blackCaptureStack) = this.captureStacks()
+    (whiteCaptureStack.map(_.toString), blackCaptureStack.map(_.toString))
+  }
+
+  def advantage(): Int = {
+    val (white_stack, black_stack) = this.captureStacks()
+    Board.advantage(white_stack, black_stack)
   }
 
   override def toString(): String = {
-    val boardStr = this.squares
+    val board = this.squares
       .sortBy(_.coord.print_ord)
       .map(_.piece.getOrElse("-"))
       .grouped(Coord.len)
       .map(_.mkString(" "))
       .mkString("\n")
-    val (whiteCaptureStack, blackCaptureStack) = this.captureStacks()
-    val captureStr = whiteCaptureStack.mkString + "\n" + blackCaptureStack.mkString
-    boardStr + "\n\n" + captureStr
+    val adv = "adv: " + this.advantage()
+    val (w, b) = this.captureStacksStr()
+    val stacks = w.mkString + "\n" + b.mkString
+    board + "\n\n" + stacks + "\n\n" + adv
   }
 }
 
@@ -154,4 +165,8 @@ object Board {
     (G7, Piece(PAWN, BLACK)),
     (H7, Piece(PAWN, BLACK))
   )
+
+  private def advantage(l1: List[Piece], l2: List[Piece]): Int = {
+    l2.map(_.worth).reduceOption(_+_).getOrElse(0) - l1.map(_.worth).reduceOption(_+_).getOrElse(0)
+  }
 }

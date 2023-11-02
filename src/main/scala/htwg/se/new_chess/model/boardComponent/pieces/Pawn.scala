@@ -8,8 +8,7 @@ import pieces.PieceColor.*
 import boardComponent.Coord
 import scala.util.Success
 
-case class Pawn(color: PieceColor, char: Char, move_count: Int = 0)
-    extends Piece {
+case class Pawn(color: PieceColor, char: Char, worth: Int, move_count: Int = 0) extends Piece {
 
   override def getPath(start_coord: Coord, end_coord: Coord): List[Coord] = {
     (color, move_count) match {
@@ -25,7 +24,13 @@ case class Pawn(color: PieceColor, char: Char, move_count: Int = 0)
     }
   }
 
-  override def copy(color: PieceColor, char: Char, move_count: Int): Piece =
-    Pawn(color, char, move_count)
+  override def copy(color: PieceColor, char: Char, worth: Int, move_count: Int): Piece =
+    Pawn(color, char, worth, move_count)
 
 }
+
+object Pawn {
+  val worth = 1
+}
+
+

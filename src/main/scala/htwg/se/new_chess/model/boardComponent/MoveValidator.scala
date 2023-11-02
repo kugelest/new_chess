@@ -32,7 +32,7 @@ object MoveValidator {
         case Nil          => return false
       }
 
-    val path_empty = !path.exists(square => !square.piece.isEmpty)
+    val path_empty = path.forall(square => square.piece.isEmpty)
     val dest_empty = dest.piece.isEmpty
     val dest_enemy = dest.piece.map(_.color) != Option(piece.color)
     val same_file = start_square.coord.file == dest.coord.file

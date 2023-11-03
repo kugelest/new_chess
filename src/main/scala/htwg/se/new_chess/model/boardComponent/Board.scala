@@ -41,10 +41,10 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], t
   }
 
   def isValid(): Boolean = {
-    true
+    MoveValidator.isValid(this)
   }
 
-  private def move(n: Int)(start_coord: Coord, end_coord: Coord): Board = {
+  private def forceMove(n: Int)(start_coord: Coord, end_coord: Coord): Board = {
     val start_square: Option[Square] = squares.find(_.coord == start_coord)
     val end_set = updateSquare(
       Square(
@@ -56,8 +56,8 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], t
     end_set_and_start_removed
   }
 
-  private def makeMove = move(+1) _
-  private def takeBackMove = move(-1) _
+  private def forceMoveForward = forceMove(+1) _
+  private def forceMoveBackward = forceMove(-1) _
 
   def doMove(from: String, to: String): Board = {
     val start_coord = Coord.fromStr(from)
@@ -68,16 +68,14 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], t
       case _                                      => Option.empty
     }
 
-    val board = makeMove(start_coord, end_coord)
+    val board = forceMoveForward(start_coord, end_coord)
     board.copy(capture_stack = capture_square :: capture_stack, turn = nextTurn())
   }
-
-  // def takeBackMove(from: String, to: String): Board = takeBackMove(Coord.fromStr(from), Coord.fromStr(to))
 
   def undoMove(from: String, to: String): Board = {
     val start_coord = Coord.fromStr(from)
     val end_coord = Coord.fromStr(to)
-    val board = takeBackMove(start_coord, end_coord)
+    val board = forceMoveBackward(start_coord, end_coord)
     val new_board = board.capture_stack match {
       case head :: tail =>
         head match {

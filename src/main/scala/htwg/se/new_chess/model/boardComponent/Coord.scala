@@ -42,8 +42,15 @@ enum Coord {
   def lowerLeftNeighbors = neighbors(_.lowerLeftNeighbor()) _
   def upperRightNeighbors = neighbors(_.upperRightNeighbor()) _
   def lowerRightNeighbors = neighbors(_.lowerRightNeighbor()) _
+  // def diagonalNeighbors
   def upperTwo(): List[Coord] = List(neighbor(0, 1).get, neighbor(0, 2).get)
   def lowerTwo(): List[Coord] = List(neighbor(0, -1).get, neighbor(0, -2).get)
+  def upperLeftAndRightNeighbor(): List[Coord] = List(upperLeftNeighbor(), upperRightNeighbor()).collect {
+    case Success(value) => value
+  }
+  def lowerLeftAndRightNeighbor(): List[Coord] = List(lowerLeftNeighbor(), lowerRightNeighbor()).collect {
+    case Success(value) => value
+  }
   def upperFront(): List[Coord] = List(upperLeftNeighbor(), upperNeighbor(), upperRightNeighbor()).collect {
     case Success(value) => value
   }

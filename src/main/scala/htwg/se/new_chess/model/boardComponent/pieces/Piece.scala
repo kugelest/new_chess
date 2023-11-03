@@ -11,6 +11,7 @@ trait Piece {
   def worth: Int
   def char: Char
   def getPath(startPos: Coord, endPos: Coord): List[Coord]
+  def sightOnEmptyBoard(coord: Coord): List[Coord]
   def copy(color: PieceColor = color, char: Char = char, worth: Int = worth, move_count: Int = move_count): Piece
   override def toString() = char.toString
 }

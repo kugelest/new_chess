@@ -57,4 +57,8 @@ object MoveValidator {
 
     true
   }
+
+  def isValid(board: Board): Boolean = {
+    true
+  }
 }

@@ -2,6 +2,7 @@ package htwg.se.chess
 package aview
 
 import controller.Controller
+import model.boardComponent.Coord
 import util.Observer
 import util.Event
 
@@ -35,7 +36,7 @@ class Tui(controller: Controller) extends Observer {
       case "quit" | "exit"       => controller.quit
       case "redo"                => controller.doAndPublish(controller.redo)
       case "undo"                => controller.doAndPublish(controller.undo)
-      case movePattern(from, to) => controller.doAndPublish(controller.makeMove, Move(from, to))
+      case movePattern(from, to) => controller.doAndPublish(controller.makeMove, Move(Coord.fromStr(from), Coord.fromStr(to)))
       case _                     =>
     }
     if continue then inputLoop()

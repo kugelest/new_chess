@@ -48,8 +48,8 @@ case class Controller(var board: Board) extends Observable {
   def whichTurn(): PieceColor = board.turn
 
   def captureStacks() = {
-    val (whiteCaptureStack, blackCaptureStack) = board.captureStacks()
-    (whiteCaptureStack.map(_.toString), blackCaptureStack.map(_.toString))
+    val (whiteCaptureStack, blackCaptureStack) = board.captureStacksStr()
+    (whiteCaptureStack, blackCaptureStack)
   }
 
   def undo: Board = undoManager.undoStep(board)
@@ -57,7 +57,7 @@ case class Controller(var board: Board) extends Observable {
   def quit: Unit = notifyObservers(Event.Quit)
 
   def squareData(): List[(String, String, String)] = {
-    board.squares.sortBy(_.coord.print_ord).map(square => (square.coord.toString.toLowerCase, square.toString, square.coord.color.toString.toLowerCase)).toList
+    board.squares.toSeq.sortBy(_._1.print_ord).map(square => (square._1.toString.toLowerCase, square._2.getOrElse("").toString, square._1.color.toString.toLowerCase)).toList
   }
 
   override def toString: String = board.toString

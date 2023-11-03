@@ -4,9 +4,10 @@ package pieces
 
 import pieces.Piece
 import pieces.PieceColor
+import pieces.PieceColor._
 import boardComponent.Coord
 
-case class Queen(color: PieceColor, char: Char, worth: Int, move_count: Int = 0) extends Piece {
+case class Queen(color: PieceColor, char: Char, worth: Int, move_count: Int) extends Piece[Queen] {
 
   override def getPath(start_coord: Coord, end_coord: Coord): List[Coord] = {
     val direction: List[Coord] = (
@@ -41,9 +42,13 @@ case class Queen(color: PieceColor, char: Char, worth: Int, move_count: Int = 0)
     val orthogonalNeighbors = coord.upperNeighbors() ++ coord.rightNeighbors() ++ coord.lowerNeighbors() ++ coord.leftNeighbors()
     diagonalNeighbors ++ orthogonalNeighbors
   }
+
+  override def increaseMoveCount(i: Int): Queen = this.copy(move_count = move_count + i)
 }
 
-
 object Queen {
-  def unapply(p: Queen) = Some(p)
+  def apply(color: PieceColor) = {
+    val char = if(color == WHITE) '♕' else '♛'
+    new Queen(color, char, 9, 0)
+  }
 }

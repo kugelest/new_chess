@@ -3,94 +3,44 @@ package boardComponent
 
 import boardComponent.Coord
 import boardComponent.Coord.*
-import boardComponent.SquareExtensions._
-import boardComponent.SquareExtensions.Removable._
-import boardComponent.SquareExtensions.Addable._
-import boardComponent.SquareExtensions.Squareable._
+// import boardComponent.SquareExtensions._
+// import boardComponent.SquareExtensions.Removable._
+// import boardComponent.SquareExtensions.Addable._
+// import boardComponent.SquareExtensions.Squareable._
 import boardComponent.pieces.{Piece, Pawn, Rook, Knight, Bishop, Queen, King}
-import boardComponent.pieces.PieceType.*
 import boardComponent.pieces.PieceColor
-import boardComponent.pieces.PieceColor.*
+import boardComponent.pieces.PieceColor._
 
 import scala.util.Try
 import scala.util.Success
+import scala.collection.immutable.Map
 
-case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], turn: PieceColor) {
+case class Board(squares: Map[Coord, Option[Piece[_]]], capture_stack: List[Option[Piece[_]]], turn: PieceColor) {
 
-  def updateSquare(new_square: Square): Board = {
-    val index = squares.indexWhere(_.coord == new_square.coord)
-    if (index >= 0)
-      this.copy(squares = squares.updated(index, new_square))
-    else
-      this
-  }
+  def startPos(): Board = Board()
+  def isMoveConceivable(from: Coord, to: Coord): Boolean = MoveValidator.isMoveConceivable(from, to, this)
+  def isValid(): Boolean =  MoveValidator.isValid(this)
 
-  private def initBoard(): Board = Board()
-
-  def startPos(): Board = {
-    val fresh_board = initBoard()
-    fresh_board.copy(squares = fresh_board.squares.replace(Board.start_pos_pieces.map(_.toSquare())).toVector)
-  }
-
-  def isMoveConceivable(from: String, to: String): Boolean = {
-    val coords_try: List[Try[Coord]] = List(Try(Coord.fromStr(from)), Try(Coord.fromStr(to)))
-    val coords = coords_try.collect { case Success(coord) => coord }
-    val coords_are_valid = coords.length == 2
-    val conceivable_move = coords_are_valid && MoveValidator.isMoveConceivable(coords(0), coords(1), this)
-    conceivable_move
-  }
-
-  def isValid(): Boolean = {
-    MoveValidator.isValid(this)
-  }
-
-  private def forceMove(n: Int)(start_coord: Coord, end_coord: Coord): Board = {
-    val start_square: Option[Square] = squares.find(_.coord == start_coord)
-    val end_set = updateSquare(
-      Square(
-        end_coord,
-        start_square.map(s => s.copy(piece = s.piece.map(piece => piece.match {
-          // case p => p.copy(move_count = p.move_count + n)
-          case p: Pawn => p.copy(move_count = p.move_count + n)
-          case p: Knight => p.copy(move_count = p.move_count + n)
-          case p: Bishop => p.copy(move_count = p.move_count + n)
-          case p: Rook => p.copy(move_count = p.move_count + n)
-          case p: Queen => p.copy(move_count = p.move_count + n)
-          case p: King => p.copy(move_count = p.move_count + n)
-        }))).get.piece
-      )
+  private def forceMove(i: Int)(from: Coord, to: Coord): Board = {
+    this.copy(
+      squares = this.squares + (to -> this.squares(from).map(piece => piece.increaseMoveCount(i)), from -> None)
     )
-    val end_set_and_start_removed = end_set.updateSquare(Square(start_coord, Option.empty))
-    end_set_and_start_removed
   }
 
   private def forceMoveForward = forceMove(+1) _
   private def forceMoveBackward = forceMove(-1) _
 
-  def doMove(from: String, to: String): Board = {
-    val start_coord = Coord.fromStr(from)
-    val end_coord = Coord.fromStr(to)
-    val end_square_opt = this.squares.find(_.coord == end_coord)
-    val capture_square = end_square_opt match {
-      case Some(square) if square.piece.isDefined => Option(square)
-      case _                                      => Option.empty
-    }
-
-    val board = forceMoveForward(start_coord, end_coord)
-    board.copy(capture_stack = capture_square :: capture_stack, turn = nextTurn())
+  def doMove(from: Coord, to: Coord): Board = {
+    val captured_piece = this.squares(to)
+    val board = forceMoveForward(from, to)
+    board.copy(capture_stack = captured_piece :: capture_stack, turn = nextTurn())
   }
 
-  def undoMove(from: String, to: String): Board = {
-    val start_coord = Coord.fromStr(from)
-    val end_coord = Coord.fromStr(to)
-    val board = forceMoveBackward(start_coord, end_coord)
-    val new_board = board.capture_stack match {
-      case head :: tail =>
-        head match {
-          case Some(square) => board.updateSquare(square)
-          case _            => board
-        }
-      case _ => board
+  def undoMove(from: Coord, to: Coord): Board = {
+    val board = forceMoveBackward(from, to)
+    val new_board = board.capture_stack.match {
+      case head :: tail => this.copy(squares = board.squares + (from -> head))
+      case _            => board
     }
     new_board.copy(capture_stack = capture_stack.tail, turn = nextTurn())
   }
@@ -103,8 +53,7 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], t
   }
 
   def captureStacks() = {
-    val captured_squares = this.capture_stack.flatten
-    val captured_pieces = captured_squares.map(_.piece).flatten
+    val captured_pieces = this.capture_stack.flatten
     val (whiteStack, blackStack) = captured_pieces.partition {
       case piece if piece.color == PieceColor.WHITE => true
       case piece if piece.color == PieceColor.BLACK => false
@@ -117,15 +66,20 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], t
     (whiteCaptureStack.map(_.toString), blackCaptureStack.map(_.toString))
   }
 
+  private def advantage(l1: List[Piece[_]], l2: List[Piece[_]]): Int = {
+    l2.map(_.worth).reduceOption(_+_).getOrElse(0) - l1.map(_.worth).reduceOption(_+_).getOrElse(0)
+  }
+
   def advantage(): Int = {
     val (white_stack, black_stack) = this.captureStacks()
-    Board.advantage(white_stack, black_stack)
+    this.advantage(white_stack, black_stack)
   }
 
   override def toString(): String = {
     val board = this.squares
-      .sortBy(_.coord.print_ord)
-      .map(_.piece.getOrElse("-"))
+      .toSeq
+      .sortBy(_._1.print_ord)
+      .map(_._2.getOrElse("-"))
       .grouped(Coord.len)
       .map(_.mkString(" "))
       .mkString("\n")
@@ -138,45 +92,75 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], t
 
 object Board {
   def apply() = {
-    new Board(Coord.values.map(Square(_, Option.empty)).toVector, List(), WHITE)
-  }
-
-  val start_pos_pieces = List(
-    (A1, Piece(ROOK, WHITE)),
-    (B1, Piece(KNIGHT, WHITE)),
-    (C1, Piece(BISHOP, WHITE)),
-    (D1, Piece(QUEEN, WHITE)),
-    (E1, Piece(KING, WHITE)),
-    (F1, Piece(BISHOP, WHITE)),
-    (G1, Piece(KNIGHT, WHITE)),
-    (H1, Piece(ROOK, WHITE)),
-    (A2, Piece(PAWN, WHITE)),
-    (B2, Piece(PAWN, WHITE)),
-    (C2, Piece(PAWN, WHITE)),
-    (D2, Piece(PAWN, WHITE)),
-    (E2, Piece(PAWN, WHITE)),
-    (F2, Piece(PAWN, WHITE)),
-    (G2, Piece(PAWN, WHITE)),
-    (H2, Piece(PAWN, WHITE)),
-    (A8, Piece(ROOK, BLACK)),
-    (B8, Piece(KNIGHT, BLACK)),
-    (C8, Piece(BISHOP, BLACK)),
-    (D8, Piece(QUEEN, BLACK)),
-    (E8, Piece(KING, BLACK)),
-    (F8, Piece(BISHOP, BLACK)),
-    (G8, Piece(KNIGHT, BLACK)),
-    (H8, Piece(ROOK, BLACK)),
-    (A7, Piece(PAWN, BLACK)),
-    (B7, Piece(PAWN, BLACK)),
-    (C7, Piece(PAWN, BLACK)),
-    (D7, Piece(PAWN, BLACK)),
-    (E7, Piece(PAWN, BLACK)),
-    (F7, Piece(PAWN, BLACK)),
-    (G7, Piece(PAWN, BLACK)),
-    (H7, Piece(PAWN, BLACK))
-  )
-
-  private def advantage(l1: List[Piece], l2: List[Piece]): Int = {
-    l2.map(_.worth).reduceOption(_+_).getOrElse(0) - l1.map(_.worth).reduceOption(_+_).getOrElse(0)
+    new Board(
+      Map(
+        A1 -> Some(Rook(WHITE)),
+        B1 -> Some(Knight(WHITE)),
+        C1 -> Some(Bishop(WHITE)),
+        D1 -> Some(Queen(WHITE)),
+        E1 -> Some(King(WHITE)),
+        F1 -> Some(Bishop(WHITE)),
+        G1 -> Some(Knight(WHITE)),
+        H1 -> Some(Rook(WHITE)),
+        A2 -> Some(Pawn(WHITE)),
+        B2 -> Some(Pawn(WHITE)),
+        C2 -> Some(Pawn(WHITE)),
+        D2 -> Some(Pawn(WHITE)),
+        E2 -> Some(Pawn(WHITE)),
+        F2 -> Some(Pawn(WHITE)),
+        G2 -> Some(Pawn(WHITE)),
+        H2 -> Some(Pawn(WHITE)),
+        A3 -> None,
+        B3 -> None,
+        C3 -> None,
+        D3 -> None,
+        E3 -> None,
+        F3 -> None,
+        G3 -> None,
+        H3 -> None,
+        A4 -> None,
+        B4 -> None,
+        C4 -> None,
+        D4 -> None,
+        E4 -> None,
+        F4 -> None,
+        G4 -> None,
+        H4 -> None,
+        A5 -> None,
+        B5 -> None,
+        C5 -> None,
+        D5 -> None,
+        E5 -> None,
+        F5 -> None,
+        G5 -> None,
+        H5 -> None,
+        A6 -> None,
+        B6 -> None,
+        C6 -> None,
+        D6 -> None,
+        E6 -> None,
+        F6 -> None,
+        G6 -> None,
+        H6 -> None,
+        A7 -> Some(Pawn(BLACK)),
+        B7 -> Some(Pawn(BLACK)),
+        C7 -> Some(Pawn(BLACK)),
+        D7 -> Some(Pawn(BLACK)),
+        E7 -> Some(Pawn(BLACK)),
+        F7 -> Some(Pawn(BLACK)),
+        G7 -> Some(Pawn(BLACK)),
+        H7 -> Some(Pawn(BLACK)),
+        A8 -> Some(Rook(BLACK)),
+        B8 -> Some(Knight(BLACK)),
+        C8 -> Some(Bishop(BLACK)),
+        D8 -> Some(Queen(BLACK)),
+        E8 -> Some(King(BLACK)),
+        F8 -> Some(Bishop(BLACK)),
+        G8 -> Some(Knight(BLACK)),
+        H8 -> Some(Rook(BLACK)),
+      ), List(), WHITE
+    )
   }
 }
+
+

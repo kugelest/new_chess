@@ -5,7 +5,7 @@ import controller.Controller
 import model.boardComponent.Move
 import model.boardComponent.pieces.PieceColor
 import model.boardComponent.SquareColors
-import htwg.se.chess.model.boardComponent.Square
+import model.boardComponent.Coord
 import util.Event
 import util.Observer
 
@@ -53,8 +53,9 @@ class SwingGui(controller: Controller) extends Frame with Observer {
 
   class SquarePanel() extends GridPanel(8, 8) {
     controller.board.squares
-      .sortBy(_.coord.print_ord)
-      .foreach(s => contents += SquareButton(s.coord.toString(), s.toString(), s.coord.color))
+      .toSeq
+      .sortBy(_._1.print_ord)
+      .foreach(s => contents += SquareButton(s._1.toString(), s._2.getOrElse("").toString, s._1.color))
   }
 
   class PlayerPanel(color: PieceColor, turn: PieceColor) extends Label("Player: " + color.toString()) {
@@ -93,7 +94,7 @@ class SwingGui(controller: Controller) extends Frame with Observer {
             case SquareColors.WHITE => Color.WHITE
             case SquareColors.BLACK => Color.LIGHT_GRAY
           }
-          controller.doAndPublish(controller.makeMove, Move(from, to))
+          controller.doAndPublish(controller.makeMove, Move(Coord.fromStr(from), Coord.fromStr(to)))
         }
       }
     }

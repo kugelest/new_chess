@@ -2,13 +2,20 @@ package htwg.se.chess.model
 package boardComponent
 package pieces
 
-import pieces.Piece
-import pieces.PieceColor
-import pieces.PieceColor.*
+// import pieces
+// import pieces.Piece
+// import pieces.PieceTyp
+// import pieces.PieceTyp.PawnType
+// import pieces.PieceTyp._
+// import pieces.PieceTyp.PawnType
+// import pieces.PawnType
+// import pieces.PieceColor
+import pieces.PieceColor._
 import boardComponent.Coord
 import scala.util.Success
 
-case class Pawn(color: PieceColor, char: Char, worth: Int, move_count: Int = 0) extends Piece {
+
+case class Pawn(color: PieceColor, char: Char, worth: Int, move_count: Int) extends Piece[Pawn] {
 
   override def getPath(start_coord: Coord, end_coord: Coord): List[Coord] = {
     (color, move_count) match {
@@ -31,10 +38,13 @@ case class Pawn(color: PieceColor, char: Char, worth: Int, move_count: Int = 0) 
     }
     sight
   }
+
+  override def increaseMoveCount(i: Int): Pawn = this.copy(move_count = move_count + i)
 }
 
 object Pawn {
-  // def unapply(p: Pawn) = Some(p)
+  def apply(color: PieceColor) = {
+    val char = if(color == WHITE) '♙' else '♟'
+    new Pawn(color, char, 1, 0)
+  }
 }
-
-

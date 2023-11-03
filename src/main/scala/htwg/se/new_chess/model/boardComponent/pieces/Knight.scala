@@ -18,11 +18,8 @@ case class Knight(color: PieceColor, char: Char, worth: Int, move_count: Int = 0
   override def sightOnEmptyBoard(coord: Coord): List[Coord] = {
     coord.knightNeighbors()
   }
-
-  override def copy(color: PieceColor, char: Char, worth: Int, move_count: Int): Piece =
-    Knight(color, char, worth, move_count)
 }
 
 object Knight {
-  def worth: Int = 3
+  def unapply(p: Knight) = Some(p)
 }

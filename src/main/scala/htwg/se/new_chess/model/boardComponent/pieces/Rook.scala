@@ -32,11 +32,8 @@ case class Rook(color: PieceColor, char: Char, worth: Int, move_count: Int = 0) 
     val orthogonalNeighbors = coord.upperNeighbors() ++ coord.rightNeighbors() ++ coord.lowerNeighbors() ++ coord.leftNeighbors()
     orthogonalNeighbors
   }
-
-  override def copy(color: PieceColor, char: Char, worth: Int, move_count: Int): Piece =
-    Rook(color, char, worth, move_count)
 }
 
 object Rook {
-  val worth = 5
+  def unapply(p: Rook) = Some(p)
 }

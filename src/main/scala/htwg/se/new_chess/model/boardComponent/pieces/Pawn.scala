@@ -31,14 +31,10 @@ case class Pawn(color: PieceColor, char: Char, worth: Int, move_count: Int = 0) 
     }
     sight
   }
-
-  override def copy(color: PieceColor, char: Char, worth: Int, move_count: Int): Piece =
-    Pawn(color, char, worth, move_count)
-
 }
 
 object Pawn {
-  val worth = 1
+  // def unapply(p: Pawn) = Some(p)
 }
 
 

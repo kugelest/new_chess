@@ -49,7 +49,15 @@ case class Board(squares: Vector[Square], capture_stack: List[Option[Square]], t
     val end_set = updateSquare(
       Square(
         end_coord,
-        start_square.map(s => s.copy(piece = s.piece.map(p => p.copy(move_count = p.move_count + n)))).get.piece
+        start_square.map(s => s.copy(piece = s.piece.map(piece => piece.match {
+          // case p => p.copy(move_count = p.move_count + n)
+          case p: Pawn => p.copy(move_count = p.move_count + n)
+          case p: Knight => p.copy(move_count = p.move_count + n)
+          case p: Bishop => p.copy(move_count = p.move_count + n)
+          case p: Rook => p.copy(move_count = p.move_count + n)
+          case p: Queen => p.copy(move_count = p.move_count + n)
+          case p: King => p.copy(move_count = p.move_count + n)
+        }))).get.piece
       )
     )
     val end_set_and_start_removed = end_set.updateSquare(Square(start_coord, Option.empty))

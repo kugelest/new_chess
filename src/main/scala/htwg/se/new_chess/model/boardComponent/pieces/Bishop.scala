@@ -31,12 +31,8 @@ case class Bishop(color: PieceColor, char: Char, worth: Int, move_count: Int = 0
     val diagonalNeighbors = coord.upperLeftNeighbors() ++ coord.upperRightNeighbors() ++ coord.lowerLeftNeighbors() ++ coord.lowerRightNeighbors()
     diagonalNeighbors
   }
-
-
-  override def copy(color: PieceColor, char: Char, worth: Int, move_count: Int): Piece =
-    Bishop(color, char, worth, move_count)
 }
 
 object Bishop {
-  val worth = 3
+  def unapply(p: Bishop) = Some(p)
 }

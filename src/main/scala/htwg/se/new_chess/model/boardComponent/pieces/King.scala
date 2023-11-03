@@ -19,10 +19,8 @@ case class King(color: PieceColor, char: Char, worth: Int, move_count: Int = 0) 
     coord.surroundingNeighbors()
   }
 
-  override def copy(color: PieceColor, char: Char, worth: Int, move_count: Int): Piece = King(color, char, worth, move_count)
-
 }
 
 object King {
-  val worth = 1000
+  def unapply(p: King) = Some(p)
 }

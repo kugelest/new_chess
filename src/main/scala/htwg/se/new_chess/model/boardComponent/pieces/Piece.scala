@@ -12,7 +12,6 @@ trait Piece {
   def char: Char
   def getPath(startPos: Coord, endPos: Coord): List[Coord]
   def sightOnEmptyBoard(coord: Coord): List[Coord]
-  def copy(color: PieceColor = color, char: Char = char, worth: Int = worth, move_count: Int = move_count): Piece
   override def toString() = char.toString
 }
 
@@ -39,6 +38,10 @@ object Piece {
 
         }
     }
+  }
+
+  def unapply(piece: Piece): Pawn | Knight | Bishop | Rook | Queen | King   = piece.match {
+    case p @ (_:Pawn | _:Bishop | _:Knight | _:Rook | _:Queen | _:King) => p
   }
 }
 

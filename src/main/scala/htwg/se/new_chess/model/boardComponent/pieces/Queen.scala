@@ -41,12 +41,9 @@ case class Queen(color: PieceColor, char: Char, worth: Int, move_count: Int = 0)
     val orthogonalNeighbors = coord.upperNeighbors() ++ coord.rightNeighbors() ++ coord.lowerNeighbors() ++ coord.leftNeighbors()
     diagonalNeighbors ++ orthogonalNeighbors
   }
-
-  override def copy(color: PieceColor, char: Char, worth: Int, move_count: Int): Piece =
-    Queen(color, char, worth, move_count)
 }
 
 
 object Queen {
-  val worth = 9
+  def unapply(p: Queen) = Some(p)
 }

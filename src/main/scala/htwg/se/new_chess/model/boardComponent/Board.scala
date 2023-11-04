@@ -12,8 +12,7 @@ case class Board(squares: Map[Coord, Option[Piece]], capture_stack: List[Option[
 
   def startPos(): Board = Board()
   def isMoveConceivable(from: Coord, to: Coord): Boolean = MoveValidator.isMoveConceivable(from, to, this)
-  def isValid(): Boolean =  MoveValidator.isValid(this)
-
+  def isValid(): Boolean = MoveValidator.isValid(this)
 
   def doMove(from: Coord, to: Coord): Board = {
     val captured_piece = this.squares(to)
@@ -37,7 +36,11 @@ case class Board(squares: Map[Coord, Option[Piece]], capture_stack: List[Option[
     }
   }
 
-  def kingPos(color: PieceColor): Coord = squares.find { case (coord, piece) => piece == King(color) }.map((coord, king) => coord ).get
+  def kingPos(color: PieceColor): Coord = {
+    squares.find { case (coord, piece) => piece.map(_.match {case King(`color`, _, _, _) => true; case _ => false}).getOrElse(false) }
+      .map((coord, king) => coord)
+      .get
+  }
 
   def captureStacks() = {
     val captured_pieces = this.capture_stack.flatten
@@ -53,7 +56,6 @@ case class Board(squares: Map[Coord, Option[Piece]], capture_stack: List[Option[
     (whiteCaptureStack.map(_.toString), blackCaptureStack.map(_.toString))
   }
 
-
   def advantage(): Int = {
     val (white_stack, black_stack) = this.captureStacks()
     this.advantage(white_stack, black_stack)
@@ -68,12 +70,11 @@ case class Board(squares: Map[Coord, Option[Piece]], capture_stack: List[Option[
   private def forceMovementBackward = forceMovement(-1) _
 
   private def advantage(l1: List[Piece], l2: List[Piece]): Int = {
-    l2.map(_.worth).reduceOption(_+_).getOrElse(0) - l1.map(_.worth).reduceOption(_+_).getOrElse(0)
+    l2.map(_.worth).reduceOption(_ + _).getOrElse(0) - l1.map(_.worth).reduceOption(_ + _).getOrElse(0)
   }
 
   override def toString(): String = {
-    val board = this.squares
-      .toSeq
+    val board = this.squares.toSeq
       .sortBy(_._1.print_ord)
       .map(_._2.getOrElse("-"))
       .grouped(Coord.len)
@@ -153,10 +154,10 @@ object Board {
         E8 -> Some(King(BLACK)),
         F8 -> Some(Bishop(BLACK)),
         G8 -> Some(Knight(BLACK)),
-        H8 -> Some(Rook(BLACK)),
-      ), List(), WHITE
+        H8 -> Some(Rook(BLACK))
+      ),
+      List(),
+      WHITE
     )
   }
 }
-
-

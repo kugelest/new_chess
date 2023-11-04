@@ -22,10 +22,6 @@ case class King(color: PieceColor, char: Char, worth: Int, move_count: Int) exte
 
   override def increaseMoveCount(i: Int): King = this.copy(move_count = move_count + i)
 
-  def unapply(targetColor: PieceColor): Option[King] = {
-    if (color == targetColor) Some(this)
-    else None
-  }
 }
 
 object King {
@@ -33,5 +29,4 @@ object King {
     val char = if(color == WHITE) '♔' else '♚'
     new King(color, char, 1000, 0)
   }
-
 }

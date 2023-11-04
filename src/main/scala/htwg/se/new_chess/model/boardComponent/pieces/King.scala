@@ -7,7 +7,7 @@ import pieces.PieceColor
 import pieces.PieceColor._
 import boardComponent.Coord
 
-case class King(color: PieceColor, char: Char, worth: Int, move_count: Int) extends Piece {
+case class King(color: PieceColor, char: Char, worth: Int, move_count: Int, is_checked: Boolean) extends Piece {
 
   override def getPath(from: Coord, to: Coord): List[Coord] = {
     from.surroundingNeighbors().find(_ == to).match {
@@ -22,11 +22,13 @@ case class King(color: PieceColor, char: Char, worth: Int, move_count: Int) exte
 
   override def increaseMoveCount(i: Int): King = this.copy(move_count = move_count + i)
 
+  def setChecked(check: Boolean): King = this.copy(is_checked = check)
+
 }
 
 object King {
   def apply(color: PieceColor) = {
     val char = if(color == WHITE) '♔' else '♚'
-    new King(color, char, 1000, 0)
+    new King(color, char, 1000, 0, false)
   }
 }

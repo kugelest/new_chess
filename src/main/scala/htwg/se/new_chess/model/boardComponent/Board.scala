@@ -8,16 +8,16 @@ import boardComponent.pieces.PieceColor._
 
 import scala.collection.immutable.Map
 
-case class Board(squares: Map[Coord, Option[Piece]], capture_stack: List[Option[Piece]], turn: PieceColor) {
+case class Board(squares: Map[Coord, Option[Piece]], capture_stack: List[Option[Piece]], check_stack: List[Boolean], turn: PieceColor) {
 
   def startPos(): Board = Board()
   def isMoveConceivable(from: Coord, to: Coord): Boolean = MoveValidator.isMoveConceivable(from, to, this)
-  def isValid(): Boolean = MoveValidator.isValid(this)
+  def isValid(): (Boolean, Boolean) = MoveValidator.isValid(this)
 
-  def doMove(from: Coord, to: Coord): Board = {
+  def doMove(from: Coord, to: Coord, checks: Boolean): Board = {
     val captured_piece = this.squares(to)
     val board = forceMovementForward(from, to)
-    board.copy(capture_stack = captured_piece :: capture_stack, turn = nextTurn())
+    board.copy(capture_stack = captured_piece :: capture_stack, check_stack = checks :: check_stack, turn = nextTurn())
   }
 
   def undoMove(from: Coord, to: Coord): Board = {
@@ -26,7 +26,7 @@ case class Board(squares: Map[Coord, Option[Piece]], capture_stack: List[Option[
       case head :: tail => this.copy(squares = board.squares + (from -> head))
       case _            => board
     }
-    new_board.copy(capture_stack = capture_stack.tail, turn = nextTurn())
+    new_board.copy(capture_stack = capture_stack.tail, check_stack = check_stack.tail, turn = nextTurn())
   }
 
   def nextTurn(): PieceColor = {
@@ -36,10 +36,17 @@ case class Board(squares: Map[Coord, Option[Piece]], capture_stack: List[Option[
     }
   }
 
-  def kingPos(color: PieceColor): Coord = {
-    squares.find { case (coord, piece) => piece.map(_.match {case King(`color`, _, _, _) => true; case _ => false}).getOrElse(false) }
+  def kingCoord(color: PieceColor): Coord = {
+    squares.find { case (coord, piece) => piece.map(_.match {case King(`color`, _, _, _, _) => true; case _ => false}).getOrElse(false) }
       .map((coord, king) => coord)
       .get
+  }
+
+  def kingChecked(): Option[PieceColor] = {
+    this.check_stack.lift(0) match {
+      case Some(checked) if checked => Some(this.turn)
+      case _ => None
+    }
   }
 
   def captureStacks() = {
@@ -83,7 +90,9 @@ case class Board(squares: Map[Coord, Option[Piece]], capture_stack: List[Option[
     val adv = "adv: " + this.advantage()
     val (w, b) = this.captureStacksStr()
     val stacks = w.mkString + "\n" + b.mkString
-    board + "\n\n" + stacks + "\n\n" + adv
+    val checks = "checked: " + this.kingChecked().getOrElse("").toString
+    val check_stack = "check_stack: " + this.check_stack.mkString(", ")
+    board + "" + stacks + "\n\n" + adv + "\n\n" + checks + "\n" + check_stack
   }
 }
 
@@ -156,6 +165,7 @@ object Board {
         G8 -> Some(Knight(BLACK)),
         H8 -> Some(Rook(BLACK))
       ),
+      List(),
       List(),
       WHITE
     )

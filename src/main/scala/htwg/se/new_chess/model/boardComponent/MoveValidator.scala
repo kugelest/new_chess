@@ -51,18 +51,17 @@ object MoveValidator {
     true
   }
 
-  def isValid(board: Board): Boolean = {
+  def isValid(board: Board): (Boolean, Boolean) = {
     val (squares_occupied_by_white, squares_occupied_by_black) = board.squares.collect{case (coord, piece_opt) if piece_opt.isDefined => (coord, piece_opt.get)}.partition(_._2.color == WHITE)
     val sight_white: List[Coord] = squares_occupied_by_white.map((coord, piece) => pieceSight(board, coord, piece)._2).flatten.toList
     val sight_black: List[Coord] = squares_occupied_by_black.map((coord, piece) => pieceSight(board, coord, piece)._2).flatten.toList
-    val black_checked = sight_white.exists(_ == board.kingPos(BLACK))
-    val white_checked = sight_black.exists(_ == board.kingPos(WHITE))
-    val valid = board.turn.match {
-      // colors are switched, because we are in the tmp_board and nextTurn() already happened
-      case WHITE => !black_checked
-      case BLACK => !white_checked
+    val black_checked = sight_white.exists(_ == board.kingCoord(BLACK))
+    val white_checked = sight_black.exists(_ == board.kingCoord(WHITE))
+    val (valid, check) = board.turn.match {
+      case WHITE => (!white_checked, black_checked)
+      case BLACK => (!black_checked, white_checked)
     }
-    valid
+    (valid, check)
   }
 
   private def pieceSight(board: Board, coord: Coord, piece: Piece): (Piece, List[Coord]) = {

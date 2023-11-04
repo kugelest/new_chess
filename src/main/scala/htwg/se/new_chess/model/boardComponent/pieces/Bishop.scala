@@ -30,7 +30,6 @@ case class Bishop(color: PieceColor, char: Char, worth: Int, move_count: Int) ex
   }
 
   override def sightOnEmptyBoard(coord: Coord): List[List[Coord]] = {
-    print("\nUpperRightNeighbors Bishop:" + coord.upperRightNeighbors())
     List(
       coord.upperLeftNeighbors(),
       coord.upperRightNeighbors(),

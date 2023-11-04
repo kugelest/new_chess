@@ -10,6 +10,7 @@ import model.boardComponent.Coord
 import model.boardComponent.SquareColors
 import model.boardComponent.MoveValidator
 import model.boardComponent.pieces.PieceColor
+import model.boardComponent.pieces.PieceColor._
 
 import scala.util.Try
 import scala.util.Success
@@ -35,14 +36,18 @@ case class Controller(var board: Board) extends Observable {
 
 
   def makeMove(move: Move): Board = {
-    if (board.isMoveConceivable(move.from, move.to))
-      board_tmp = board.doMove(move.from, move.to)
-      if (board_tmp.isValid())
-        undoManager.doStep(board, MoveCommand(move))
+    if (board.isMoveConceivable(move.from, move.to)) {
+      board_tmp = board.doMove(move.from, move.to, false).copy(turn = board.turn)
+      val (valid, checks) = board_tmp.isValid()
+      if(valid) {
+        undoManager.doStep(board, MoveCommand(move, checks))
+      }
       else
         undoManager.noStep(board, MoveCommand(move))
-    else
+    }
+    else {
       undoManager.noStep(board, MoveCommand(move))
+    }
   }
 
   def whichTurn(): PieceColor = board.turn

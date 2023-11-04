@@ -7,7 +7,7 @@ import pieces.PieceColor
 import pieces.PieceColor._
 import boardComponent.Coord
 
-case class Queen(color: PieceColor, char: Char, worth: Int, move_count: Int) extends Piece[QueenType] {
+case class Queen(color: PieceColor, char: Char, worth: Int, move_count: Int) extends Piece {
 
   override def getPath(start_coord: Coord, end_coord: Coord): List[Coord] = {
     val direction: List[Coord] = (

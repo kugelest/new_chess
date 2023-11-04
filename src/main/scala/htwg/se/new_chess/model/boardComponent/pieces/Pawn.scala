@@ -15,7 +15,7 @@ import boardComponent.Coord
 import scala.util.Success
 
 
-case class Pawn(color: PieceColor, char: Char, worth: Int, move_count: Int) extends Piece[PawnType] {
+case class Pawn(color: PieceColor, char: Char, worth: Int, move_count: Int) extends Piece {
 
   override def getPath(start_coord: Coord, end_coord: Coord): List[Coord] = {
     (color, move_count) match {

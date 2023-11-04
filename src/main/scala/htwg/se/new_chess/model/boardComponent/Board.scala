@@ -10,13 +10,12 @@ import boardComponent.Coord.*
 import boardComponent.pieces.{Piece, Pawn, Rook, Knight, Bishop, Queen, King}
 import boardComponent.pieces.PieceColor
 import boardComponent.pieces.PieceColor._
-import boardComponent.pieces.PieceTyp
 
 import scala.util.Try
 import scala.util.Success
 import scala.collection.immutable.Map
 
-case class Board(squares: Map[Coord, Option[Piece[PieceTyp]]], capture_stack: List[Option[Piece[PieceTyp]]], turn: PieceColor) {
+case class Board(squares: Map[Coord, Option[Piece]], capture_stack: List[Option[Piece]], turn: PieceColor) {
 
   def startPos(): Board = Board()
   def isMoveConceivable(from: Coord, to: Coord): Boolean = MoveValidator.isMoveConceivable(from, to, this)
@@ -67,7 +66,7 @@ case class Board(squares: Map[Coord, Option[Piece[PieceTyp]]], capture_stack: Li
     (whiteCaptureStack.map(_.toString), blackCaptureStack.map(_.toString))
   }
 
-  private def advantage(l1: List[Piece[_]], l2: List[Piece[_]]): Int = {
+  private def advantage(l1: List[Piece], l2: List[Piece]): Int = {
     l2.map(_.worth).reduceOption(_+_).getOrElse(0) - l1.map(_.worth).reduceOption(_+_).getOrElse(0)
   }
 

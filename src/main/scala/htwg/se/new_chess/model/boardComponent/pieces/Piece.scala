@@ -8,18 +8,11 @@ enum PieceColor {
   case WHITE, BLACK
 }
 
-sealed trait PieceTyp
-trait PawnType extends PieceTyp
-trait KnightType extends PieceTyp
-trait BishopType extends PieceTyp
-trait RookType extends PieceTyp
-trait QueenType extends PieceTyp
-trait KingType extends PieceTyp
 
-trait Piece[+PieceTyp <: Piece[PieceTyp]]  {
+trait Piece {
   def color: PieceColor
   def move_count: Int
-  def increaseMoveCount(n: Int): PieceTyp
+  def increaseMoveCount(n: Int): Pawn | Knight | Bishop | Rook | Queen | King
   def worth: Int
   def char: Char
   def getPath(startPos: Coord, endPos: Coord): List[Coord]
@@ -28,7 +21,7 @@ trait Piece[+PieceTyp <: Piece[PieceTyp]]  {
 }
 
 object Piece {
-  def apply(pieceType: String, color: PieceColor): Piece[PieceTyp] = {
+  def apply(pieceType: String, color: PieceColor): Piece = {
     pieceType match {
       case "Pawn" => Pawn(color)
       case "Knight" => Knight(color)

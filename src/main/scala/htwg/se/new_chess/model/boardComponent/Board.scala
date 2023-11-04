@@ -1,18 +1,11 @@
 package htwg.se.chess.model
 package boardComponent
 
-import boardComponent.Coord
-import boardComponent.Coord.*
-// import boardComponent.SquareExtensions._
-// import boardComponent.SquareExtensions.Removable._
-// import boardComponent.SquareExtensions.Addable._
-// import boardComponent.SquareExtensions.Squareable._
+import boardComponent.Coord._
 import boardComponent.pieces.{Piece, Pawn, Rook, Knight, Bishop, Queen, King}
 import boardComponent.pieces.PieceColor
 import boardComponent.pieces.PieceColor._
 
-import scala.util.Try
-import scala.util.Success
 import scala.collection.immutable.Map
 
 case class Board(squares: Map[Coord, Option[Piece]], capture_stack: List[Option[Piece]], turn: PieceColor) {

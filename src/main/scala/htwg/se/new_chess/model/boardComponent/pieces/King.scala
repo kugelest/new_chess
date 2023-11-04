@@ -7,7 +7,7 @@ import pieces.PieceColor
 import pieces.PieceColor._
 import boardComponent.Coord
 
-case class King(color: PieceColor, char: Char, worth: Int, move_count: Int) extends Piece[King] {
+case class King(color: PieceColor, char: Char, worth: Int, move_count: Int) extends Piece[KingType] {
 
   override def getPath(start_coord: Coord, end_coord: Coord): List[Coord] = {
     start_coord.surroundingNeighbors().find(_ == end_coord) match {

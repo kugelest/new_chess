@@ -4,8 +4,19 @@ package pieces
 // import pieces.{Pawn, Rook, Knight, Bishop, Queen, King}
 // import pieces.PieceColor.*
 
+enum PieceColor {
+  case WHITE, BLACK
+}
 
-trait Piece[PieceTyp <: Piece[PieceTyp]]  {
+sealed trait PieceTyp
+trait PawnType extends PieceTyp
+trait KnightType extends PieceTyp
+trait BishopType extends PieceTyp
+trait RookType extends PieceTyp
+trait QueenType extends PieceTyp
+trait KingType extends PieceTyp
+
+trait Piece[+PieceTyp <: Piece[PieceTyp]]  {
   def color: PieceColor
   def move_count: Int
   def increaseMoveCount(n: Int): PieceTyp
@@ -17,7 +28,7 @@ trait Piece[PieceTyp <: Piece[PieceTyp]]  {
 }
 
 object Piece {
-  def apply(pieceType: String, color: PieceColor): Piece[_] = {
+  def apply(pieceType: String, color: PieceColor): Piece[PieceTyp] = {
     pieceType match {
       case "Pawn" => Pawn(color)
       case "Knight" => Knight(color)
@@ -29,33 +40,3 @@ object Piece {
   }
 }
 
-// object Piece {
-//   def apply(kind: PieceType, color: PieceColor): Piece[_] = {
-//     color.match {
-//       case WHITE =>
-//         kind.match {
-//           case PAWN   => Pawn(WHITE, '♙', 1)
-//           case KNIGHT => Knight(WHITE, '♘', 3)
-//           case BISHOP => Bishop(WHITE, '♗', 3)
-//           case ROOK   => Rook(WHITE, '♖', 5)
-//           case QUEEN  => Queen(WHITE, '♕', 9)
-//           case KING   => King(WHITE, '♔', 1000)
-//         }
-//       case PieceColor.BLACK =>
-//         kind.match {
-//           case PAWN   => Pawn(BLACK, '♟', 1)
-//           case KNIGHT => Knight(BLACK, '♞', 3)
-//           case BISHOP => Bishop(BLACK, '♝', 3)
-//           case ROOK   => Rook(BLACK, '♜', 5)
-//           case QUEEN  => Queen(BLACK, '♛', 9)
-//           case KING   => King(BLACK, '♚', 1000)
-//
-//         }
-//     }
-//   }
-// }
-
-
-enum PieceColor {
-  case WHITE, BLACK
-}

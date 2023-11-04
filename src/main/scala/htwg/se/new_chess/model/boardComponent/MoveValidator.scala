@@ -2,12 +2,13 @@ package htwg.se.chess.model
 package boardComponent
 
 import boardComponent.Coord
-import boardComponent.pieces.Pawn
+import boardComponent.pieces.{Piece, Pawn, Knight, Bishop, Rook, Queen, King}
+import boardComponent.pieces.PieceColor._
 
 object MoveValidator {
 
   def isMoveConceivable(from: Coord, to: Coord, board: Board): Boolean = {
-    val piece = board.squares.get(from).get match {
+    val piece = board.squares(from) match {
       case Some(piece) => piece
       case None        => return false
     }
@@ -51,6 +52,30 @@ object MoveValidator {
   }
 
   def isValid(board: Board): Boolean = {
-    true
+    val (squares_occupied_by_white, squares_occupied_by_black) = board.squares.collect{case (coord, piece_opt) if piece_opt.isDefined => (coord, piece_opt.get)}.partition(_._2.color == WHITE)
+    val sight_white: List[Coord] = squares_occupied_by_white.map((coord, piece) => pieceSight(board, coord, piece)._2).flatten.toList
+    val sight_black: List[Coord] = squares_occupied_by_black.map((coord, piece) => pieceSight(board, coord, piece)._2).flatten.toList
+    val valid = sight_white.forall(_ != board.kingPos(BLACK)) && sight_black.forall(_ != board.kingPos(WHITE))
+    valid
+  }
+
+  private def pieceSight(board: Board, coord: Coord, piece: Piece): (Piece, List[Coord]) = {
+    assert(board.squares.exists(_ == coord -> Some(piece)))
+
+    val sight: (Piece, List[Coord]) = (coord, piece).match {
+      case (c, p): (Coord, Pawn) => (p, p.sightOnEmptyBoard(c).flatten)
+      case (c, p): (Coord, Knight) => (p, p.sightOnEmptyBoard(c).flatten)
+      case (c, p): (Coord, King) => (p, p.sightOnEmptyBoard(c).flatten)
+      case (c, p): (Coord, Bishop) => (p, p.sightOnEmptyBoard(c).map(pathUntilPiece(board, _)).flatten)
+      case (c, p): (Coord, Rook) => (p, p.sightOnEmptyBoard(c).map(pathUntilPiece(board, _)).flatten)
+      case (c, p): (Coord, Queen) => (p, p.sightOnEmptyBoard(c).map(pathUntilPiece(board, _)).flatten)
+      case (c, p) => (p, List())
+    }
+    sight
+  }
+
+  private def pathUntilPiece(board: Board, path: List[Coord]): List[Coord] = {
+    val (empty_path, rest) = path.span(board.squares.get(_).isEmpty)
+    empty_path ++ rest.take(1)
   }
 }

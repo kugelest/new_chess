@@ -29,9 +29,13 @@ case class Rook(color: PieceColor, char: Char, worth: Int, move_count: Int) exte
     direction.reverse.dropWhile(_ != end_coord)
   }
 
-  override def sightOnEmptyBoard(coord: Coord): List[Coord] = {
-    val orthogonalNeighbors = coord.upperNeighbors() ++ coord.rightNeighbors() ++ coord.lowerNeighbors() ++ coord.leftNeighbors()
-    orthogonalNeighbors
+  override def sightOnEmptyBoard(coord: Coord): List[List[Coord]] = {
+    List(
+      coord.upperNeighbors(),
+      coord.rightNeighbors(),
+      coord.lowerNeighbors(),
+      coord.leftNeighbors()
+    )
   }
 
   override def increaseMoveCount(i: Int): Rook = this.copy(move_count = move_count + i)

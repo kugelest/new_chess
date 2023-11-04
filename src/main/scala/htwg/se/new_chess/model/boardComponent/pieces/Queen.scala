@@ -37,10 +37,17 @@ case class Queen(color: PieceColor, char: Char, worth: Int, move_count: Int) ext
     direction.reverse.dropWhile(_ != end_coord)
   }
 
-  override def sightOnEmptyBoard(coord: Coord): List[Coord] = {
-    val diagonalNeighbors = coord.upperLeftNeighbors() ++ coord.upperRightNeighbors() ++ coord.lowerLeftNeighbors() ++ coord.lowerRightNeighbors()
-    val orthogonalNeighbors = coord.upperNeighbors() ++ coord.rightNeighbors() ++ coord.lowerNeighbors() ++ coord.leftNeighbors()
-    diagonalNeighbors ++ orthogonalNeighbors
+  override def sightOnEmptyBoard(coord: Coord): List[List[Coord]] = {
+    List(
+      coord.upperLeftNeighbors(),
+      coord.upperRightNeighbors(),
+      coord.lowerLeftNeighbors(),
+      coord.lowerRightNeighbors(),
+      coord.upperNeighbors(),
+      coord.rightNeighbors(),
+      coord.lowerNeighbors(),
+      coord.leftNeighbors()
+    )
   }
 
   override def increaseMoveCount(i: Int): Queen = this.copy(move_count = move_count + i)

@@ -16,7 +16,7 @@ trait Piece {
   def worth: Int
   def char: Char
   def getPath(startPos: Coord, endPos: Coord): List[Coord]
-  def sightOnEmptyBoard(coord: Coord): List[Coord]
+  def sightOnEmptyBoard(coord: Coord): List[List[Coord]]
   override def toString() = char.toString
 }
 

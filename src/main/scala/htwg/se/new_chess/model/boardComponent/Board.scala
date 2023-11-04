@@ -14,23 +14,15 @@ case class Board(squares: Map[Coord, Option[Piece]], capture_stack: List[Option[
   def isMoveConceivable(from: Coord, to: Coord): Boolean = MoveValidator.isMoveConceivable(from, to, this)
   def isValid(): Boolean =  MoveValidator.isValid(this)
 
-  private def forceMove(i: Int)(from: Coord, to: Coord): Board = {
-    this.copy(
-      squares = this.squares + (to -> this.squares(from).map(piece => piece.increaseMoveCount(i)), from -> None)
-    )
-  }
-
-  private def forceMoveForward = forceMove(+1) _
-  private def forceMoveBackward = forceMove(-1) _
 
   def doMove(from: Coord, to: Coord): Board = {
     val captured_piece = this.squares(to)
-    val board = forceMoveForward(from, to)
+    val board = forceMovementForward(from, to)
     board.copy(capture_stack = captured_piece :: capture_stack, turn = nextTurn())
   }
 
   def undoMove(from: Coord, to: Coord): Board = {
-    val board = forceMoveBackward(from, to)
+    val board = forceMovementBackward(from, to)
     val new_board = board.capture_stack.match {
       case head :: tail => this.copy(squares = board.squares + (from -> head))
       case _            => board
@@ -44,6 +36,8 @@ case class Board(squares: Map[Coord, Option[Piece]], capture_stack: List[Option[
       case BLACK => WHITE
     }
   }
+
+  def kingPos(color: PieceColor): Coord = squares.find { case (coord, piece) => piece == King(color) }.map((coord, king) => coord ).get
 
   def captureStacks() = {
     val captured_pieces = this.capture_stack.flatten
@@ -59,13 +53,22 @@ case class Board(squares: Map[Coord, Option[Piece]], capture_stack: List[Option[
     (whiteCaptureStack.map(_.toString), blackCaptureStack.map(_.toString))
   }
 
-  private def advantage(l1: List[Piece], l2: List[Piece]): Int = {
-    l2.map(_.worth).reduceOption(_+_).getOrElse(0) - l1.map(_.worth).reduceOption(_+_).getOrElse(0)
-  }
 
   def advantage(): Int = {
     val (white_stack, black_stack) = this.captureStacks()
     this.advantage(white_stack, black_stack)
+  }
+
+  private def forceMovement(i: Int)(from: Coord, to: Coord): Board = {
+    this.copy(
+      squares = this.squares + (to -> this.squares(from).map(piece => piece.increaseMoveCount(i)), from -> None)
+    )
+  }
+  private def forceMovementForward = forceMovement(+1) _
+  private def forceMovementBackward = forceMovement(-1) _
+
+  private def advantage(l1: List[Piece], l2: List[Piece]): Int = {
+    l2.map(_.worth).reduceOption(_+_).getOrElse(0) - l1.map(_.worth).reduceOption(_+_).getOrElse(0)
   }
 
   override def toString(): String = {

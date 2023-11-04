@@ -31,10 +31,10 @@ case class Pawn(color: PieceColor, char: Char, worth: Int, move_count: Int) exte
     }
   }
 
-  override def sightOnEmptyBoard(coord: Coord): List[Coord] = {
+  override def sightOnEmptyBoard(coord: Coord): List[List[Coord]] = {
     val sight = color match {
-      case WHITE => coord.upperLeftAndRightNeighbor()
-      case BLACK => coord.lowerLeftAndRightNeighbor()
+      case WHITE => List(coord.upperLeftAndRightNeighbor())
+      case BLACK => List(coord.lowerLeftAndRightNeighbor())
     }
     sight
   }

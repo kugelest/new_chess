@@ -9,29 +9,33 @@ import boardComponent.Coord
 
 case class Bishop(color: PieceColor, char: Char, worth: Int, move_count: Int) extends Piece {
 
-  override def getPath(start_coord: Coord, end_coord: Coord): List[Coord] = {
+  override def getPath(from: Coord, to: Coord): List[Coord] = {
     val direction = (
-      start_coord.file,
-      start_coord.rank,
-      end_coord.file,
-      end_coord.rank
+      from.file,
+      from.rank,
+      to.file,
+      to.rank
     ) match {
       case (sx, sy, ex, ey) if (sx < ex) && (sy < ey) =>
-        start_coord.upperRightNeighbors()
+        from.upperRightNeighbors()
       case (sx, sy, ex, ey) if (sx < ex) && (sy > ey) =>
-        start_coord.lowerRightNeighbors()
+        from.lowerRightNeighbors()
       case (sx, sy, ex, ey) if (sx > ex) && (sy < ey) =>
-        start_coord.upperLeftNeighbors()
+        from.upperLeftNeighbors()
       case (sx, sy, ex, ey) if (sx > ex) && (sy > ey) =>
-        start_coord.lowerLeftNeighbors()
+        from.lowerLeftNeighbors()
       case _ => List()
     }
-    direction.reverse.dropWhile(_ != end_coord)
+    direction.reverse.dropWhile(_ != to)
   }
 
-  override def sightOnEmptyBoard(coord: Coord): List[Coord] = {
-    val diagonalNeighbors = coord.upperLeftNeighbors() ++ coord.upperRightNeighbors() ++ coord.lowerLeftNeighbors() ++ coord.lowerRightNeighbors()
-    diagonalNeighbors
+  override def sightOnEmptyBoard(coord: Coord): List[List[Coord]] = {
+    List(
+      coord.upperLeftNeighbors(),
+      coord.upperRightNeighbors(),
+      coord.lowerLeftNeighbors(),
+      coord.lowerRightNeighbors()
+    )
   }
 
   override def increaseMoveCount(i: Int): Bishop = this.copy(move_count = move_count + i)

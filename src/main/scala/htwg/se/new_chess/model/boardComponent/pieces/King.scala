@@ -9,18 +9,23 @@ import boardComponent.Coord
 
 case class King(color: PieceColor, char: Char, worth: Int, move_count: Int) extends Piece {
 
-  override def getPath(start_coord: Coord, end_coord: Coord): List[Coord] = {
-    start_coord.surroundingNeighbors().find(_ == end_coord) match {
+  override def getPath(from: Coord, to: Coord): List[Coord] = {
+    from.surroundingNeighbors().find(_ == to).match {
       case Some(dest) => List(dest)
       case _          => List()
     }
   }
 
-  override def sightOnEmptyBoard(coord: Coord): List[Coord] = {
-    coord.surroundingNeighbors()
+  override def sightOnEmptyBoard(coord: Coord): List[List[Coord]] = {
+    List(coord.surroundingNeighbors())
   }
 
   override def increaseMoveCount(i: Int): King = this.copy(move_count = move_count + i)
+
+  def unapply(targetColor: PieceColor): Option[King] = {
+    if (color == targetColor) Some(this)
+    else None
+  }
 }
 
 object King {
@@ -28,4 +33,5 @@ object King {
     val char = if(color == WHITE) '♔' else '♚'
     new King(color, char, 1000, 0)
   }
+
 }

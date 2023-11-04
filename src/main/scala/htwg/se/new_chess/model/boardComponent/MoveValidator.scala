@@ -54,12 +54,14 @@ object MoveValidator {
   def isValid(board: Board): Boolean = {
     val (squares_occupied_by_white, squares_occupied_by_black) = board.squares.collect{case (coord, piece_opt) if piece_opt.isDefined => (coord, piece_opt.get)}.partition(_._2.color == WHITE)
     val sight_white: List[Coord] = squares_occupied_by_white.map((coord, piece) => pieceSight(board, coord, piece)._2).flatten.toList
-    print("\nsight_white: " + sight_white.mkString(", ") + "\n")
     val sight_black: List[Coord] = squares_occupied_by_black.map((coord, piece) => pieceSight(board, coord, piece)._2).flatten.toList
-    val valid = sight_white.forall(_ != board.kingPos(BLACK)) && sight_black.forall(_ != board.kingPos(WHITE))
-    print("\nValid: " + valid + "\n")
-    print("\nKingPosWhite: " + board.kingPos(WHITE) + "\n")
-    print("\nKingPosBlack: " + board.kingPos(BLACK) + "\n")
+    val black_checked = sight_white.exists(_ == board.kingPos(BLACK))
+    val white_checked = sight_black.exists(_ == board.kingPos(WHITE))
+    val valid = board.turn.match {
+      // colors are switched, because we are in the tmp_board and nextTurn() already happened
+      case WHITE => !black_checked
+      case BLACK => !white_checked
+    }
     valid
   }
 
@@ -72,7 +74,6 @@ object MoveValidator {
       case k: King => (k, k.sightOnEmptyBoard(coord).flatten)
       case b: Bishop => {
         val si = b.sightOnEmptyBoard(coord).map(pathUntilPiece(board, _)).flatten
-        print("\nBishop sight: " + si.mkString(", "))
         (b, b.sightOnEmptyBoard(coord).map(pathUntilPiece(board, _)).flatten)
       }
       case r: Rook => (r, r.sightOnEmptyBoard(coord).map(pathUntilPiece(board, _)).flatten)
@@ -83,7 +84,8 @@ object MoveValidator {
   }
 
   private def pathUntilPiece(board: Board, path: List[Coord]): List[Coord] = {
-    val (empty_path, rest) = path.span(board.squares.get(_).isEmpty)
-    empty_path ++ rest.take(1)
+    val (empty_path, rest) = path.span(coord => board.squares(coord).isEmpty)
+    val res = empty_path ++ rest.take(1)
+    res
   }
 }

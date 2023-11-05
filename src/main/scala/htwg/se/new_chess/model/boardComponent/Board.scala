@@ -13,6 +13,7 @@ case class Board(squares: Map[Coord, Option[Piece]], capture_stack: List[Option[
   def startPos(): Board = Board()
   def isMoveConceivable(from: Coord, to: Coord): Boolean = MoveValidator.isMoveConceivable(from, to, this)
   def isValid(): (Boolean, Boolean) = MoveValidator.isValid(this)
+  def isValid(): Boolean = MoveValidator.isCheckmate(this)
 
   def doMove(from: Coord, to: Coord, checks: Boolean): Board = {
     val captured_piece = this.squares(to)

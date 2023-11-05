@@ -64,6 +64,13 @@ object MoveValidator {
     (valid, check)
   }
 
+  def isCheckmate(board: Board): Boolean = {
+    false
+
+  }
+
+  // private def pieceSightIgnoringOwnPieces(board: Board, coord: Coord, piece: Piece): (Piece, List[Coord])
+
   private def pieceSight(board: Board, coord: Coord, piece: Piece): (Piece, List[Coord]) = {
     assert(board.squares.exists(_ == coord -> Some(piece)))
 
@@ -71,10 +78,7 @@ object MoveValidator {
       case p: Pawn => (p, p.sightOnEmptyBoard(coord).flatten)
       case k: Knight => (k, k.sightOnEmptyBoard(coord).flatten)
       case k: King => (k, k.sightOnEmptyBoard(coord).flatten)
-      case b: Bishop => {
-        val si = b.sightOnEmptyBoard(coord).map(pathUntilPiece(board, _)).flatten
-        (b, b.sightOnEmptyBoard(coord).map(pathUntilPiece(board, _)).flatten)
-      }
+      case b: Bishop => (b, b.sightOnEmptyBoard(coord).map(pathUntilPiece(board, _)).flatten)
       case r: Rook => (r, r.sightOnEmptyBoard(coord).map(pathUntilPiece(board, _)).flatten)
       case q: Queen => (q, q.sightOnEmptyBoard(coord).map(pathUntilPiece(board, _)).flatten)
       case x => (x, List())

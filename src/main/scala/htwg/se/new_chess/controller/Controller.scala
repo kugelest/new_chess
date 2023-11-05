@@ -34,20 +34,17 @@ case class Controller(var board: Board) extends Observable {
     board.startPos()
   }
 
-
   def makeMove(move: Move): Board = {
     if (board.isMoveConceivable(move.from, move.to)) {
       board_tmp = board.doMove(move.from, move.to, false).copy(turn = board.turn)
       val (valid, checks) = board_tmp.isValid()
-      val checkmate = if(checks) board_tmp.copy(turn = board_tmp.nextTurn()).isCheckmate() else false
-      println("checkmate: " + checkmate)
-      if(valid) {
-        undoManager.doStep(board, MoveCommand(move, checks))
+      val checkmate = if (checks) board_tmp.copy(turn = board_tmp.nextTurn()).checkCheckmate() else None
+      (valid, checkmate) match {
+        case (true, None)        => undoManager.doStep(board, MoveCommand(move, checks))
+        case (true, Some(color)) => undoManager.doStep(board.copy(checkmate = Some(color)), MoveCommand(move, checks))
+        case _                   => undoManager.noStep(board, MoveCommand(move))
       }
-      else
-        undoManager.noStep(board, MoveCommand(move))
-    }
-    else {
+    } else {
       undoManager.noStep(board, MoveCommand(move))
     }
   }
@@ -64,7 +61,12 @@ case class Controller(var board: Board) extends Observable {
   def quit: Unit = notifyObservers(Event.Quit)
 
   def squareData(): List[(String, String, String)] = {
-    board.squares.toSeq.sortBy(_._1.print_ord).map(square => (square._1.toString.toLowerCase, square._2.getOrElse("").toString, square._1.color.toString.toLowerCase)).toList
+    board.squares.toSeq
+      .sortBy(_._1.print_ord)
+      .map(square =>
+        (square._1.toString.toLowerCase, square._2.getOrElse("").toString, square._1.color.toString.toLowerCase)
+      )
+      .toList
   }
 
   override def toString: String = board.toString

@@ -65,6 +65,11 @@ object MoveValidator {
     (valid, check)
   }
 
+  def moveOptions(board: Board, from: Coord, piece: Piece): List[Coord] = {
+    val all_move_options = moveOptions(board, piece.color)
+    all_move_options(piece)
+  }
+
   def moveOptions(board: Board, color: PieceColor): Map[Piece, List[Coord]] = {
     val (squares_occupied_by_white, squares_occupied_by_black) = occupiedSquares(board)
     val move_options_white: Map[Piece, List[Coord]] = squares_occupied_by_white.map((coord, piece) => pieceSightNotSeeingOwnPieces(board, coord, piece))

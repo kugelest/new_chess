@@ -8,34 +8,40 @@ import boardComponent.pieces.PieceColor._
 
 import scala.collection.immutable.Map
 
-case class Board(squares: Map[Coord, Option[Piece]], capture_stack: List[Option[Piece]], check_stack: List[Boolean], turn: PieceColor) {
+case class Board(
+    squares: Map[Coord, Option[Piece]],
+    capture_stack: List[Option[Piece]],
+    check_stack: List[Boolean],
+    turn: PieceColor,
+    checkmate: Option[PieceColor]
+) {
 
   def startPos(): Board = Board()
   def isMoveConceivable(from: Coord, to: Coord): Boolean = MoveValidator.isMoveConceivable(from, to, this)
   def isValid(): (Boolean, Boolean) = MoveValidator.isValid(this)
 
-  def isCheckmate(): Boolean = {
+  def checkCheckmate(): Option[PieceColor] = {
     var board_tmp = this
     val move_options = MoveValidator.moveOptions(this, this.turn).values
-    val checkmate = move_options.map {moves => moves.match {
-      case from :: to_options => to_options.forall {
-        to => {
-          if(MoveValidator.isMoveConceivable(from, to, this)) {
-            board_tmp = this.doMove(from, to, false).copy(turn = this.turn)
-            val (valid, _) = MoveValidator.isValid(board_tmp)
-            !valid
+    val not_possible = move_options.map { moves =>
+      moves.match {
+        case from :: to_options =>
+          to_options.forall { to =>
+            {
+              if (MoveValidator.isMoveConceivable(from, to, this)) {
+                board_tmp = this.copy().doMove(from, to, false).copy(turn = this.turn)
+                val (valid, _) = MoveValidator.isValid(board_tmp)
+                !valid
+              } else {
+                true
+              }
+            }
           }
-          else {
-            true
-          }
-        }
+        case _ => true
       }
-      case _ => true
     }
-    }
-    !checkmate.toList.contains(false)
+    if (!not_possible.toList.contains(false)) Some(this.turn) else None
   }
-
 
   def doMove(from: Coord, to: Coord, checks: Boolean): Board = {
     val captured_piece = this.squares(to)
@@ -46,7 +52,7 @@ case class Board(squares: Map[Coord, Option[Piece]], capture_stack: List[Option[
   def undoMove(from: Coord, to: Coord): Board = {
     val board = forceMovementBackward(from, to)
     val new_board = board.capture_stack.match {
-      case head :: tail => this.copy(squares = board.squares + (from -> head))
+      case head :: tail => this.copy(squares = board.squares + (from -> head), checkmate = None)
       case _            => board
     }
     new_board.copy(capture_stack = capture_stack.tail, check_stack = check_stack.tail, turn = nextTurn())
@@ -60,7 +66,10 @@ case class Board(squares: Map[Coord, Option[Piece]], capture_stack: List[Option[
   }
 
   def kingCoord(color: PieceColor): Coord = {
-    squares.find { case (coord, piece) => piece.map(_.match {case King(`color`, _, _, _, _) => true; case _ => false}).getOrElse(false) }
+    squares
+      .find { case (coord, piece) =>
+        piece.map(_.match { case King(`color`, _, _, _, _) => true; case _ => false }).getOrElse(false)
+      }
       .map((coord, king) => coord)
       .get
   }
@@ -68,7 +77,14 @@ case class Board(squares: Map[Coord, Option[Piece]], capture_stack: List[Option[
   def kingChecked(): Option[PieceColor] = {
     this.check_stack.lift(0) match {
       case Some(checked) if checked => Some(this.turn)
-      case _ => None
+      case _                        => None
+    }
+  }
+
+  def moveOptions(from: Coord): List[Coord] = {
+    this.squares(from).match {
+      case Some(piece) => MoveValidator.moveOptions(this, from, piece)
+      case _ => List()
     }
   }
 
@@ -112,10 +128,11 @@ case class Board(squares: Map[Coord, Option[Piece]], capture_stack: List[Option[
       .mkString("\n")
     val adv = "adv: " + this.advantage()
     val (w, b) = this.captureStacksStr()
-    val stacks = w.mkString + "\n" + b.mkString
-    val checks = "checked: " + this.kingChecked().getOrElse("").toString
-    val check_stack = "check_stack: " + this.check_stack.mkString(", ")
-    board + "" + stacks + "\n\n" + adv + "\n\n" + checks + "\n" + check_stack
+    val stacks = "white_stack: " + w.mkString + "\n" + "black_stack: " + b.mkString
+    val checked = "checked: " + this.kingChecked().getOrElse("").toString
+    val checkmate = "checkmated: " + this.checkmate.getOrElse("").toString
+    val move_options = "options_f3: " + this.moveOptions(F3).mkString(", ")
+    board + "\n" + stacks + "\n" + adv + "\n" + checked + "\n" + checkmate + "\n" + move_options
   }
 }
 
@@ -190,7 +207,8 @@ object Board {
       ),
       List(),
       List(),
-      WHITE
+      WHITE,
+      None
     )
   }
 }

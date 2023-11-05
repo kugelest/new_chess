@@ -39,7 +39,8 @@ case class Controller(var board: Board) extends Observable {
     if (board.isMoveConceivable(move.from, move.to)) {
       board_tmp = board.doMove(move.from, move.to, false).copy(turn = board.turn)
       val (valid, checks) = board_tmp.isValid()
-      val checkmate = if(checks) board_tmp.isCheckmate() else false
+      val checkmate = if(checks) board_tmp.copy(turn = board_tmp.nextTurn()).isCheckmate() else false
+      println("checkmate: " + checkmate)
       if(valid) {
         undoManager.doStep(board, MoveCommand(move, checks))
       }

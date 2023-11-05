@@ -108,21 +108,27 @@ case class Board(
   }
 
   def advantage(): Int = {
-    val (white_stack, black_stack) = this.captureStacks()
-    this.advantage(white_stack, black_stack)
+    val white_worth = whitePieces().map(_.worth).reduce(_+_)
+    val black_worth = blackPieces().map(_.worth).reduce(_+_)
+    white_worth - black_worth
+  }
+
+  private def whitePieces = pieces(WHITE) _
+  private def blackPieces = pieces(BLACK) _
+  private def pieces(color: PieceColor)(): List[Piece] = {
+    this.squares.values.collect{ case Some(piece) if(piece.color == color) => piece }.toList
   }
 
   private def forceMovementForward = forceMovement(+1) _
   private def forceMovementBackward = forceMovement(-1) _
-  private def forceMovement(i: Int)(from: Coord, to: Coord, promotion: Option[PieceColor]): Board = {
-    promotion.match {
-      case Some(color) => this.copy( squares = this.squares + (to -> Some(Queen(color)), from -> None))
+  private def forceMovement(i: Int)(from: Coord, to: Coord, promotion_opt: Option[PieceColor]): Board = {
+    val piece_opt = this.squares(from)
+    (piece_opt, promotion_opt).match {
+      case (Some(piece), Some(color)) if(i > 0) => this.copy( squares = this.squares + (to -> Some(Queen(color, promoted_on_move = piece.move_count + i)), from -> None))
+      case (Some(queen: Queen), None) if(i < 0 && Some(queen.move_count) == queen.promoted_on_move) =>
+        this.copy( squares = this.squares + (to -> Some(Pawn(queen.color, move_count = queen.move_count + i)), from -> None))
       case _ => this.copy( squares = this.squares + (to -> this.squares(from).map(piece => piece.increaseMoveCount(i)), from -> None))
     }
-  }
-
-  private def advantage(l1: List[Piece], l2: List[Piece]): Int = {
-    l2.map(_.worth).reduceOption(_ + _).getOrElse(0) - l1.map(_.worth).reduceOption(_ + _).getOrElse(0)
   }
 
   override def toString(): String = {

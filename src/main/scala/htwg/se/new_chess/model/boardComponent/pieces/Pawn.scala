@@ -47,4 +47,9 @@ object Pawn {
     val char = if(color == WHITE) '♙' else '♟'
     new Pawn(color, char, 1, 0)
   }
+
+  def apply(color: PieceColor, move_count: Int) = {
+    val char = if(color == WHITE) '♙' else '♟'
+    new Pawn(color, char, 1, move_count)
+  }
 }

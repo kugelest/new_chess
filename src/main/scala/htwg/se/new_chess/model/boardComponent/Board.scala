@@ -84,7 +84,7 @@ case class Board(
   def moveOptions(from: Coord): List[Coord] = {
     this.squares(from).match {
       case Some(piece) => MoveValidator.moveOptions(this, from, piece)
-      case _ => List()
+      case _ => List(from)
     }
   }
 

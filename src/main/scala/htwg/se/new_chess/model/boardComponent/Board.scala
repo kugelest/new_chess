@@ -44,13 +44,18 @@ case class Board(
   }
 
   def doMove(from: Coord, to: Coord, checks: Boolean): Board = {
-    val captured_piece = this.squares(to)
-    val board = forceMovementForward(from, to)
-    board.copy(capture_stack = captured_piece :: capture_stack, check_stack = checks :: check_stack, turn = nextTurn())
+    val captured_square = this.squares(to)
+    val piece_opt = this.squares(from)
+    val promotion = piece_opt.match {
+      case Some(piece) if piece.isInstanceOf[Pawn] => MoveValidator.promotion(this, from, piece.asInstanceOf[Pawn])
+      case _ => None
+    }
+    val board = forceMovementForward(from, to, promotion)
+    board.copy(capture_stack = captured_square :: capture_stack, check_stack = checks :: check_stack, turn = nextTurn())
   }
 
   def undoMove(from: Coord, to: Coord): Board = {
-    val board = forceMovementBackward(from, to)
+    val board = forceMovementBackward(from, to, None)
     val new_board = board.capture_stack.match {
       case head :: tail => this.copy(squares = board.squares + (from -> head), checkmate = None)
       case _            => board
@@ -107,13 +112,14 @@ case class Board(
     this.advantage(white_stack, black_stack)
   }
 
-  private def forceMovement(i: Int)(from: Coord, to: Coord): Board = {
-    this.copy(
-      squares = this.squares + (to -> this.squares(from).map(piece => piece.increaseMoveCount(i)), from -> None)
-    )
-  }
   private def forceMovementForward = forceMovement(+1) _
   private def forceMovementBackward = forceMovement(-1) _
+  private def forceMovement(i: Int)(from: Coord, to: Coord, promotion: Option[PieceColor]): Board = {
+    promotion.match {
+      case Some(color) => this.copy( squares = this.squares + (to -> Some(Queen(color)), from -> None))
+      case _ => this.copy( squares = this.squares + (to -> this.squares(from).map(piece => piece.increaseMoveCount(i)), from -> None))
+    }
+  }
 
   private def advantage(l1: List[Piece], l2: List[Piece]): Int = {
     l2.map(_.worth).reduceOption(_ + _).getOrElse(0) - l1.map(_.worth).reduceOption(_ + _).getOrElse(0)

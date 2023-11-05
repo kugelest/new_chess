@@ -81,6 +81,12 @@ object MoveValidator {
     move_options
   }
 
+  def promotion(board: Board, from: Coord, pawn: Pawn): Option[PieceColor] = (pawn.color, from.rank).match {
+    case (WHITE, '7') => Some(WHITE)
+    case (BLACK, '2') => Some(BLACK)
+    case _ => None
+  }
+
   private def pieceSightSeeingOwnPieces = pieceSight(pathSeeingOwnPiece)(false) _
   private def pieceSightNotSeeingOwnPieces = pieceSight(pathNotSeeingOwnPiece)(true) _
 

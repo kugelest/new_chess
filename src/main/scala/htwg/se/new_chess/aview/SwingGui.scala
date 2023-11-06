@@ -12,6 +12,7 @@ import util.Observer
 import javax.swing.BorderFactory
 import java.awt.Color
 import java.awt.Dimension
+import java.awt.Graphics2D
 import scala.swing._
 import scala.swing.event._
 
@@ -38,7 +39,7 @@ class SwingGui(controller: Controller) extends Frame with Observer {
   open()
 
   def updateContents = {
-    val turn = controller.whichTurn()
+    val turn = controller.turn()
     new BorderPanel {
       add(new PlayerPanel(PieceColor.BLACK, turn), BorderPanel.Position.North)
       add(squares, BorderPanel.Position.Center)
@@ -52,10 +53,8 @@ class SwingGui(controller: Controller) extends Frame with Observer {
     case Event.Move => contents = updateContents; repaint()
 
   class SquarePanel() extends GridPanel(8, 8) {
-    controller.board.squares
-      .toSeq
-      .sortBy(_._1.print_ord)
-      .foreach(s => contents += SquareButton(s._1.toString(), s._2.getOrElse("").toString, s._1.color))
+    controller.squareData()
+      .foreach((coord, piece, square_color) => contents += SquareButton(coord, piece, square_color))
   }
 
   class PlayerPanel(color: PieceColor, turn: PieceColor) extends Label("Player: " + color.toString()) {
@@ -70,15 +69,19 @@ class SwingGui(controller: Controller) extends Frame with Observer {
   var from = ""
   var to = ""
 
-  class SquareButton(coord: String, piece: String, background_color: SquareColors) extends Button(piece) {
-    background = background_color match {
-      case SquareColors.WHITE => Color.WHITE
-      case SquareColors.BLACK => Color.LIGHT_GRAY
+  class SquareButton(coord: String, piece: String, square_color: String) extends Button(piece) {
+    background = square_color match {
+      case "white" => Color.WHITE
+      case "black" => Color.LIGHT_GRAY
     }
     border = BorderFactory.createEmptyBorder()
     preferredSize = new Dimension(100, 100)
     font = new Font("Monospace", 0, 75)
     focusPainted = false
+
+    override def paintComponent(g: Graphics2D): Unit = {
+      super.paintComponent(g)
+    }
 
     listenTo(mouse.clicks)
     reactions += {
@@ -90,9 +93,9 @@ class SwingGui(controller: Controller) extends Frame with Observer {
         } else {
           fromSet = false
           to = coord
-          background = background_color match {
-            case SquareColors.WHITE => Color.WHITE
-            case SquareColors.BLACK => Color.LIGHT_GRAY
+          background = square_color match {
+            case "white" => Color.WHITE
+            case "black" => Color.LIGHT_GRAY
           }
           controller.doAndPublish(controller.makeMove, Move(Coord.fromStr(from), Coord.fromStr(to)))
         }

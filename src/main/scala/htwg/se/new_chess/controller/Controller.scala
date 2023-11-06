@@ -49,25 +49,32 @@ case class Controller(var board: Board) extends Observable {
     }
   }
 
-  def whichTurn(): PieceColor = board.turn
+  def kingCheckedCoord(): Option[Coord] = {
+    board.kingChecked().match {
+      case Some(color) => Some(board.kingCoord(color))
+      case _ => None
+    }
+  }
 
   def captureStacks() = {
     val (whiteCaptureStack, blackCaptureStack) = board.captureStacksStr()
     (whiteCaptureStack, blackCaptureStack)
   }
 
-  def undo: Board = undoManager.undoStep(board)
-  def redo: Board = undoManager.redoStep(board)
-  def quit: Unit = notifyObservers(Event.Quit)
-
   def squareData(): List[(String, String, String)] = {
     board.squares.toSeq
       .sortBy(_._1.print_ord)
-      .map(square =>
-        (square._1.toString.toLowerCase, square._2.getOrElse("").toString, square._1.color.toString.toLowerCase)
-      )
+      .map((coord, piece_opt) => (coord.toString.toLowerCase, piece_opt.getOrElse("").toString, coord.color.toString.toLowerCase))
       .toList
   }
+
+  def turn(): PieceColor = board.turn
+  def advantage(): Int = board.advantage()
+  def moveOptions(from: Coord): List[Coord] = board.moveOptions(from)
+
+  def undo: Board = undoManager.undoStep(board)
+  def redo: Board = undoManager.redoStep(board)
+  def quit: Unit = notifyObservers(Event.Quit)
 
   override def toString: String = board.toString
 

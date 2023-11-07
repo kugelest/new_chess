@@ -11,7 +11,7 @@ enum Coord {
 
   def file = toString.charAt(0)
   def rank = toString.charAt(1)
-  def color: SquareColors = if ((file + rank) % 2 == 0) SquareColors.WHITE else SquareColors.BLACK
+  def color: SquareColor = if ((file + rank) % 2 == 0) SquareColor.WHITE else SquareColor.BLACK
   def print_ord: Int = Coord.len * (Coord.len - rank.asDigit) + (file - 'A')
 
   def neighbor(x: Int, y: Int): Try[Coord] = Try(Coord.fromTupel((file + x).toChar, (rank + y).toChar))
@@ -94,6 +94,6 @@ object Coord {
   def fromStr(str: String) = Coord.valueOf(str.toUpperCase())
 }
 
-enum SquareColors {
+enum SquareColor {
   case BLACK, WHITE
 }

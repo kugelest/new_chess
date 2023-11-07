@@ -7,7 +7,7 @@ import util.Event
 import model.boardComponent.Move
 import model.boardComponent.Board
 import model.boardComponent.Coord
-import model.boardComponent.SquareColors
+import model.boardComponent.SquareColor
 import model.boardComponent.MoveValidator
 import model.boardComponent.pieces.PieceColor
 import model.boardComponent.pieces.PieceColor._
@@ -61,11 +61,25 @@ case class Controller(var board: Board) extends Observable {
     (whiteCaptureStack, blackCaptureStack)
   }
 
-  def squareData(): List[(String, String, String)] = {
+  def squareData(): List[(String, String, SquareColor)] = {
+    board.squares.toSeq
+      .sortBy(_._1.print_ord)
+      .map((coord, piece_opt) => (coord.toString.toLowerCase, piece_opt.getOrElse("").toString, coord.color))
+      .toList
+  }
+
+  def squareDataStr(): List[(String, String, String)] = {
     board.squares.toSeq
       .sortBy(_._1.print_ord)
       .map((coord, piece_opt) => (coord.toString.toLowerCase, piece_opt.getOrElse("").toString, coord.color.toString.toLowerCase))
       .toList
+  }
+  def winner(): Option[PieceColor] = {
+    board.checkmate.match {
+      case Some(BLACK) => Some(WHITE)
+      case Some(WHITE) => Some(BLACK)
+      case _ => None
+    }
   }
 
   def turn(): PieceColor = board.turn

@@ -4,7 +4,7 @@ package aview
 import controller.Controller
 import model.boardComponent.Move
 import model.boardComponent.pieces.PieceColor
-import model.boardComponent.SquareColors
+import model.boardComponent.SquareColor
 import model.boardComponent.Coord
 import util.Event
 import util.Observer
@@ -69,19 +69,15 @@ class SwingGui(controller: Controller) extends Frame with Observer {
   var from = ""
   var to = ""
 
-  class SquareButton(coord: String, piece: String, square_color: String) extends Button(piece) {
+  class SquareButton(coord: String, piece: String, square_color: SquareColor) extends Button(piece) {
     background = square_color match {
-      case "white" => Color.WHITE
-      case "black" => Color.LIGHT_GRAY
+      case SquareColor.WHITE => Color.WHITE
+      case SquareColor.BLACK => Color.LIGHT_GRAY
     }
     border = BorderFactory.createEmptyBorder()
     preferredSize = new Dimension(100, 100)
     font = new Font("Monospace", 0, 75)
     focusPainted = false
-
-    override def paintComponent(g: Graphics2D): Unit = {
-      super.paintComponent(g)
-    }
 
     listenTo(mouse.clicks)
     reactions += {
@@ -94,8 +90,8 @@ class SwingGui(controller: Controller) extends Frame with Observer {
           fromSet = false
           to = coord
           background = square_color match {
-            case "white" => Color.WHITE
-            case "black" => Color.LIGHT_GRAY
+            case SquareColor.WHITE => Color.WHITE
+            case SquareColor.BLACK => Color.LIGHT_GRAY
           }
           controller.doAndPublish(controller.makeMove, Move(Coord.fromStr(from), Coord.fromStr(to)))
         }

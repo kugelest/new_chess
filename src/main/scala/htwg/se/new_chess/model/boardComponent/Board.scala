@@ -5,6 +5,7 @@ import boardComponent.Coord._
 import boardComponent.pieces.{Piece, Pawn, Rook, Knight, Bishop, Queen, King}
 import boardComponent.pieces.PieceColor
 import boardComponent.pieces.PieceColor._
+import boardComponent.pieces.PieceType._
 
 import scala.collection.immutable.Map
 
@@ -73,7 +74,7 @@ case class Board(
   def kingCoord(color: PieceColor): Coord = {
     squares
       .find { case (coord, piece) =>
-        piece.map(_.match { case King(`color`, _, _, _, _) => true; case _ => false }).getOrElse(false)
+        piece.map(_.match { case King(`color`, _, _, _, _, _, _) => true; case _ => false }).getOrElse(false)
       }
       .map((coord, king) => coord)
       .get
@@ -124,9 +125,9 @@ case class Board(
   private def forceMovement(i: Int)(from: Coord, to: Coord, promotion_opt: Option[PieceColor]): Board = {
     val piece_opt = this.squares(from)
     (piece_opt, promotion_opt).match {
-      case (Some(piece), Some(color)) if(i > 0) => this.copy( squares = this.squares + (to -> Some(Queen(color, promoted_on_move = piece.move_count + i)), from -> None))
+      case (Some(piece), Some(color)) if(i > 0) => this.copy( squares = this.squares + (to -> Some(Piece(QUEEN, color, promoted_on_move = Some(piece.move_count + i))), from -> None))
       case (Some(queen: Queen), None) if(i < 0 && Some(queen.move_count) == queen.promoted_on_move) =>
-        this.copy( squares = this.squares + (to -> Some(Pawn(queen.color, move_count = queen.move_count + i)), from -> None))
+        this.copy( squares = this.squares + (to -> Some(Piece(PAWN, queen.color, move_count = queen.move_count + i)), from -> None))
       case _ => this.copy( squares = this.squares + (to -> this.squares(from).map(piece => piece.increaseMoveCount(i)), from -> None))
     }
   }
@@ -152,22 +153,22 @@ object Board {
   def apply() = {
     new Board(
       Map(
-        A1 -> Some(Rook(WHITE)),
-        B1 -> Some(Knight(WHITE)),
-        C1 -> Some(Bishop(WHITE)),
-        D1 -> Some(Queen(WHITE)),
-        E1 -> Some(King(WHITE)),
-        F1 -> Some(Bishop(WHITE)),
-        G1 -> Some(Knight(WHITE)),
-        H1 -> Some(Rook(WHITE)),
-        A2 -> Some(Pawn(WHITE)),
-        B2 -> Some(Pawn(WHITE)),
-        C2 -> Some(Pawn(WHITE)),
-        D2 -> Some(Pawn(WHITE)),
-        E2 -> Some(Pawn(WHITE)),
-        F2 -> Some(Pawn(WHITE)),
-        G2 -> Some(Pawn(WHITE)),
-        H2 -> Some(Pawn(WHITE)),
+        A1 -> Some(Piece(ROOK, WHITE)),
+        B1 -> Some(Piece(KNIGHT, WHITE)),
+        C1 -> Some(Piece(BISHOP, WHITE)),
+        D1 -> Some(Piece(QUEEN, WHITE)),
+        E1 -> Some(Piece(KING, WHITE)),
+        F1 -> Some(Piece(BISHOP, WHITE)),
+        G1 -> Some(Piece(KNIGHT, WHITE)),
+        H1 -> Some(Piece(ROOK, WHITE)),
+        A2 -> Some(Piece(PAWN, WHITE)),
+        B2 -> Some(Piece(PAWN, WHITE)),
+        C2 -> Some(Piece(PAWN, WHITE)),
+        D2 -> Some(Piece(PAWN, WHITE)),
+        E2 -> Some(Piece(PAWN, WHITE)),
+        F2 -> Some(Piece(PAWN, WHITE)),
+        G2 -> Some(Piece(PAWN, WHITE)),
+        H2 -> Some(Piece(PAWN, WHITE)),
         A3 -> None,
         B3 -> None,
         C3 -> None,
@@ -200,22 +201,22 @@ object Board {
         F6 -> None,
         G6 -> None,
         H6 -> None,
-        A7 -> Some(Pawn(BLACK)),
-        B7 -> Some(Pawn(BLACK)),
-        C7 -> Some(Pawn(BLACK)),
-        D7 -> Some(Pawn(BLACK)),
-        E7 -> Some(Pawn(BLACK)),
-        F7 -> Some(Pawn(BLACK)),
-        G7 -> Some(Pawn(BLACK)),
-        H7 -> Some(Pawn(BLACK)),
-        A8 -> Some(Rook(BLACK)),
-        B8 -> Some(Knight(BLACK)),
-        C8 -> Some(Bishop(BLACK)),
-        D8 -> Some(Queen(BLACK)),
-        E8 -> Some(King(BLACK)),
-        F8 -> Some(Bishop(BLACK)),
-        G8 -> Some(Knight(BLACK)),
-        H8 -> Some(Rook(BLACK))
+        A7 -> Some(Piece(PAWN, BLACK)),
+        B7 -> Some(Piece(PAWN, BLACK)),
+        C7 -> Some(Piece(PAWN, BLACK)),
+        D7 -> Some(Piece(PAWN, BLACK)),
+        E7 -> Some(Piece(PAWN, BLACK)),
+        F7 -> Some(Piece(PAWN, BLACK)),
+        G7 -> Some(Piece(PAWN, BLACK)),
+        H7 -> Some(Piece(PAWN, BLACK)),
+        A8 -> Some(Piece(ROOK, BLACK)),
+        B8 -> Some(Piece(KNIGHT, BLACK)),
+        C8 -> Some(Piece(BISHOP, BLACK)),
+        D8 -> Some(Piece(QUEEN, BLACK)),
+        E8 -> Some(Piece(KING, BLACK)),
+        F8 -> Some(Piece(BISHOP, BLACK)),
+        G8 -> Some(Piece(KNIGHT, BLACK)),
+        H8 -> Some(Piece(ROOK, BLACK))
       ),
       List(),
       List(),

@@ -7,7 +7,7 @@ import pieces.PieceColor
 import pieces.PieceColor._
 import boardComponent.Coord
 
-case class Bishop(color: PieceColor, char: Char, worth: Int, move_count: Int) extends Piece {
+case class Bishop(color: PieceColor, id: Int, char: Char, worth: Int, move_count: Int, promoted_on_move: Option[Int]) extends Piece {
 
   override def getPath(from: Coord, to: Coord): List[Coord] = {
     val direction = (
@@ -42,8 +42,9 @@ case class Bishop(color: PieceColor, char: Char, worth: Int, move_count: Int) ex
 }
 
 object Bishop {
-  def apply(color: PieceColor) = {
+  def apply(color: PieceColor, id: Int, move_count: Int, promoted_on_move: Option[Int]) = {
     val char = if(color == WHITE) '♗' else '♝'
-    new Bishop(color, char, 3, 0)
+    val worth = 3
+    new Bishop(color, id, char, worth, move_count, promoted_on_move)
   }
 }

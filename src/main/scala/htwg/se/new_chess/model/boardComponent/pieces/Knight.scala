@@ -7,7 +7,7 @@ import pieces.PieceColor
 import pieces.PieceColor._
 import boardComponent.Coord
 
-case class Knight(color: PieceColor, char: Char, worth: Int, move_count: Int) extends Piece {
+case class Knight(color: PieceColor, id: Int, char: Char, worth: Int, move_count: Int, promoted_on_move: Option[Int]) extends Piece {
 
   override def getPath(start_coord: Coord, end_coord: Coord): List[Coord] = {
     start_coord.knightNeighbors().find(_ == end_coord) match {
@@ -24,8 +24,9 @@ case class Knight(color: PieceColor, char: Char, worth: Int, move_count: Int) ex
 }
 
 object Knight {
-  def apply(color: PieceColor) = {
+  def apply(color: PieceColor, id: Int, move_count: Int, promoted_on_move: Option[Int]) = {
     val char = if(color == WHITE) '♘' else '♞'
-    new Knight(color, char, 3, 0)
+    val worth = 3
+    new Knight(color, id, char, worth, move_count, promoted_on_move)
   }
 }

@@ -7,7 +7,7 @@ import pieces.PieceColor
 import pieces.PieceColor._
 import boardComponent.Coord
 
-case class Rook(color: PieceColor, char: Char, worth: Int, move_count: Int) extends Piece {
+case class Rook(color: PieceColor, id: Int, char: Char, worth: Int, move_count: Int, promoted_on_move: Option[Int]) extends Piece {
 
   override def getPath(start_coord: Coord, end_coord: Coord): List[Coord] = {
     val direction = (
@@ -43,8 +43,9 @@ case class Rook(color: PieceColor, char: Char, worth: Int, move_count: Int) exte
 }
 
 object Rook {
-  def apply(color: PieceColor) = {
+  def apply(color: PieceColor, id: Int, move_count: Int, promoted_on_move: Option[Int]) = {
     val char = if(color == WHITE) '♖' else '♜'
-    new Rook(color, char, 5, 0)
+    val worth = 5
+    new Rook(color, id, char, worth, move_count, promoted_on_move)
   }
 }

@@ -1,11 +1,16 @@
 package htwg.se.chess.model.boardComponent
 package pieces
 
-// import pieces.{Pawn, Rook, Knight, Bishop, Queen, King}
-// import pieces.PieceColor.*
+import java.util.concurrent.atomic.AtomicInteger
+
+import PieceType._
 
 enum PieceColor {
   case WHITE, BLACK
+}
+
+enum PieceType {
+  case PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING
 }
 
 
@@ -21,14 +26,19 @@ trait Piece {
 }
 
 object Piece {
-  def apply(pieceType: String, color: PieceColor): Piece = {
+  private val idCounter = AtomicInteger(0)
+
+  def generateId(): Int = idCounter.incrementAndGet()
+
+  def apply(pieceType: PieceType, color: PieceColor, move_count: Int = 0, promoted_on_move: Option[Int] = None): Piece = {
+    val id = generateId()
     pieceType match {
-      case "Pawn" => Pawn(color)
-      case "Knight" => Knight(color)
-      case "Bishop" => Bishop(color)
-      case "Rook" => Rook(color)
-      case "Queen" => Queen(color)
-      case "King" => King(color)
+      case PAWN => Pawn(color = color, id = id, move_count = move_count, promoted_on_move = promoted_on_move)
+      case KNIGHT => Knight(color = color, id = id, move_count = move_count, promoted_on_move = promoted_on_move)
+      case BISHOP => Bishop(color = color, id = id, move_count = move_count, promoted_on_move = promoted_on_move)
+      case ROOK => Rook(color = color, id = id, move_count = move_count, promoted_on_move = promoted_on_move)
+      case QUEEN => Queen(color = color, id = id, move_count = move_count, promoted_on_move = promoted_on_move)
+      case KING => King(color = color, id = id, move_count = move_count, promoted_on_move = promoted_on_move)
     }
   }
 }

@@ -14,6 +14,8 @@ import model.boardComponent.pieces.PieceColor._
 
 import scala.util.Try
 import scala.util.Success
+import play.api.libs.json._
+// import play.api.libs.json.{JsValue, Json}
 
 case class Controller(var board: Board) extends Observable {
 
@@ -74,17 +76,16 @@ case class Controller(var board: Board) extends Observable {
       .map((coord, piece_opt) => (coord.toString.toLowerCase, piece_opt.getOrElse("").toString, coord.color.toString.toLowerCase))
       .toList
   }
-  def winner(): Option[PieceColor] = {
-    board.checkmate.match {
-      case Some(BLACK) => Some(WHITE)
-      case Some(WHITE) => Some(BLACK)
-      case _ => None
-    }
-  }
+
+
+  def boardJson(): JsValue = board.toJson()
+  def moveOptionsJson(from: Coord): JsValue = board.moveOptionsJson(from)
 
   def turn(): PieceColor = board.turn
   def advantage(): Int = board.advantage()
-  def moveOptions(from: Coord): List[Coord] = board.moveOptions(from)
+  def winner(): Option[PieceColor] = board.winner()
+
+
 
   def undo: Board = undoManager.undoStep(board)
   def redo: Board = undoManager.redoStep(board)

@@ -67,7 +67,8 @@ object MoveValidator {
 
   def moveOptions(board: Board, from: Coord, piece: Piece): List[Coord] = {
     val all_move_options = moveOptions(board, piece.color)
-    all_move_options(piece)
+    val move_options = all_move_options(piece).filter(to => this.isMoveConceivable(from, to, board)).filter(to => this.isValid(board.doMove(from, to, false))._1)
+    move_options
   }
 
   def moveOptions(board: Board, color: PieceColor): Map[Piece, List[Coord]] = {

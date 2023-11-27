@@ -8,6 +8,9 @@ import boardComponent.pieces.PieceColor._
 import boardComponent.pieces.PieceType._
 
 import scala.collection.immutable.Map
+import scala.collection.immutable.TreeMap
+import play.api.libs.json._
+// import play.api.libs.json.{JsValue, Json}
 
 case class Board(
     squares: Map[Coord, Option[Piece]],
@@ -71,6 +74,14 @@ case class Board(
     }
   }
 
+  def winner(): Option[PieceColor] = {
+    this.checkmate.match {
+      case Some(BLACK) => Some(WHITE)
+      case Some(WHITE) => Some(BLACK)
+      case _ => None
+    }
+  }
+
   def kingCoord(color: PieceColor): Coord = {
     squares
       .find { case (coord, piece) =>
@@ -94,6 +105,10 @@ case class Board(
     }
   }
 
+  def moveOptionsJson(from: Coord): JsValue = {
+    Json.toJson(this.moveOptions(from).map(_.toString.toLowerCase))
+  }
+
   def captureStacks() = {
     val captured_pieces = this.capture_stack.flatten
     val (whiteStack, blackStack) = captured_pieces.partition {
@@ -114,11 +129,20 @@ case class Board(
     white_worth - black_worth
   }
 
+  def kingCheckedCoord(): Option[Coord] = {
+    this.kingChecked().match {
+      case Some(color) => Some(this.kingCoord(color))
+      case _ => None
+    }
+  }
+
   private def whitePieces = pieces(WHITE) _
   private def blackPieces = pieces(BLACK) _
   private def pieces(color: PieceColor)(): List[Piece] = {
     this.squares.values.collect{ case Some(piece) if(piece.color == color) => piece }.toList
   }
+
+  private def pieces(): Map[Coord, Piece] = this.squares.collect{ case (coord, Some(piece)) => coord -> piece }
 
   private def forceMovementForward = forceMovement(+1) _
   private def forceMovementBackward = forceMovement(-1) _
@@ -147,6 +171,28 @@ case class Board(
     val move_options = "options_f3: " + this.moveOptions(F3).mkString(", ")
     board + "\n" + stacks + "\n" + adv + "\n" + checked + "\n" + checkmate + "\n" + move_options
   }
+
+  def toJson(): JsValue = {
+    val (w, b) = this.captureStacksStr()
+    Json.obj(
+      "board" -> Json.obj(
+        "turn" -> this.turn.toString.toLowerCase,
+        "checked" -> this.kingCheckedCoord().getOrElse("").toString.toLowerCase,
+        "winner" -> this.winner().getOrElse("").toString.toLowerCase,
+        "capture_stack" -> Json.obj("white" -> w.mkString, "black" -> b.mkString),
+        "advantage" -> this.advantage(),
+        "squares" -> Json.toJson(
+          this.squares.map((coord, piece_opt) =>
+            coord.toString.toLowerCase -> Json.obj(
+              "color" -> Json.toJson(coord.color.toString.toLowerCase),
+              "piece" -> Json.toJson(piece_opt.getOrElse("").toString),
+            )
+          )
+        )
+      )
+    )
+  }
+
 }
 
 object Board {

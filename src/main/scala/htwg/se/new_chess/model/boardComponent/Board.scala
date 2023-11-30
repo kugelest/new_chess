@@ -20,8 +20,8 @@ case class Board(
   def startPos: Board                      = Board()
   val whitePieces: List[Piece]             = occupiedSquares(Some(WHITE)).values.toList
   val blackPieces: List[Piece]             = occupiedSquares(Some(BLACK)).values.toList
-  val whiteCapturedPieces: List[Piece]     = captured_pieces.filter(_.color == WHITE)
-  val blackCapturedPieces: List[Piece]     = captured_pieces.filter(_.color == BLACK)
+  val whiteCapturedPieces: List[Piece]     = captured_pieces.filter(_.color == WHITE).sortBy(_.worth).reverse
+  val blackCapturedPieces: List[Piece]     = captured_pieces.filter(_.color == BLACK).sortBy(_.worth).reverse
   val whiteCapturedPiecesStr: List[String] = blackCapturedPieces.map(_.toString)
   val blackCapturedPiecesStr: List[String] = whiteCapturedPieces.map(_.toString)
   val whiteKing: Coord                     = kingCoord(WHITE)

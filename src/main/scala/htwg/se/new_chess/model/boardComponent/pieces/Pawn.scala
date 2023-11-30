@@ -31,12 +31,20 @@ case class Pawn(color: PieceColor, id: Int, char: Char, worth: Int, move_count: 
     }
   }
 
-  override def sightOnEmptyBoard(coord: Coord): List[List[Coord]] = {
-    val sight = color match {
-      case WHITE => List(coord.upperLeftAndRightNeighbor())
-      case BLACK => List(coord.lowerLeftAndRightNeighbor())
+  override def threateningSightOnEmptyBoard(coord: Coord): List[List[Coord]] = {
+    this.color match {
+      case WHITE => coord.upperLeftAndRightNeighbor().map(List(_))
+      case BLACK => coord.lowerLeftAndRightNeighbor().map(List(_))
     }
-    sight
+  }
+
+  override def walkingSightOnEmptyBoard(coord: Coord): List[List[Coord]] = {
+    (this.color, this.move_count) match {
+      case (WHITE, 0) => List(coord.upperTwo())
+      case (BLACK, 0) => List(coord.lowerTwo())
+      case (WHITE, _) => List(coord.upperNeighbor()).collect{case Success(c) => List(c)}
+      case (BLACK, _) => List(coord.lowerNeighbor()).collect{case Success(c) => List(c)}
+    }
   }
 
   override def increaseMoveCount(i: Int): Pawn = this.copy(move_count = move_count + i)

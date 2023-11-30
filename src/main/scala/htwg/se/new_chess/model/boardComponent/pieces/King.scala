@@ -16,9 +16,11 @@ case class King(color: PieceColor, id: Int, char: Char, worth: Int, move_count: 
     }
   }
 
-  override def sightOnEmptyBoard(coord: Coord): List[List[Coord]] = {
-    List(coord.surroundingNeighbors())
+  override def threateningSightOnEmptyBoard(coord: Coord): List[List[Coord]] = {
+    coord.surroundingNeighbors().map(List(_))
   }
+
+  override def walkingSightOnEmptyBoard(coord: Coord): List[List[Coord]] = threateningSightOnEmptyBoard(coord)
 
   override def increaseMoveCount(i: Int): King = this.copy(move_count = move_count + i)
 

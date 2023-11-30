@@ -1,46 +1,42 @@
 package htwg.se.chess
 package util
 
-trait Command[T] {
-  def noStep(t: T): T
-  def doStep(t: T): T
-  def undoStep(t: T): T
-  def redoStep(t: T): T
-}
+import model.boardComponent.Board
 
-class UndoManager[T] {
-  private var undoStack: List[Command[T]] = Nil
-  private var redoStack: List[Command[T]] = Nil
+class UndoManager {
+  private var undoStack: List[Board] = Nil
+  private var redoStack: List[Board] = Nil
 
-  def doStep(t: T, command: Command[T]): T = {
-    undoStack = command :: undoStack
+  def doStep(board: Board): Board = {
+    undoStack = board :: undoStack
     redoStack = Nil
-    command.doStep(t)
+    board
   }
-  def undoStep(t: T): T = {
+
+  def undoStep(board: Board): Board = {
     undoStack match {
-      case Nil => t
-      case head :: stack => {
-        val result = head.undoStep(t)
-        undoStack = stack
-        redoStack = head :: redoStack
-        result
+      case cur :: rest => {
+        undoStack = rest
+        redoStack = cur :: redoStack
+        rest.headOption.getOrElse(Board())
       }
+      case Nil                 => board
     }
   }
-  def redoStep(t: T): T = {
+
+  def redoStep(board: Board): Board = {
     redoStack match {
-      case Nil => t
-      case head :: stack => {
-        val result = head.redoStep(t)
-        redoStack = stack
-        undoStack = head :: undoStack
-        result
+      case cur :: rest         => {
+        redoStack = rest
+        undoStack = cur :: undoStack
+        cur
       }
+      case Nil                 => board
     }
   }
-  def noStep(t: T, command: Command[T]): T = {
-    command.noStep(t)
+
+  def noStep(board: Board): Board = {
+    board
   }
 
   def clear() = {

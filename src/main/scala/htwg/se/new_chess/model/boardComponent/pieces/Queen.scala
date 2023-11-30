@@ -37,7 +37,7 @@ case class Queen(color: PieceColor, id: Int, char: Char, worth: Int, move_count:
     direction.reverse.dropWhile(_ != end_coord)
   }
 
-  override def sightOnEmptyBoard(coord: Coord): List[List[Coord]] = {
+  override def threateningSightOnEmptyBoard(coord: Coord): List[List[Coord]] = {
     List(
       coord.upperLeftNeighbors(),
       coord.upperRightNeighbors(),
@@ -49,6 +49,8 @@ case class Queen(color: PieceColor, id: Int, char: Char, worth: Int, move_count:
       coord.leftNeighbors()
     )
   }
+
+  override def walkingSightOnEmptyBoard(coord: Coord): List[List[Coord]] = threateningSightOnEmptyBoard(coord)
 
   override def increaseMoveCount(i: Int): Queen = this.copy(move_count = move_count + i)
 }

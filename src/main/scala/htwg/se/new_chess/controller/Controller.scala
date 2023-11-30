@@ -19,8 +19,7 @@ import play.api.libs.json._
 
 case class Controller(var board: Board) extends Observable {
 
-  val undoManager = new UndoManager[Board]
-  var board_tmp = board
+  val undoManager = new UndoManager()
 
   def doAndPublish(doThis: Move => Board, move: Move) = {
     board = doThis(move)
@@ -33,35 +32,25 @@ case class Controller(var board: Board) extends Observable {
 
   def newGame: Board = {
     undoManager.clear()
-    board.startPos()
+    board.startPos
   }
 
   def makeMove(move: Move): Board = {
-    if (board.isMoveConceivable(move.from, move.to)) {
-      board_tmp = board.doMove(move.from, move.to, false).copy(turn = board.turn)
-      val (valid, checks) = board_tmp.isValid()
-      val checkmate = if (checks) board_tmp.copy(turn = board_tmp.nextTurn()).checkCheckmate() else None
-      (valid, checkmate) match {
-        case (true, None)        => undoManager.doStep(board, MoveCommand(move, checks))
-        case (true, Some(color)) => undoManager.doStep(board.copy(checkmate = Some(color)), MoveCommand(move, checks))
-        case _                   => undoManager.noStep(board, MoveCommand(move))
-      }
-    } else {
-      undoManager.noStep(board, MoveCommand(move))
+    this.board.move(move) match {
+      case Some(board) => undoManager.doStep(board)
+      case _ => undoManager.noStep(this.board)
     }
   }
 
   def kingCheckedCoord(): Option[Coord] = {
-    board.kingChecked().match {
-      case Some(color) => Some(board.kingCoord(color))
+    board.checked match {
+      case Some(WHITE) => Some(board.whiteKing)
+      case Some(BLACK) => Some(board.blackKing)
       case _ => None
     }
   }
 
-  def captureStacks() = {
-    val (whiteCaptureStack, blackCaptureStack) = board.captureStacksStr()
-    (whiteCaptureStack, blackCaptureStack)
-  }
+  def captureStacks() = (board.whiteCapturedPiecesStr, board.blackCapturedPiecesStr)
 
   def squareData(): List[(String, String, SquareColor)] = {
     board.squares.toSeq
@@ -82,10 +71,8 @@ case class Controller(var board: Board) extends Observable {
   def moveOptionsJson(from: Coord): JsValue = board.moveOptionsJson(from)
 
   def turn(): PieceColor = board.turn
-  def advantage(): Int = board.advantage()
-  def winner(): Option[PieceColor] = board.winner()
-
-
+  def advantage(): Int = board.advantage
+  def winner(): Option[PieceColor] = board.winner
 
   def undo: Board = undoManager.undoStep(board)
   def redo: Board = undoManager.redoStep(board)

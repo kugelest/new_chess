@@ -42,6 +42,7 @@ case class Rook(color: PieceColor, id: Int, char: Char, worth: Int, move_count: 
 
   override def increaseMoveCount(i: Int): Rook = this.copy(move_count = move_count + i)
 
+  override def notation: Char = 'R'
 }
 
 object Rook {

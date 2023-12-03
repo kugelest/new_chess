@@ -86,6 +86,13 @@ case class MoveValidator(move: Move, board: Board) {
     else None
   }
 
+  val resulting_move_notation: String = {
+    start match {
+      case Some(piece) => s"${piece.notation}${if(resulting_captured.size == 1) "x" else ""}${move.to.toString.toLowerCase}${if(resulting_check.isDefined) "+" else ""}"
+      case _ => "unvalid"
+    }
+  }
+
   val move_valid: Boolean = {
     if (move_conceivable) {
       resulting_check match {

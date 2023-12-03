@@ -26,6 +26,7 @@ case class King(color: PieceColor, id: Int, char: Char, worth: Int, move_count: 
 
   def setChecked(check: Boolean): King = this.copy(is_checked = check)
 
+  override def notation: Char = 'K'
 }
 
 object King {

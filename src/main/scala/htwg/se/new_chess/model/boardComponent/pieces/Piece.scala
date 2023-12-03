@@ -22,6 +22,7 @@ trait Piece {
   def getPath(startPos: Coord, endPos: Coord): List[Coord]
   def threateningSightOnEmptyBoard(coord: Coord): List[List[Coord]]
   def walkingSightOnEmptyBoard(coord: Coord): List[List[Coord]]
+  def notation: Char
   override def toString()                                       = char.toString
 }
 

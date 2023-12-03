@@ -25,6 +25,14 @@ case class Controller(var board: Board) extends Observable {
     board = doThis(move)
     notifyObservers(Event.Move)
   }
+  def doUndoTo(doThis: Int => Board, n: Int) = {
+    board = doThis(n)
+    notifyObservers(Event.Move)
+  }
+  def doRedoSteps(doThis: Int => Board, i: Int) = {
+    board = doThis(i)
+    notifyObservers(Event.Move)
+  }
   def doAndPublish(doThis: => Board) = {
     board = doThis
     notifyObservers(Event.Move)
@@ -67,7 +75,12 @@ case class Controller(var board: Board) extends Observable {
   }
 
 
-  def boardJson(): JsValue = board.toJson()
+  def boardJson(): JsValue = {
+    val cur = board.toJson()
+    val redo_moves = "redo_moves" -> Json.toJson(undoManager.redoStackMoves())
+    cur + redo_moves
+  }
+
   def moveOptionsJson(from: Coord): JsValue = board.moveOptionsJson(from)
 
   def turn(): PieceColor = board.turn
@@ -75,7 +88,9 @@ case class Controller(var board: Board) extends Observable {
   def winner(): Option[PieceColor] = board.winner
 
   def undo: Board = undoManager.undoStep(board)
+  def undoTo(n: Int): Board = undoManager.undoStepsTo(n, board)
   def redo: Board = undoManager.redoStep(board)
+  def redoSteps(i: Int): Board = undoManager.redoSteps(i, board)
   def quit: Unit = notifyObservers(Event.Quit)
 
   override def toString: String = board.toString

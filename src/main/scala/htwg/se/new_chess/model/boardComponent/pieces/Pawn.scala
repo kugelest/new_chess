@@ -48,6 +48,8 @@ case class Pawn(color: PieceColor, id: Int, char: Char, worth: Int, move_count: 
   }
 
   override def increaseMoveCount(i: Int): Pawn = this.copy(move_count = move_count + i)
+
+  override def notation: Char = ' '
 }
 
 object Pawn {

@@ -14,7 +14,8 @@ case class Board(
     squares: Map[Coord, Option[Piece]],
     turn: PieceColor,
     in_check: Boolean,
-    captured_pieces: List[Piece]
+    captured_pieces: List[Piece],
+    moves: List[String]
 ) {
 
   def startPos: Board                      = Board()
@@ -39,7 +40,8 @@ case class Board(
           squares = validator.resulting_squares,
           turn = nextTurn,
           in_check = validator.resulting_check.isDefined,
-          captured_pieces = this.captured_pieces ++ validator.resulting_captured
+          captured_pieces = this.captured_pieces ++ validator.resulting_captured,
+          moves = this.moves :+ validator.resulting_move_notation
         )
       )
     else
@@ -93,7 +95,7 @@ case class Board(
     case _           => this.squares.collect { case (coord, Some(piece)) => coord -> piece }
   }
 
-  def toJson(): JsValue = {
+  def toJson(): JsObject = {
     Json.obj(
       "board" -> Json.obj(
         "turn"          -> this.turn.toString.toLowerCase,
@@ -108,7 +110,8 @@ case class Board(
               "piece" -> Json.toJson(piece_opt.getOrElse("").toString)
             )
           )
-        )
+        ),
+        "moves" -> Json.toJson(this.moves)
       )
     )
   }
@@ -129,7 +132,8 @@ case class Board(
     val checked = "checked: " + this.checked.getOrElse("").toString
     val winner  = "winner: " + this.winner.getOrElse("").toString
     val turn    = "turn: " + this.turn.toString
-    board + "\n" + turn + "\n" + stacks + "\n" + adv + "\n" + checked + "\n" + winner + "\n"
+    val moves = "moves: " + this.moves.mkString(" ")
+    board + "\n" + turn + "\n" + stacks + "\n" + adv + "\n" + checked + "\n" + winner + "\n" + moves + "\n"
   }
 
 }
@@ -205,6 +209,7 @@ object Board {
       ),
       WHITE,
       false,
+      List(),
       List()
     )
   }

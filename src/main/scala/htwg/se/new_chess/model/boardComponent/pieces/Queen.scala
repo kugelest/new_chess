@@ -53,6 +53,8 @@ case class Queen(color: PieceColor, id: Int, char: Char, worth: Int, move_count:
   override def walkingSightOnEmptyBoard(coord: Coord): List[List[Coord]] = threateningSightOnEmptyBoard(coord)
 
   override def increaseMoveCount(i: Int): Queen = this.copy(move_count = move_count + i)
+
+  override def notation: Char = 'Q'
 }
 
 object Queen {

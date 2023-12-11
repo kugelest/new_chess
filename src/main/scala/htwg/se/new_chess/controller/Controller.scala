@@ -60,20 +60,23 @@ case class Controller(var board: Board) extends Observable {
 
   def captureStacks() = (board.whiteCapturedPiecesStr, board.blackCapturedPiecesStr)
 
+  def squareInit(): List[(String, String)] = {
+    board.squares.keys.toSeq
+      .sortBy(_.print_ord)
+      .map(coord => (coord.toString.toLowerCase, coord.color.toString.toLowerCase))
+      .toList
+  }
+
   def squareData(): List[(String, String, SquareColor)] = {
     board.squares.toSeq
       .sortBy(_._1.print_ord)
-      .map((coord, piece_opt) => (coord.toString.toLowerCase, piece_opt.getOrElse("").toString, coord.color))
+      .map((coord, piece) => (coord.toString.toLowerCase, piece.getOrElse("").toString, coord.color))
       .toList
   }
 
-  def squareDataStr(): List[(String, String, String)] = {
-    board.squares.toSeq
-      .sortBy(_._1.print_ord)
-      .map((coord, piece_opt) => (coord.toString.toLowerCase, piece_opt.getOrElse("").toString, coord.color.toString.toLowerCase))
-      .toList
-  }
+  def initBoardJson(): JsValue = board.initBoardJson()
 
+  def squaresJson(): JsValue = board.squaresJson()
 
   def boardJson(): JsValue = {
     val cur = board.toJson()

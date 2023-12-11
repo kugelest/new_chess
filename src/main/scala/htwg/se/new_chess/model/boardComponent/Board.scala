@@ -95,6 +95,25 @@ case class Board(
     case _           => this.squares.collect { case (coord, Some(piece)) => coord -> piece }
   }
 
+  def initBoardJson(): JsValue = {
+    val squares = this.squares.keys.toSeq
+      .sortBy(_.print_ord)
+      .map(coord => (coord.toString.toLowerCase, coord.color.toString.toLowerCase))
+      .toList
+    Json.toJson(squares)
+  }
+
+  def squaresJson(): JsValue = {
+    val squares = this.squares.toList
+      .sortBy((coord, piece_opt) => coord.print_ord)
+      .map((coord, piece_opt) => Json.obj(
+        "coord" -> coord.toString.toLowerCase,
+        "color" -> coord.color.toString.toLowerCase,
+        "piece" -> piece_opt.getOrElse("").toString
+        ))
+    Json.toJson(squares)
+  }
+
   def toJson(): JsObject = {
     Json.obj(
       "board" -> Json.obj(

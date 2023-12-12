@@ -62,8 +62,8 @@ case class Board(
 
   def moveOptions(from: Coord): List[Coord] = {
     this.squares(from) match {
-      case Some(piece) if(piece.color == this.turn) => this.moveOptions(piece)
-      case _           => Nil
+      case Some(piece) if (piece.color == this.turn) => this.moveOptions(piece)
+      case _                                         => Nil
     }
   }
 
@@ -106,12 +106,24 @@ case class Board(
   def squaresJson(): JsValue = {
     val squares = this.squares.toList
       .sortBy((coord, piece_opt) => coord.print_ord)
-      .map((coord, piece_opt) => Json.obj(
-        "coord" -> coord.toString.toLowerCase,
-        "color" -> coord.color.toString.toLowerCase,
-        "piece" -> piece_opt.getOrElse("").toString
-        ))
+      .map((coord, piece_opt) =>
+        Json.obj(
+          "coord" -> coord.toString.toLowerCase,
+          "color" -> coord.color.toString.toLowerCase,
+          "piece" -> piece_opt.getOrElse("").toString
+        )
+      )
     Json.toJson(squares)
+  }
+
+  def gameInfoJson(): JsValue = {
+    Json.obj(
+      "turn"          -> this.turn.toString.toLowerCase,
+      "winner"        -> this.winner.getOrElse("").toString.toLowerCase,
+      "capture_stack" -> Json.obj("white" -> whiteCapturedPiecesStr, "black" -> blackCapturedPiecesStr),
+      "advantage"     -> this.advantage,
+      "undo_moves"    -> Json.toJson(this.moves)
+    )
   }
 
   def toJson(): JsObject = {
@@ -130,7 +142,7 @@ case class Board(
             )
           )
         ),
-        "moves" -> Json.toJson(this.moves)
+        "moves"         -> Json.toJson(this.moves)
       )
     )
   }
@@ -151,7 +163,7 @@ case class Board(
     val checked = "checked: " + this.checked.getOrElse("").toString
     val winner  = "winner: " + this.winner.getOrElse("").toString
     val turn    = "turn: " + this.turn.toString
-    val moves = "moves: " + this.moves.mkString(" ")
+    val moves   = "moves: " + this.moves.mkString(" ")
     board + "\n" + turn + "\n" + stacks + "\n" + adv + "\n" + checked + "\n" + winner + "\n" + moves + "\n"
   }
 

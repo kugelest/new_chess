@@ -78,6 +78,14 @@ case class Controller(var board: Board) extends Observable {
 
   def squaresJson(): JsValue = board.squaresJson()
 
+  def checkedCoordJson(): JsValue = Json.toJson(this.kingCheckedCoord().getOrElse("").toString.toLowerCase)
+
+  def gameInfoJson(): JsValue = {
+    val cur = board.gameInfoJson().as[JsObject]
+    val redo_moves = "redo_moves" -> Json.toJson(undoManager.redoStackMoves())
+    cur + redo_moves
+  }
+
   def boardJson(): JsValue = {
     val cur = board.toJson()
     val redo_moves = "redo_moves" -> Json.toJson(undoManager.redoStackMoves())

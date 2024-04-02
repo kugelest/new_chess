@@ -27,9 +27,9 @@ case class MoveValidator(move: Move, board: Board) {
 
   private val path: Try[List[Option[Piece]]] = Try(full_path.init)
 
-  private val path_free: Try[Boolean] = path.map(_.forall(square => square.isEmpty))
-
   private val dest: Try[Option[Piece]] = Try(full_path.last)
+
+  private val path_free: Try[Boolean] = path.map(_.forall(square => square.isEmpty))
 
   private val dest_manned: Option[Manned] = {
     if (dest.map(_.isEmpty) == Success(true)) Some(Manned.Free)

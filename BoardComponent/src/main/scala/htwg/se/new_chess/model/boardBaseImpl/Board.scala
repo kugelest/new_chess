@@ -1,11 +1,13 @@
 package htwg.se.chess.model
-package boardComponent
+package BoardComponent
+package boardBaseImpl
 
-import boardComponent.Coord._
-import boardComponent.pieces.{Piece, Pawn, Rook, Knight, Bishop, Queen, King}
-import boardComponent.pieces.PieceColor
-import boardComponent.pieces.PieceColor._
-import boardComponent.pieces.PieceType._
+// import boardComponent.Coord
+import Coord._
+import pieces.{Piece, Pawn, Rook, Knight, Bishop, Queen, King}
+import pieces.PieceColor
+import pieces.PieceColor._
+import pieces.PieceType._
 
 import scala.collection.immutable.Map
 import play.api.libs.json._
@@ -16,7 +18,7 @@ case class Board(
     in_check: Boolean,
     captured_pieces: List[Piece],
     moves: List[String]
-) {
+) extends BoardInterface {
 
   def startPos: Board                      = Board()
   val whitePieces: List[Piece]             = occupiedSquares(Some(WHITE)).values.toList

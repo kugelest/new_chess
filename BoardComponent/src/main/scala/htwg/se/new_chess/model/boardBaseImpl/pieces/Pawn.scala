@@ -1,5 +1,6 @@
 package htwg.se.chess.model
-package boardComponent
+package BoardComponent
+package boardBaseImpl
 package pieces
 
 // import pieces
@@ -10,8 +11,8 @@ package pieces
 // import pieces.PieceTyp.PawnType
 // import pieces.PawnType
 // import pieces.PieceColor
-import pieces.PieceColor._
-import boardComponent.Coord
+import PieceColor._
+// import boardComponent.Coord
 import scala.util.Success
 
 

@@ -4,13 +4,13 @@ package controller
 import util.Observable
 import util.UndoManager
 import util.Event
-import model.boardComponent.Move
-import model.boardComponent.Board
-import model.boardComponent.Coord
-import model.boardComponent.SquareColor
-import model.boardComponent.MoveValidator
-import model.boardComponent.pieces.PieceColor
-import model.boardComponent.pieces.PieceColor._
+import model.BoardComponent.boardBaseImpl.Move
+import model.BoardComponent.boardBaseImpl.Board
+import model.BoardComponent.boardBaseImpl.Coord
+import model.BoardComponent.boardBaseImpl.SquareColor
+import model.BoardComponent.boardBaseImpl.MoveValidator
+import model.BoardComponent.boardBaseImpl.pieces.PieceColor
+import model.BoardComponent.boardBaseImpl.pieces.PieceColor._
 
 import scala.util.Try
 import scala.util.Success

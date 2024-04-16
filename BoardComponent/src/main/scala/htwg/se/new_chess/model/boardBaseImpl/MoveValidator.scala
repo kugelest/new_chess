@@ -1,11 +1,11 @@
 package htwg.se.chess.model
-package boardComponent
+package BoardComponent
+package boardBaseImpl
 
-import boardComponent.Coord
-import boardComponent.pieces.{Piece, Pawn, Knight, Bishop, Rook, Queen, King}
-import boardComponent.pieces.PieceColor._
-import boardComponent.pieces.PieceColor
-import boardComponent.pieces.PieceType._
+import pieces.{Piece, Pawn, Knight, Bishop, Rook, Queen, King}
+import pieces.PieceColor._
+import pieces.PieceColor
+import pieces.PieceType._
 
 import scala.util.{Try, Success, Failure}
 

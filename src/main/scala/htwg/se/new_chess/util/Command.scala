@@ -1,7 +1,7 @@
 package htwg.se.chess
 package util
 
-import model.boardComponent.Board
+import model.BoardComponent.boardBaseImpl.Board
 
 class UndoManager {
   private var undoStack: List[Board] = Nil

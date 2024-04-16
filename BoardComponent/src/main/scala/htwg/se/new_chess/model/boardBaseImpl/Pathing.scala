@@ -1,9 +1,9 @@
 package htwg.se.chess.model
-package boardComponent
+package BoardComponent
+package boardBaseImpl
 
-import boardComponent.Coord
-import boardComponent.pieces.Piece
-import boardComponent.pieces._
+import pieces.Piece
+import pieces._
 
 import scala.util.{Try, Success, Failure}
 

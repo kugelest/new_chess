@@ -1,5 +1,6 @@
 package htwg.se.chess.model
-package boardComponent
+package BoardComponent
+package boardBaseImpl
 
 import scala.util.{Try, Success, Failure}
 import scala.annotation.tailrec

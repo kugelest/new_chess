@@ -1,6 +1,5 @@
 package htwg.se.chess.model
-package boardComponent
-
-import boardComponent.Coord
+package BoardComponent
+package boardBaseImpl
 
 case class Move(from: Coord, to: Coord)

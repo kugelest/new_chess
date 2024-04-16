@@ -1,4 +1,6 @@
-package htwg.se.chess.model.boardComponent
+package htwg.se.chess.model
+package BoardComponent
+package boardBaseImpl
 package pieces
 
 import java.util.concurrent.atomic.AtomicInteger

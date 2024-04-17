@@ -1,3 +1,4 @@
+package htwg.se.chess
 package model
 package FileIOComponent
 package fileIoJsonImpl

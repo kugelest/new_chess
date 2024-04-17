@@ -1,4 +1,4 @@
-
+package htwg.se.chess
 package aview
 
 import controller.Controller

@@ -1,4 +1,4 @@
-
+package htwg.se.chess
 
 import controller.Controller
 import model.BoardComponent.boardBaseImpl.Board

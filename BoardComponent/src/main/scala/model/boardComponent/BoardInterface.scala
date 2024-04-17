@@ -1,6 +1,6 @@
 package htwg.se.chess
 package model
-package BoardComponent
+package boardComponent
 
 import play.api.libs.json._
 

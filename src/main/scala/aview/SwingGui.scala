@@ -2,10 +2,10 @@ package htwg.se.chess
 package aview
 
 import controller.Controller
-import model.BoardComponent.boardBaseImpl.Move
-import model.BoardComponent.boardBaseImpl.pieces.PieceColor
-import model.BoardComponent.boardBaseImpl.SquareColor
-import model.BoardComponent.boardBaseImpl.Coord
+import model.boardComponent.boardBaseImpl.Move
+import model.boardComponent.boardBaseImpl.pieces.PieceColor
+import model.boardComponent.boardBaseImpl.SquareColor
+import model.boardComponent.boardBaseImpl.Coord
 import util.Event
 import util.Observer
 

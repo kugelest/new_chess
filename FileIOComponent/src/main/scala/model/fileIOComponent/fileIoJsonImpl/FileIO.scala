@@ -1,16 +1,16 @@
 package htwg.se.chess
 package model
-package FileIOComponent
+package fileIOComponent
 package fileIoJsonImpl
 
-import model.BoardComponent.BoardInterface
-import model.BoardComponent.boardBaseImpl.Coord
-import model.BoardComponent.boardBaseImpl.Board
-// import model.BoardComponent.boardBaseImpl.Square
-// import model.BoardComponent.boardBaseImpl.SquareExtensions
-import model.BoardComponent.boardBaseImpl.pieces.Piece
-import model.BoardComponent.boardBaseImpl.pieces.PieceType
-import model.BoardComponent.boardBaseImpl.pieces.PieceColor
+import model.boardComponent.BoardInterface
+import model.boardComponent.boardBaseImpl.Coord
+import model.boardComponent.boardBaseImpl.Board
+// import model.boardComponent.boardBaseImpl.Square
+// import model.boardComponent.boardBaseImpl.SquareExtensions
+import model.boardComponent.boardBaseImpl.pieces.Piece
+import model.boardComponent.boardBaseImpl.pieces.PieceType
+import model.boardComponent.boardBaseImpl.pieces.PieceColor
 
 import scala.collection.immutable.Map
 import play.api.libs.json._

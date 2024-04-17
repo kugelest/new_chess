@@ -1,6 +1,6 @@
 package htwg.se.chess
 package model
-package BoardComponent
+package boardComponent
 package boardBaseImpl
 package pieces
 

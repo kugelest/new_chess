@@ -1,12 +1,12 @@
-ThisBuild / organization := "htwg.se.new_chess"
+ThisBuild / organization := "htwg.se.chess"
 ThisBuild / version := "0.1"
 ThisBuild / scalaVersion := "3.3.1"
-// ThisBuild / coverageExcludedPackages := "htwg\\.se\\.chess\\.aview\\.gui;.*FileIOComponent.*;.*Chess"
+// ThisBuild / coverageExcludedPackages := "htwg\\.se\\.chess\\.aview\\.gui;.*fileIOComponent.*;.*Chess"
 
-assembly / assemblyMergeStrategy := {
-  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
-  case x => MergeStrategy.first
-}
+// assembly / assemblyMergeStrategy := {
+//   case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+//   case x => MergeStrategy.first
+// }
 
 libraryDependencies += "org.scala-lang.modules" %% "scala-swing" % "3.0.0"
 libraryDependencies += "org.playframework" %% "play-json" % "3.0.1"
@@ -28,7 +28,7 @@ lazy val FileIOComponent = project
 	)
 
 lazy val root = (project in file("."))
-  // .aggregate(BoardComponent, FileIOComponent)
+  // .aggregate(boardComponent, fileIOComponent)
   .dependsOn(BoardComponent, FileIOComponent)
   .settings(
     libraryDependencies += "net.codingwell" %% "scala-guice" % "5.1.1",

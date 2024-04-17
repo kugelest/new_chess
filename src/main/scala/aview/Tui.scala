@@ -2,12 +2,12 @@ package htwg.se.chess
 package aview
 
 import controller.Controller
-import model.BoardComponent.boardBaseImpl.Coord
+import model.boardComponent.boardBaseImpl.Coord
 import util.Observer
 import util.Event
 
 import scala.io.StdIn.readLine
-import model.BoardComponent.boardBaseImpl.Move
+import model.boardComponent.boardBaseImpl.Move
 
 class Tui(controller: Controller) extends Observer {
 

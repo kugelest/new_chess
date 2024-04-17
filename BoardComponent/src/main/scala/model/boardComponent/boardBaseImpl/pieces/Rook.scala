@@ -1,6 +1,6 @@
 package htwg.se.chess
 package model
-package BoardComponent
+package boardComponent
 package boardBaseImpl
 package pieces
 
@@ -9,10 +9,10 @@ package pieces
 import PieceColor._
 // import boardComponent.Coord
 
-case class Queen(color: PieceColor, id: Int, char: Char, worth: Int, move_count: Int, promoted_on_move: Option[Int]) extends Piece {
+case class Rook(color: PieceColor, id: Int, char: Char, worth: Int, move_count: Int, promoted_on_move: Option[Int]) extends Piece {
 
   override def getPath(start_coord: Coord, end_coord: Coord): List[Coord] = {
-    val direction: List[Coord] = (
+    val direction = (
       start_coord.file,
       start_coord.rank,
       end_coord.file,
@@ -26,14 +26,6 @@ case class Queen(color: PieceColor, id: Int, char: Char, worth: Int, move_count:
         start_coord.rightNeighbors()
       case (sx, sy, ex, ey) if (sx > ex) && (sy == ey) =>
         start_coord.leftNeighbors()
-      case (sx, sy, ex, ey) if (sx < ex) && (sy < ey) =>
-        start_coord.upperRightNeighbors()
-      case (sx, sy, ex, ey) if (sx < ex) && (sy > ey) =>
-        start_coord.lowerRightNeighbors()
-      case (sx, sy, ex, ey) if (sx > ex) && (sy < ey) =>
-        start_coord.upperLeftNeighbors()
-      case (sx, sy, ex, ey) if (sx > ex) && (sy > ey) =>
-        start_coord.lowerLeftNeighbors()
       case _ => List()
     }
     direction.reverse.dropWhile(_ != end_coord)
@@ -41,10 +33,6 @@ case class Queen(color: PieceColor, id: Int, char: Char, worth: Int, move_count:
 
   override def threateningSightOnEmptyBoard(coord: Coord): List[List[Coord]] = {
     List(
-      coord.upperLeftNeighbors(),
-      coord.upperRightNeighbors(),
-      coord.lowerLeftNeighbors(),
-      coord.lowerRightNeighbors(),
       coord.upperNeighbors(),
       coord.rightNeighbors(),
       coord.lowerNeighbors(),
@@ -54,15 +42,15 @@ case class Queen(color: PieceColor, id: Int, char: Char, worth: Int, move_count:
 
   override def walkingSightOnEmptyBoard(coord: Coord): List[List[Coord]] = threateningSightOnEmptyBoard(coord)
 
-  override def increaseMoveCount(i: Int): Queen = this.copy(move_count = move_count + i)
+  override def increaseMoveCount(i: Int): Rook = this.copy(move_count = move_count + i)
 
-  override def notation: Char = 'Q'
+  override def notation: Char = 'R'
 }
 
-object Queen {
+object Rook {
   def apply(color: PieceColor, id: Int, move_count: Int, promoted_on_move: Option[Int]) = {
-    val char = if(color == WHITE) '♕' else '♛'
-    val worth = 9
-    new Queen(color, id, char, worth, move_count, promoted_on_move)
+    val char = if(color == WHITE) '♖' else '♜'
+    val worth = 5
+    new Rook(color, id, char, worth, move_count, promoted_on_move)
   }
 }

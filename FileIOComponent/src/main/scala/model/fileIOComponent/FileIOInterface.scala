@@ -1,8 +1,8 @@
 package htwg.se.chess
 package model
-package FileIOComponent
+package fileIOComponent
 
-import BoardComponent.BoardInterface
+import boardComponent.BoardInterface
 
 import scala.util.Try
 

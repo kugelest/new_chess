@@ -3,14 +3,12 @@ package model
 package fileIOComponent
 package fileIoJsonImpl
 
-import model.boardComponent.BoardInterface
-import model.boardComponent.boardBaseImpl.Coord
-import model.boardComponent.boardBaseImpl.Board
-// import model.boardComponent.boardBaseImpl.Square
-// import model.boardComponent.boardBaseImpl.SquareExtensions
-import model.boardComponent.boardBaseImpl.pieces.Piece
-import model.boardComponent.boardBaseImpl.pieces.PieceType
-import model.boardComponent.boardBaseImpl.pieces.PieceColor
+import boardComponent.BoardInterface
+import boardComponent.boardBaseImpl.Coord
+import boardComponent.boardBaseImpl.Board
+import boardComponent.boardBaseImpl.pieces.Piece
+import boardComponent.boardBaseImpl.pieces.PieceType
+import boardComponent.boardBaseImpl.pieces.PieceColor
 
 import scala.collection.immutable.Map
 import play.api.libs.json._

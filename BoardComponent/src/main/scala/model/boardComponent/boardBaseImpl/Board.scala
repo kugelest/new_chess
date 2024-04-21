@@ -54,13 +54,7 @@ case class Board(
   lazy val moveOptions: Map[Piece, List[Coord]] = {
     this
       .occupiedSquares(Some(this.turn))
-      .map((from, piece) =>
-        (
-          piece,
-          Pathing(from, piece, this.squares).moveOptions
-            .filter(to => MoveValidator(Move(from, to), this).move_valid)
-        )
-      )
+      .map((from, piece) => (piece, Pathing(from, piece, this.squares).moveOptions.filter(to => MoveValidator(Move(from, to), this).move_valid)))
   }
 
   def moveOptions(from: Coord): List[Coord] = {
@@ -80,7 +74,12 @@ case class Board(
   private def kingCoord(color: PieceColor): Coord = {
     squares
       .find { case (coord, piece) =>
-        piece.map(_.match { case King(`color`, _, _, _, _, _, _) => true; case _ => false }).getOrElse(false)
+        piece
+          .map(_.match {
+            case King(`color`, _, _, _, _, _, _) => true;
+            case _                               => false
+          })
+          .getOrElse(false)
       }
       .map((coord, king) => coord)
       .get
@@ -93,29 +92,34 @@ case class Board(
     }
   }
 
-  def occupiedSquares(color_opt: Option[PieceColor] = None): Map[Coord, Piece] = color_opt match {
-    case Some(color) => this.squares.collect { case (coord, Some(piece)) if (piece.color == color) => coord -> piece }
-    case _           => this.squares.collect { case (coord, Some(piece)) => coord -> piece }
-  }
+  def occupiedSquares(color_opt: Option[PieceColor] = None): Map[Coord, Piece] =
+    color_opt match {
+      case Some(color) => this.squares.collect { case (coord, Some(piece)) if (piece.color == color) => coord -> piece }
+      case _           => this.squares.collect { case (coord, Some(piece)) => coord -> piece }
+    }
 
   def initBoardJson(): JsValue = {
-    val squares = this.squares.keys.toSeq
-      .sortBy(_.print_ord)
-      .map(coord => (coord.toString.toLowerCase, coord.color.toString.toLowerCase))
-      .toList
+    val squares =
+      this.squares.keys.toSeq
+        .sortBy(_.print_ord)
+        .map(coord => (coord.toString.toLowerCase, coord.color.toString.toLowerCase))
+        .toList
     Json.toJson(squares)
   }
 
   def squaresJson(): JsValue = {
-    val squares = this.squares.toList
-      .sortBy((coord, piece_opt) => coord.print_ord)
-      .map((coord, piece_opt) =>
-        Json.obj(
-          "coord" -> coord.toString.toLowerCase,
-          "color" -> coord.color.toString.toLowerCase,
-          "piece" -> piece_opt.getOrElse("").toString
+    val squares =
+      this.squares.toList
+        .sortBy((coord, piece_opt) => coord.print_ord)
+        .map((coord, piece_opt) =>
+          Json.obj(
+            "coord" -> coord.toString.toLowerCase,
+            "color" -> coord.color.toString.toLowerCase,
+            "piece" -> piece_opt
+              .getOrElse("")
+              .toString
+          )
         )
-      )
     Json.toJson(squares)
   }
 
@@ -139,10 +143,7 @@ case class Board(
         "advantage"     -> this.advantage,
         "squares"       -> Json.toJson(
           this.squares.map((coord, piece_opt) =>
-            coord.toString.toLowerCase -> Json.obj(
-              "color" -> Json.toJson(coord.color.toString.toLowerCase),
-              "piece" -> Json.toJson(piece_opt.getOrElse("").toString)
-            )
+            coord.toString.toLowerCase -> Json.obj("color" -> Json.toJson(coord.color.toString.toLowerCase), "piece" -> Json.toJson(piece_opt.getOrElse("").toString))
           )
         ),
         "moves"         -> Json.toJson(this.moves)
@@ -155,12 +156,13 @@ case class Board(
   }
 
   override def toString(): String = {
-    val board   = this.squares.toSeq
-      .sortBy(_._1.print_ord)
-      .map(_._2.getOrElse("-"))
-      .grouped(Coord.len)
-      .map(_.mkString(" "))
-      .mkString("\n")
+    val board   =
+      this.squares.toSeq
+        .sortBy(_._1.print_ord)
+        .map(_._2.getOrElse("-"))
+        .grouped(Coord.len)
+        .map(_.mkString(" "))
+        .mkString("\n")
     val adv     = "adv: " + advantage
     val stacks  = "white_stack: " + whiteCapturedPiecesStr.mkString + "\n" + "black_stack: " + blackCapturedPiecesStr.mkString
     val checked = "checked: " + this.checked.getOrElse("").toString

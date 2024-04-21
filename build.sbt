@@ -1,4 +1,5 @@
-ThisBuild / organization := "htwg.se.chess"
+ThisBuild / name := "chess"
+ThisBuild / organization := "htwg.se"
 ThisBuild / version := "0.1"
 ThisBuild / scalaVersion := "3.3.1"
 // ThisBuild / coverageExcludedPackages := "htwg\\.se\\.chess\\.aview\\.gui;.*fileIOComponent.*;.*Chess"
@@ -11,7 +12,7 @@ ThisBuild / scalaVersion := "3.3.1"
 libraryDependencies += "org.scala-lang.modules" %% "scala-swing" % "3.0.0"
 libraryDependencies += "org.playframework" %% "play-json" % "3.0.1"
 
-lazy val BoardComponent = project
+lazy val BoardComponent = (project in file("BoardComponent"))
 	.settings(
 		// other settings
 		libraryDependencies += "com.google.inject" % "guice" % "5.1.0",
@@ -19,7 +20,8 @@ lazy val BoardComponent = project
 	)
 
 
-lazy val FileIOComponent = project
+lazy val FileIOComponent = (project in file("FileIOComponent"))
+  .aggregate(BoardComponent)
 	.dependsOn(BoardComponent)
 	.settings(
 		libraryDependencies += "com.google.inject" % "guice" % "5.1.0",
@@ -28,7 +30,7 @@ lazy val FileIOComponent = project
 	)
 
 lazy val root = (project in file("."))
-  // .aggregate(boardComponent, fileIOComponent)
+  .aggregate(BoardComponent, FileIOComponent)
   .dependsOn(BoardComponent, FileIOComponent)
   .settings(
     libraryDependencies += "net.codingwell" %% "scala-guice" % "5.1.1",

@@ -123,6 +123,7 @@ case class Board(
     Json.toJson(squares)
   }
 
+
   def gameInfoJson(): JsValue = {
     Json.obj(
       "turn"          -> this.turn.toString.toLowerCase,

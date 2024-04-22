@@ -12,7 +12,7 @@ import boardComponent.boardBaseImpl.pieces.PieceColor
 
 import scala.collection.immutable.Map
 import play.api.libs.json._
-import com.google.inject.Guice
+// import com.google.inject.Guice
 // import net.codingwell.scalaguice.InjectorExtensions._
 import scala.util.Try
 import scala.io.Source

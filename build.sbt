@@ -1,3 +1,4 @@
+Global / excludeLintKeys += name
 ThisBuild / name := "chess"
 ThisBuild / organization := "htwg.se"
 ThisBuild / version := "0.1"

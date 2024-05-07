@@ -176,6 +176,15 @@ case class Board(
 }
 
 object Board {
+  def apply(
+    squares: Map[Coord, Option[Piece]],
+    turn: PieceColor,
+    in_check: Boolean,
+    captured_pieces: List[Piece],
+    moves: List[String]
+  ) = {
+    new Board(squares, turn, in_check, captured_pieces, moves)
+  }
   def apply() = {
     new Board(
       Map(

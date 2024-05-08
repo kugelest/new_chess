@@ -10,10 +10,12 @@ import pieces.PieceColor
 import pieces.PieceColor._
 import pieces.PieceType._
 
+import java.util.concurrent.atomic.AtomicInteger
 import scala.collection.immutable.Map
 import play.api.libs.json._
 
 case class Board(
+    id: Int,
     squares: Map[Coord, Option[Piece]],
     turn: PieceColor,
     in_check: Boolean,
@@ -176,17 +178,13 @@ case class Board(
 }
 
 object Board {
-  def apply(
-    squares: Map[Coord, Option[Piece]],
-    turn: PieceColor,
-    in_check: Boolean,
-    captured_pieces: List[Piece],
-    moves: List[String]
-  ) = {
-    new Board(squares, turn, in_check, captured_pieces, moves)
-  }
+  private val idCounter = AtomicInteger(0)
+  def generateId(): Int = idCounter.incrementAndGet()
+
   def apply() = {
+    val id = generateId()
     new Board(
+      id,
       Map(
         A1 -> Some(Piece(ROOK, WHITE)),
         B1 -> Some(Piece(KNIGHT, WHITE)),

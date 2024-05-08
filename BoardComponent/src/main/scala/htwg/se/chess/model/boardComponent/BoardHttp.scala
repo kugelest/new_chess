@@ -2,10 +2,6 @@ package htwg.se.chess
 package model
 package boardComponent
 
-// import boardComponent.BoardRegistry
-// import boardComponent.BoardRoutes
-
-
 import org.apache.pekko
 import pekko.actor.typed.ActorSystem
 import pekko.actor.typed.scaladsl.Behaviors
@@ -15,6 +11,7 @@ import pekko.http.scaladsl.server.Route
 import scala.util.Failure
 import scala.util.Success
 import Console.{GREEN, RED, BLUE, RESET}
+import scala.io.StdIn
 
 object BoardHttp {
 
@@ -25,12 +22,11 @@ object BoardHttp {
     futureBinding.onComplete {
       case Success(binding) =>
         val address = binding.localAddress
-        val msg = s"BoardHttp-Server online at http://${address.getHostString}:${address.getPort}/"
+        val msg     = s"BoardHttp-Server online at http://${address.getHostString}:${address.getPort}/"
         system.log.info(msg)
-        // system.log.info("BoardHttp-Server online at http://{}:{}/", address.getHostString, address.getPort)
         Console.println(s"${BLUE}${msg}${RESET}")
-      case Failure(ex) =>
-        val msg = "Failed to bind HTTP endpoint, terminating system"
+      case Failure(ex)      =>
+        val msg = s"Failed to bind HTTP endpoint, terminating system"
         system.log.error(msg, ex)
         Console.err.println(s"${RED}${msg}${RESET}")
         system.terminate()
@@ -43,10 +39,14 @@ object BoardHttp {
       context.watch(boardRegistryActor)
 
       val routes = new BoardRoutes(boardRegistryActor)(context.system)
-      startHttpServer(routes.boardRoutes)(context.system)
+      startHttpServer(routes.topLevelRoute)(context.system)
 
       Behaviors.empty
     }
-    val system = ActorSystem[Nothing](rootBehavior, "BoardHttp")
+    val system       = ActorSystem[Nothing](rootBehavior, "BoardHttp")
+
+    StdIn.readLine()                       // let it run until user presses return
+    system.terminate()
   }
+
 }

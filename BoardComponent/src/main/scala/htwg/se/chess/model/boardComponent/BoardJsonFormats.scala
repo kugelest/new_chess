@@ -9,6 +9,7 @@ import htwg.se.chess.model.boardComponent.boardBaseImpl.pieces.Piece
 import htwg.se.chess.model.boardComponent.boardBaseImpl.pieces.PieceType
 import htwg.se.chess.model.boardComponent.boardBaseImpl.pieces.PieceColor
 
+import boardComponent.BoardRegistry.ActionPerformed
 //#json-formats
 // import spray.json.RootJsonFormat
 // import spray.json.DefaultJsonProtocol
@@ -18,8 +19,11 @@ object BoardJsonFormats {
   // import the default encoders for primitive types (Int, String, Lists etc)
   import DefaultJsonProtocol._
 
-  implicit val boardJsonFormat: RootJsonFormat[Board]           = jsonFormat5(Board.apply)
+  // implicit val boardJsonFormat: RootJsonFormat[Board]           = jsonFormat5(Board.apply)
+  implicit val boardJsonFormat: RootJsonFormat[Board]           = jsonFormat(Board.apply, "id", "squares", "turn", "in_check", "captured_pieces", "moves")
   implicit val boardsJsonFormat: RootJsonFormat[Boards]           = jsonFormat1(Boards.apply)
+
+  implicit val actionPerformedJsonFormat: RootJsonFormat[ActionPerformed]  = jsonFormat1(ActionPerformed.apply)
 
   implicit object PieceJsonFormat extends RootJsonFormat[Piece] {
     def write(p: Piece) =

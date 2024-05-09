@@ -60,7 +60,7 @@ class BoardRoutes(boardRegistry: ActorRef[BoardRegistry.Command])(implicit val s
     concat(
       pathEnd {
         concat(
-          put {
+          get {
             rejectEmptyResponse {
               onSuccess(getBoard(id)) { response =>
                 complete(response.maybeBoard)

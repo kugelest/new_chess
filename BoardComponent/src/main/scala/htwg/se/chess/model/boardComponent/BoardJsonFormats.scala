@@ -5,6 +5,7 @@ package boardComponent
 // import BoardRegistry
 import htwg.se.chess.model.boardComponent.boardBaseImpl.Board
 import htwg.se.chess.model.boardComponent.boardBaseImpl.Coord
+import htwg.se.chess.model.boardComponent.boardBaseImpl.Move
 import htwg.se.chess.model.boardComponent.boardBaseImpl.pieces.Piece
 import htwg.se.chess.model.boardComponent.boardBaseImpl.pieces.PieceType
 import htwg.se.chess.model.boardComponent.boardBaseImpl.pieces.PieceColor
@@ -22,6 +23,8 @@ object BoardJsonFormats {
   // implicit val boardJsonFormat: RootJsonFormat[Board]           = jsonFormat5(Board.apply)
   implicit val boardJsonFormat: RootJsonFormat[Board]           = jsonFormat(Board.apply, "id", "squares", "turn", "in_check", "captured_pieces", "moves")
   implicit val boardsJsonFormat: RootJsonFormat[Boards]           = jsonFormat1(Boards.apply)
+
+  implicit val moveJsonFormat: RootJsonFormat[Move]           = jsonFormat2(Move.apply)
 
   implicit val actionPerformedJsonFormat: RootJsonFormat[ActionPerformed]  = jsonFormat1(ActionPerformed.apply)
 
@@ -42,7 +45,7 @@ object BoardJsonFormats {
 
     def read(value: JsValue) = value match {
       case JsString(c) =>
-        Coord.valueOf(c)
+        Coord.fromStr(c)
       case _           => deserializationError("Coord expected")
     }
   }
@@ -69,4 +72,4 @@ object BoardJsonFormats {
     }
   }
 }
-//#json-formats
+

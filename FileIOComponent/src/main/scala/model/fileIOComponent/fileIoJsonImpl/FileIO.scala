@@ -43,7 +43,7 @@ class FileIO extends FileIOInterface {
         // Square(Coord.fromStr(file + "" + rank), piece)
         (Coord.fromStr(file + "" + rank) -> piece)
       }
-      Option(Board(squares.toMap, turn, false, List(), List()))
+      Option(Board(1, squares.toMap, turn, false, List(), List()))
     }
   }
 

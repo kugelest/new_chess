@@ -2,7 +2,7 @@ Global / excludeLintKeys += name
 ThisBuild / name         := "chess"
 ThisBuild / organization := "htwg.se"
 ThisBuild / version      := "0.1"
-ThisBuild / scalaVersion := "3.4.1"
+ThisBuild / scalaVersion := "3.3.3"
 
 lazy val pekkoHttpVersion = "1.0.1"
 lazy val pekkoVersion     = "1.0.2"

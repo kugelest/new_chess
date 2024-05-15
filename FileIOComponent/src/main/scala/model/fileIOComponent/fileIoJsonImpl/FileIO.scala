@@ -3,62 +3,32 @@ package model
 package fileIOComponent
 package fileIoJsonImpl
 
-import boardComponent.BoardInterface
-import boardComponent.boardBaseImpl.Coord
-import boardComponent.boardBaseImpl.Board
-import boardComponent.boardBaseImpl.pieces.Piece
-import boardComponent.boardBaseImpl.pieces.PieceType
-import boardComponent.boardBaseImpl.pieces.PieceColor
 
 import scala.collection.immutable.Map
 import play.api.libs.json._
-// import com.google.inject.Guice
-// import net.codingwell.scalaguice.InjectorExtensions._
 import scala.util.Try
 import scala.io.Source
 
-class FileIO extends FileIOInterface {
+object FileIO {
 
   final val FILE_NAME: String = "board.json"
 
-  override def load: Try[Option[BoardInterface]] = {
+  def load: Try[String] = {
     Try {
-      // val injector: ScalaInjector = Guice.createInjector(new ChessModule)
-      val source: String = Source.fromFile(FILE_NAME).getLines.mkString
-      val json: JsValue = Json.parse(source)
-
-      // val board = injector.instance[BoardInterface]
-      val turnStr = (json \ "board" \ "turn").as[String]
-      val turn = PieceColor.valueOf(turnStr)
-
-      val squares = for {
-        i <- 0 until 64
-      } yield {
-        val file = (json \\ "file")(i).as[String]
-        val rank = (json \\ "rank")(i).as[String]
-        val piece_type = Try(PieceType.valueOf((json \\ "piece")(i).as[String]))
-        val color = Try(PieceColor.valueOf((json \\ "color")(i).as[String]))
-        val piece =
-          if ((piece_type.isSuccess) && (color.isSuccess)) Option(Piece(piece_type.get, color.get)) else Option.empty
-        // Square(Coord.fromStr(file + "" + rank), piece)
-        (Coord.fromStr(file + "" + rank) -> piece)
-      }
-      Option(Board(1, squares.toMap, turn, false, List(), List()))
+      Source.fromFile(FILE_NAME).getLines.mkString
     }
   }
 
-  override def save(board: BoardInterface): Try[Unit] = {
+  def save(board: String): Try[Unit] = {
     import java.io._
 
     Try {
       val pw = new PrintWriter(new File(FILE_NAME))
-      pw.write(Json.prettyPrint(gridToJson(board)))
+      pw.write(board)
       pw.close
     }
   }
 
-  def gridToJson(board: BoardInterface) = board.toJson()
-
-  override def unbind(): Unit = {}
+  def unbind(): Unit = {}
 
 }

@@ -18,7 +18,7 @@ object BoardHttp {
   private def startHttpServer(routes: Route)(implicit system: ActorSystem[?]): Unit = {
     import system.executionContext
 
-    val futureBinding = Http().newServerAt("localhost", 8081).bind(routes)
+    val futureBinding = Http().newServerAt("0.0.0.0", 8081).bind(routes)
     futureBinding.onComplete {
       case Success(binding) =>
         val address = binding.localAddress
@@ -26,7 +26,7 @@ object BoardHttp {
         system.log.info(msg)
         Console.println(s"${BLUE}${msg}${RESET}")
       case Failure(ex)      =>
-        val msg = s"Failed to bind HTTP endpoint, terminating system"
+        val msg = s"Failed to bind HTTP endpoint, terminating system  ${ex}"
         system.log.error(msg, ex)
         Console.err.println(s"${RED}${msg}${RESET}")
         system.terminate()

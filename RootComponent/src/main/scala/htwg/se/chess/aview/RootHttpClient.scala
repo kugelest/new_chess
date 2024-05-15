@@ -1,4 +1,5 @@
 package htwg.se.chess
+package aview
 
 import org.apache.pekko.actor.typed.ActorSystem
 import org.apache.pekko.http.scaladsl.Http
@@ -12,27 +13,29 @@ import spray.json._
 import scala.concurrent.Future
 import scala.concurrent.duration._
 
-class BoardRegistryClient()(implicit system: ActorSystem[_]) {
+class RootHttpClient()(implicit system: ActorSystem[_]) {
   import system.executionContext
 
   private implicit val timeout: Timeout = Timeout(5.seconds)
 
+  private val baseUrl = "http://0.0.0.0:8090"
+
   def getBoards(): Future[String] = {
-    val responseFuture = Http().singleRequest(HttpRequest(GET, uri = "http://localhost:8081/boards"))
+    val responseFuture = Http().singleRequest(HttpRequest(GET, uri = s"${baseUrl}/boards"))
     responseFuture.flatMap { response =>
       Unmarshal(response.entity).to[String]
     }
   }
 
   def getBoard(id: Int): Future[String] = {
-    val responseFuture = Http().singleRequest(HttpRequest(GET, uri = s"http://localhost:8081/board/$id"))
+    val responseFuture = Http().singleRequest(HttpRequest(GET, uri = s"${baseUrl}/board/${id}"))
     responseFuture.flatMap { response =>
       Unmarshal(response.entity).to[String]
     }
   }
 
   def createBoard(): Future[String] = {
-    val responseFuture = Http().singleRequest(HttpRequest(POST, uri = "http://localhost:8081/board/create"))
+    val responseFuture = Http().singleRequest(HttpRequest(POST, uri = s"${baseUrl}/board/create"))
     responseFuture.flatMap { response =>
       Unmarshal(response.entity).to[String]
     }
@@ -40,7 +43,7 @@ class BoardRegistryClient()(implicit system: ActorSystem[_]) {
 
   def execMove(id: Int, move: String): Future[String] = {
     val requestEntity = HttpEntity(ContentTypes.`application/json`, move)
-    val responseFuture = Http().singleRequest(HttpRequest(PUT, uri = s"http://localhost:8081/board/$id/move", entity = requestEntity))
+    val responseFuture = Http().singleRequest(HttpRequest(PUT, uri = s"${baseUrl}/board/${id}/move", entity = requestEntity))
     responseFuture.flatMap { response =>
       Unmarshal(response.entity).to[String]
     }

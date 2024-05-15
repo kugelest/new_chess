@@ -21,7 +21,7 @@ object RootHttp {
     implicit val system: ActorSystem[_] = ActorSystem(Behaviors.empty, "RootActor")
     implicit val executionContext: ExecutionContextExecutor = system.executionContext
 
-    val client = new BoardRegistryClient()(system)
+    val client = new BoardHttpClient()(system)
     val fileclient = new FileIoClient()(system)
 
     val routes: Route = concat(

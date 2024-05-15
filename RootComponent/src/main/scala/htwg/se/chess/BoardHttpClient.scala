@@ -12,7 +12,7 @@ import spray.json._
 import scala.concurrent.Future
 import scala.concurrent.duration._
 
-class BoardRegistryClient()(implicit system: ActorSystem[_]) {
+class BoardHttpClient()(implicit system: ActorSystem[_]) {
   import system.executionContext
 
   private implicit val timeout: Timeout = Timeout(5.seconds)

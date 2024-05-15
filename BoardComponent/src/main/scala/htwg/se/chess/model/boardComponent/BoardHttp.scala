@@ -45,7 +45,7 @@ object BoardHttp {
     }
     val system       = ActorSystem[Nothing](rootBehavior, "BoardHttp")
 
-    StdIn.readLine()                       // let it run until user presses return
+    StdIn.readLine() // let it run until user presses return
     system.terminate()
   }
 

@@ -24,7 +24,7 @@ object ChessHttp {
   //   }
   // }
   //
-  def main(args: Array[String]): Unit = {
+  // def main(args: Array[String]): Unit = {
   //   val rootBehavior = Behaviors.setup[Nothing] { context =>
   //     val boardRegistryActor = context.spawn(BoardRegistry(), "BoardRegistryActor")
   //     context.watch(boardRegistryActor)
@@ -35,6 +35,6 @@ object ChessHttp {
   //     Behaviors.empty
   //   }
   //   val system = ActorSystem[Nothing](rootBehavior, "BoardHttp")
-    println("hi")
-  }
+  //   println("hi")
+  // }
 }

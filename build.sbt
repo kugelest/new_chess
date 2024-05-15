@@ -14,7 +14,7 @@ lazy val commonDependencies = Seq(
   "org.apache.pekko" %% "pekko-http-spray-json" % pekkoHttpVersion,
   "org.apache.pekko" %% "pekko-actor-typed"     % pekkoVersion,
   "org.apache.pekko" %% "pekko-stream"          % pekkoVersion,
-  "org.slf4j"         % "slf4j-api"             % sl4jVersion
+  "org.slf4j"         % "slf4j-simple"          % "2.0.13" % Test
 )
 
 lazy val root = (project in file("."))

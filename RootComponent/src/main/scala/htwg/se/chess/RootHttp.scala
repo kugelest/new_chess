@@ -22,7 +22,7 @@ object RootHttp {
     implicit val executionContext: ExecutionContextExecutor = system.executionContext
 
     val client = new BoardHttpClient()(system)
-    val fileclient = new FileIoClient()(system)
+    // val fileclient = new FileIoClient()(system)
 
     val routes: Route = concat(
       path("boards") {
@@ -63,26 +63,26 @@ object RootHttp {
           }
         }
       },
-      path("fileio" / "load") {
-        get {
-            complete {
-              fileclient.load().map { response =>
-                response
-              }
-            }
-        }
-      },
-      path("fileio" / "save") {
-        put {
-          entity(as[String]) { boardJson =>
-            complete {
-              fileclient.save(boardJson).map { response =>
-                response
-              }
-            }
-          }
-        }
-      },
+      // path("fileio" / "load") {
+      //   get {
+      //       complete {
+      //         fileclient.load().map { response =>
+      //           response
+      //         }
+      //       }
+      //   }
+      // },
+      // path("fileio" / "save") {
+      //   put {
+      //     entity(as[String]) { boardJson =>
+      //       complete {
+      //         fileclient.save(boardJson).map { response =>
+      //           response
+      //         }
+      //       }
+      //     }
+      //   }
+      // },
     )
 
     startHttpServer(routes)

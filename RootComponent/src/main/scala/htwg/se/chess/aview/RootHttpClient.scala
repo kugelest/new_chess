@@ -50,4 +50,11 @@ class RootHttpClient()(implicit system: ActorSystem[_]) {
       Unmarshal(response.entity).to[String]
     }
   }
+
+  def save(): Future[String] = {
+    val responseFuture = Http().singleRequest(HttpRequest(GET, uri = s"${baseUrl}/save"))
+    responseFuture.flatMap { response =>
+      Unmarshal(response.entity).to[String]
+    }
+  }
 }

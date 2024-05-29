@@ -47,11 +47,22 @@ class BoardRoutes(boardRegistry: ActorRef[BoardRegistry.Command])(implicit val s
   def execMove(id: Int, move: Move): Future[ActionPerformed] =
     boardRegistry.ask(ExecMove(id, move, _))
 
+  def save(): Future[ActionPerformed] =
+    boardRegistry.ask(Save(_))
+
+
   lazy val topLevelRoute: Route =
     concat(
       pathPrefix("boards")(boardsRoute),
       pathPrefix("board")(boardRoute),
-      pathPrefix("board" / IntNumber)(boardIdRoute)
+      pathPrefix("board" / IntNumber)(boardIdRoute),
+      pathEnd {
+        get {
+          onSuccess(save()) { response =>
+            complete(response)
+          }
+        }
+      },
     )
 
   lazy val boardsRoute: Route =

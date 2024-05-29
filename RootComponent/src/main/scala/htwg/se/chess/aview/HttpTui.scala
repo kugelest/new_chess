@@ -31,6 +31,8 @@ object HttpTui {
       case "board" :: id :: "move" :: from :: to :: Nil =>
         val moveJson = s"""{ "from": "$from", "to": "$to" }"""
         client.execMove(id.toInt, moveJson).foreach(println)
+      case "save" :: Nil                     =>
+        client.save().foreach(println)
       case _                                            =>
         println("Unknown command")
     }

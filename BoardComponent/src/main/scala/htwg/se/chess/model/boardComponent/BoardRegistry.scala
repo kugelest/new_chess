@@ -21,6 +21,7 @@ object BoardRegistry {
   final case class GetBoardsStr(replyTo: ActorRef[GetBoardsStrResponse]) extends Command
   final case class CreateBoard(replyTo: ActorRef[ActionPerformed]) extends Command
   final case class ExecMove(id: Int, move: Move, replyTo: ActorRef[ActionPerformed]) extends Command
+  final case class Save(replyTo: ActorRef[ActionPerformed]) extends Command
 
   final case class GetBoardResponse(maybeBoard: Option[Board])
   final case class GetBoardStrResponse(maybeBoardStr: Option[String])
@@ -28,6 +29,8 @@ object BoardRegistry {
   final case class ActionPerformed(description: String)
 
   def apply(): Behavior[Command] = registry(Set.empty)
+
+  val db = DAO()
 
   private def registry(boards: Set[Board]): Behavior[Command] =
     Behaviors.receiveMessage {
@@ -59,6 +62,10 @@ object BoardRegistry {
             registry(boards)
           }
         }
+      case Save(replyTo) =>
+        db.save(boards.toSeq)
+        replyTo ! ActionPerformed(s"boards saved")
+        Behaviors.same
     }
 }
 

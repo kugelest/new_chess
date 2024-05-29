@@ -1,5 +1,5 @@
 Global / excludeLintKeys += name
-ThisBuild / name         := "chess"
+ThisBuild / name         := "chess_fileio"
 ThisBuild / organization := "htwg.se"
 ThisBuild / version      := "0.1"
 ThisBuild / scalaVersion := "3.3.3"

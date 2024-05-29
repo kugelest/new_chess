@@ -38,11 +38,16 @@ object HttpTui {
 
   def run() = {
     println("Welcome to the TUI. Type your commands:")
+    println("----------------------------------------------")
     println("create board")
     println("get boards")
     println("get board [ID]")
     println("board [ID] move [FROM] [TO]")
-    Iterator.continually(StdIn.readLine()).takeWhile(_ != "exit").foreach(processCommand)
+    println("----------------------------------------------")
+    Iterator.continually(StdIn.readLine()).takeWhile(_ != "exit").foreach { command =>
+      processCommand(command)
+      println("----------------------------------------------")
+    }
     system.terminate()
   }
 }

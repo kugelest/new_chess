@@ -23,6 +23,7 @@ object BoardJsonFormats {
   // implicit val boardJsonFormat: RootJsonFormat[Board]           = jsonFormat5(Board.apply)
   implicit val boardJsonFormat: RootJsonFormat[Board]           = jsonFormat(Board.apply, "id", "squares", "turn", "in_check", "captured_pieces", "moves")
   implicit val boardsJsonFormat: RootJsonFormat[Boards]           = jsonFormat1(Boards.apply)
+  // implicit val boardsStrJsonFormat: RootJsonFormat[BoardsStr]           = jsonFormat1(BoardsStr.apply)
 
   implicit val moveJsonFormat: RootJsonFormat[Move]           = jsonFormat2(Move.apply)
 

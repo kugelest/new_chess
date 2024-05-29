@@ -32,8 +32,14 @@ class BoardRoutes(boardRegistry: ActorRef[BoardRegistry.Command])(implicit val s
   def getBoards(): Future[Boards] =
     boardRegistry.ask(GetBoards.apply)
 
+  def getBoardsStr(): Future[GetBoardsStrResponse] =
+    boardRegistry.ask(GetBoardsStr.apply)
+
   def getBoard(id: Int): Future[GetBoardResponse] =
     boardRegistry.ask(GetBoard(id, _))
+
+  def getBoardStr(id: Int): Future[GetBoardStrResponse] =
+    boardRegistry.ask(GetBoardStr(id, _))
 
   def createBoard(): Future[ActionPerformed] =
     boardRegistry.ask(CreateBoard(_))
@@ -49,13 +55,22 @@ class BoardRoutes(boardRegistry: ActorRef[BoardRegistry.Command])(implicit val s
     )
 
   lazy val boardsRoute: Route =
-    pathEnd {
-      get {
-        onSuccess(getBoards()) { response =>
-          complete(response)
+    concat(
+      pathEnd {
+        get {
+          onSuccess(getBoards()) { response =>
+            complete(response)
+          }
+        }
+      },
+      path("string") {
+        get {
+          onSuccess(getBoardsStr()) { response =>
+            complete(response.boardsStr)
+          }
         }
       }
-    }
+    )
 
   lazy val boardRoute: Route =
     path("create") {
@@ -67,15 +82,16 @@ class BoardRoutes(boardRegistry: ActorRef[BoardRegistry.Command])(implicit val s
     }
 
   def boardIdRoute(id: Int): Route =
-    pathEnd {
-      get {
-        rejectEmptyResponse {
-          onSuccess(getBoard(id)) { response =>
-            complete(response.maybeBoard)
+    concat(
+      pathEnd {
+        get {
+          rejectEmptyResponse {
+            onSuccess(getBoard(id)) { response =>
+              complete(response.maybeBoard)
+            }
           }
         }
-      }
-    } ~
+      },
       path("move") {
         concat(
           put {
@@ -86,6 +102,18 @@ class BoardRoutes(boardRegistry: ActorRef[BoardRegistry.Command])(implicit val s
             }
           }
         )
+      },
+      path("string") {
+        concat(
+          get {
+            rejectEmptyResponse {
+              onSuccess(getBoardStr(id)) { response =>
+                complete(response.maybeBoardStr)
+              }
+            }
+          }
+        )
       }
+    )
 
 }

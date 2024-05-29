@@ -15,6 +15,8 @@ import scala.concurrent.duration._
 
 class RootHttpClient()(implicit system: ActorSystem[_]) {
   import system.executionContext
+  import org.apache.pekko.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
+  import DefaultJsonProtocol._
 
   private implicit val timeout: Timeout = Timeout(5.seconds)
 

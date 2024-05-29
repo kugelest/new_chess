@@ -24,8 +24,22 @@ class BoardHttpClient()(implicit system: ActorSystem[_]) {
     }
   }
 
+  def getBoardsStr(): Future[String] = {
+    val responseFuture = Http().singleRequest(HttpRequest(GET, uri = "http://0.0.0.0:8081/boards/string"))
+    responseFuture.flatMap { response =>
+      Unmarshal(response.entity).to[String]
+    }
+  }
+
   def getBoard(id: Int): Future[String] = {
     val responseFuture = Http().singleRequest(HttpRequest(GET, uri = s"http://0.0.0.0:8081/board/$id"))
+    responseFuture.flatMap { response =>
+      Unmarshal(response.entity).to[String]
+    }
+  }
+
+  def getBoardStr(id: Int): Future[String] = {
+    val responseFuture = Http().singleRequest(HttpRequest(GET, uri = s"http://0.0.0.0:8081/board/$id/string"))
     responseFuture.flatMap { response =>
       Unmarshal(response.entity).to[String]
     }

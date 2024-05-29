@@ -28,7 +28,7 @@ object RootHttp {
       path("boards") {
         get {
           complete {
-            client.getBoards().map { response =>
+            client.getBoardsStr().map { response =>
               response
             }
           }
@@ -46,7 +46,7 @@ object RootHttp {
       path("board" / IntNumber) { id =>
         get {
           complete {
-            client.getBoard(id).map { response =>
+            client.getBoardStr(id).map { response =>
               response
             }
           }

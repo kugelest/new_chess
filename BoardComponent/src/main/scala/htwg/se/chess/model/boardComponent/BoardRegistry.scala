@@ -6,6 +6,11 @@ import scala.collection.immutable
 import pekko.actor.typed.ActorRef
 import pekko.actor.typed.Behavior
 import pekko.actor.typed.scaladsl.Behaviors
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Await
+import scala.concurrent.duration._
+import scala.util.Success
+import scala.util.Failure
 
 import boardBaseImpl.Board
 import boardBaseImpl.Coord
@@ -28,11 +33,22 @@ object BoardRegistry {
   final case class GetBoardsStrResponse(boardsStr: String)
   final case class ActionPerformed(description: String)
 
-  def apply(): Behavior[Command] = registry(Set.empty)
+  // def apply(): Behavior[Command] = registry(Set.empty)
+
+  def apply(): Behavior[Command] = Behaviors.setup { context =>
+    // Initialize the database table
+    implicit val ec: ExecutionContext = context.executionContext
+    val db = DAO()
+
+    val createTableFuture = db.createTable()
+    Await.result(createTableFuture, 10.seconds) // Block until the table is created (only for initialization)
+
+    registry(Set.empty, db)(ec)
+  }
 
   val db = DAO()
 
-  private def registry(boards: Set[Board]): Behavior[Command] =
+  private def registry(boards: Set[Board], db: DAO)(implicit ec: ExecutionContext): Behavior[Command] =
     Behaviors.receiveMessage {
       case GetBoards(replyTo) =>
         replyTo ! Boards(boards.toSeq)
@@ -48,23 +64,31 @@ object BoardRegistry {
         Behaviors.same
       case CreateBoard(replyTo) =>
         replyTo ! ActionPerformed(s"New board created.")
-        registry(boards + Board())
+        registry(boards + Board(), db)
       case ExecMove(id, move, replyTo) =>
         val board_old = boards.find(_.id == id)
         val board_new = board_old.flatMap(_.move(move))
         (board_old, board_new) match {
           case (Some(o), Some(n)) => {
             replyTo ! ActionPerformed(s"Move executed.")
-            registry(boards - o + n)
+            registry(boards - o + n, db)
           }
           case _ => {
             replyTo ! ActionPerformed(s"Move cannot be executed.")
-            registry(boards)
+            registry(boards, db)
           }
         }
       case Save(replyTo) =>
-        db.save(boards.toSeq)
-        replyTo ! ActionPerformed(s"boards saved")
+        val saveFuture = db.save(boards.toSeq)
+        saveFuture.onComplete {
+          case Success(_) =>
+            println("Boards saved successfully")
+            replyTo ! ActionPerformed("Boards saved successfully")
+          case Failure(ex) =>
+            println(s"Failed to save boards: ${ex.getMessage}")
+            ex.printStackTrace()
+            replyTo ! ActionPerformed(s"Failed to save boards: ${ex.getMessage}")
+        }
         Behaviors.same
     }
 }

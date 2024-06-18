@@ -18,6 +18,8 @@ import pekko.actor.typed.ActorSystem
 import pekko.actor.typed.scaladsl.AskPattern._
 import pekko.util.Timeout
 import spray.json._
+import scala.util.Failure
+import scala.util.Success
 
 class BoardRoutes(boardRegistry: ActorRef[BoardRegistry.Command])(implicit val system: ActorSystem[?]) {
 
@@ -56,10 +58,13 @@ class BoardRoutes(boardRegistry: ActorRef[BoardRegistry.Command])(implicit val s
       pathPrefix("boards")(boardsRoute),
       pathPrefix("board")(boardRoute),
       pathPrefix("board" / IntNumber)(boardIdRoute),
-      pathEnd {
+      path("save") {
         get {
-          onSuccess(save()) { response =>
-            complete(response)
+          onComplete(save()) {
+            case Success(response) =>
+              complete(response)
+            case Failure(ex) =>
+              complete((StatusCodes.InternalServerError, s"An error occurred: ${ex.getMessage}"))
           }
         }
       },

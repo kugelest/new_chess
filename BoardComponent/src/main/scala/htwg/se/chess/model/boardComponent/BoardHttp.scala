@@ -13,6 +13,8 @@ import scala.util.Success
 import Console.{GREEN, RED, BLUE, RESET}
 import scala.io.StdIn
 
+
+
 object BoardHttp {
 
   private def startHttpServer(routes: Route)(implicit system: ActorSystem[?]): Unit = {
@@ -44,6 +46,7 @@ object BoardHttp {
       Behaviors.empty
     }
     val system       = ActorSystem[Nothing](rootBehavior, "BoardHttp")
+
 
     StdIn.readLine() // let it run until user presses return
     system.terminate()

@@ -45,6 +45,7 @@ object HttpTui {
     println("get boards")
     println("get board [ID]")
     println("board [ID] move [FROM] [TO]")
+    println("save")
     println("----------------------------------------------")
     Iterator.continually(StdIn.readLine()).takeWhile(_ != "exit").foreach { command =>
       processCommand(command)

@@ -41,7 +41,7 @@ object BoardRegistry {
   def apply(): Behavior[Command] = Behaviors.setup { context =>
     // Initialize the database table
     implicit val ec: ExecutionContext = context.executionContext
-    val db = BoardDAOPostgres()
+    val db = BoardDAO("postgres")
 
     val createTableFuture = db.createTable()
     Await.result(createTableFuture, 10.seconds) // Block until the table is created (only for initialization)

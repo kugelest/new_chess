@@ -16,9 +16,8 @@ import scala.util.{Failure, Success, Try}
 import boardStateTable._
 import boardBaseImpl.Board
 
-class BoardDAOPostgres()(implicit ec: ExecutionContext) extends BoardDAO {
+class BoardDAOPostgres(db: Database)(implicit ec: ExecutionContext) extends BoardDAO {
 
-  val db = Database.forConfig("mydb")
 
   val boards = TableQuery[BoardTable]
 

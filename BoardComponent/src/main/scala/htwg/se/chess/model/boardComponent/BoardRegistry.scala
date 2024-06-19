@@ -28,6 +28,8 @@ object BoardRegistry {
   final case class ExecMove(id: Int, move: Move, replyTo: ActorRef[ActionPerformed]) extends Command
   final case class Save(replyTo: ActorRef[ActionPerformed]) extends Command
   final case class Load(replyTo: ActorRef[ActionPerformed]) extends Command
+  final case class BoardsLoaded(boards: Set[Board], replyTo: ActorRef[ActionPerformed]) extends Command
+  final case class LoadFailed(ex: Throwable, replyTo: ActorRef[ActionPerformed]) extends Command
 
   final case class GetBoardResponse(maybeBoard: Option[Board])
   final case class GetBoardStrResponse(maybeBoardStr: Option[String])
@@ -67,17 +69,15 @@ object BoardRegistry {
         replyTo ! ActionPerformed(s"New board created.")
         registry(boards + Board(), db)
       case ExecMove(id, move, replyTo) =>
-        val board_old = boards.find(_.id == id)
-        val board_new = board_old.flatMap(_.move(move))
-        (board_old, board_new) match {
-          case (Some(o), Some(n)) => {
+        val boardOld = boards.find(_.id == id)
+        val boardNew = boardOld.flatMap(_.move(move))
+        (boardOld, boardNew) match {
+          case (Some(o), Some(n)) =>
             replyTo ! ActionPerformed(s"Move executed.")
             registry(boards - o + n, db)
-          }
-          case _ => {
+          case _ =>
             replyTo ! ActionPerformed(s"Move cannot be executed.")
-            registry(boards, db)
-          }
+            Behaviors.same
         }
       case Save(replyTo) =>
         val saveFuture = db.save(boards.toSeq)
@@ -92,16 +92,26 @@ object BoardRegistry {
         }
         Behaviors.same
       case Load(replyTo) =>
-        val loadFuture = db.load()
-        loadFuture.onComplete {
-          case Success(db_boards) =>
-            replyTo ! ActionPerformed("Boards loaded successfully")
-            registry(db_boards, db)
-          case Failure(ex) =>
-            ex.printStackTrace()
-            replyTo ! ActionPerformed(s"Failed to load boards: ${ex.getMessage}")
-            Behaviors.same
+        Behaviors.setup[Command] { context =>
+          val loadFuture = db.load()
+          loadFuture.onComplete {
+            case Success(dbBoards) =>
+              context.self ! BoardsLoaded(dbBoards, replyTo)
+            case Failure(ex) =>
+              context.self ! LoadFailed(ex, replyTo)
+          }
+          Behaviors.same
         }
+      case BoardsLoaded(dbBoards, replyTo) =>
+        println("Boards loaded successfully")
+        replyTo ! ActionPerformed("Boards loaded successfully")
+        registry(dbBoards, db)
+      case LoadFailed(ex, replyTo) =>
+        println(s"Failed to load boards: ${ex.getMessage}")
+        ex.printStackTrace()
+        replyTo ! ActionPerformed(s"Failed to load boards: ${ex.getMessage}")
+        Behaviors.same
     }
+
 }
 

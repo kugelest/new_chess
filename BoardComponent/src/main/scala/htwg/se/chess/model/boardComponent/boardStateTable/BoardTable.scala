@@ -65,11 +65,11 @@ class BoardTable(tag: Tag) extends Table[Board](tag, "boards") {
       val Array(coordStr, pieceStr) = entry.split(":")
       val coord = Coord.valueOf(coordStr)
 
-      val parts = str.split(",")
+      val parts = pieceStr.split(",")
       val pieceOpt = parts.length match {
         case 3 => {
           val Array(pieceType, color, moveCount) = parts
-          Piece(PieceType.valueOf(pieceType), PieceColor.valueOf(color), moveCount.toInt)
+          Some(Piece(PieceType.valueOf(pieceType), PieceColor.valueOf(color), moveCount.toInt))
         }
         case _ => None
       }

@@ -7,8 +7,11 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
+import scala.concurrent.ExecutionContext
 
 import boardBaseImpl.Board
+import boardComponent.BoardDAOPostgres
+import boardComponent.BoardDAOMongodb
 
 trait BoardDAO {
   def createTable(): Future[Unit]

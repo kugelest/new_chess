@@ -8,6 +8,7 @@ import scala.concurrent.ExecutionContext
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 import scala.concurrent.ExecutionContext
+import com.typesafe.config.ConfigFactory
 
 import boardBaseImpl.Board
 import boardComponent.BoardDAOPostgres
@@ -20,14 +21,20 @@ trait BoardDAO {
 }
 
 object BoardDAO {
-  def apply(dbType: String)(implicit ec: ExecutionContext): BoardDAO = dbType match {
-    case "postgres" =>
-      val db = Database.forConfig("mydb")
-      new BoardDAOPostgres(db)
-    case "mongodb" =>
-      val mongoClient = MongoClient("mongodb://localhost:27017")
-      new BoardDAOMongodb(mongoClient, "testdb")
-    case _ =>
-      throw new IllegalArgumentException(s"Unsupported database type: $dbType")
+  def apply(dbType: String)(implicit ec: ExecutionContext): BoardDAO = {
+    val config = ConfigFactory.load()
+
+    dbType match {
+      case "postgres" =>
+        val db = Database.forConfig("mydb")
+        new BoardDAOPostgres(db)
+      case "mongodb" =>
+        val mongoUri = config.getString("mongodb.uri")
+        val dbName = config.getString("mongodb.database")
+        val mongoClient = MongoClient(mongoUri)
+        new BoardDAOMongodb(mongoClient, dbName)
+      case _ =>
+        throw new IllegalArgumentException(s"Unsupported database type: $dbType")
+    }
   }
 }

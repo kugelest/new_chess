@@ -23,6 +23,7 @@ services:
     network_mode: "host"
     depends_on:
       - db
+      - mongodb
 
   # fileiocomponent:
   #   image: fileiocomponent:0.1

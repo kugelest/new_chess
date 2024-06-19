@@ -33,6 +33,8 @@ object HttpTui {
         client.execMove(id.toInt, moveJson).foreach(println)
       case "save" :: Nil                     =>
         client.save().foreach(println)
+      case "load" :: Nil                     =>
+        client.load().foreach(println)
       case _                                            =>
         println("Unknown command")
     }

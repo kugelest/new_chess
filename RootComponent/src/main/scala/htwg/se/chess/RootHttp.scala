@@ -72,6 +72,15 @@ object RootHttp {
           }
         }
       },
+      path("load") {
+        get {
+          complete {
+            client.load().map { response =>
+              response
+            }
+          }
+        }
+      },
       // path("fileio" / "load") {
       //   get {
       //       complete {

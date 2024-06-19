@@ -32,5 +32,8 @@ class DAO {
     db.run(insertQuery).map(_ => ())
   }
 
+  def load()(implicit ec: ExecutionContext): Future[Set[Board]] = {
+    db.run(boards.result).map(_.toSet)
+  }
 }
 

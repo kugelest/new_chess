@@ -27,6 +27,7 @@ object BoardRegistry {
   final case class CreateBoard(replyTo: ActorRef[ActionPerformed]) extends Command
   final case class ExecMove(id: Int, move: Move, replyTo: ActorRef[ActionPerformed]) extends Command
   final case class Save(replyTo: ActorRef[ActionPerformed]) extends Command
+  final case class Load(replyTo: ActorRef[ActionPerformed]) extends Command
 
   final case class GetBoardResponse(maybeBoard: Option[Board])
   final case class GetBoardStrResponse(maybeBoardStr: Option[String])
@@ -90,6 +91,17 @@ object BoardRegistry {
             replyTo ! ActionPerformed(s"Failed to save boards: ${ex.getMessage}")
         }
         Behaviors.same
+      case Load(replyTo) =>
+        val loadFuture = db.load()
+        loadFuture.onComplete {
+          case Success(db_boards) =>
+            replyTo ! ActionPerformed("Boards loaded successfully")
+            registry(db_boards, db)
+          case Failure(ex) =>
+            ex.printStackTrace()
+            replyTo ! ActionPerformed(s"Failed to load boards: ${ex.getMessage}")
+            Behaviors.same
+        }
     }
 }
 

@@ -16,7 +16,7 @@ trait MyPostgresProfile extends ExPostgresProfile
     object MyAPI extends ExtPostgresAPI
       with ArrayImplicits
       with HStoreImplicits {
-      implicit val strListTypeMapper: BaseColumnType[List[String]] = new SimpleArrayJdbcType[String]("text").to(_.toList)
+        implicit val strListTypeMapper: BaseColumnType[List[String]] = new SimpleArrayJdbcType[String]("text").to(_.toList)
     }
 }
 

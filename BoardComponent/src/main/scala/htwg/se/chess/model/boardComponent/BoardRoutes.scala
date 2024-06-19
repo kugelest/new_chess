@@ -52,6 +52,8 @@ class BoardRoutes(boardRegistry: ActorRef[BoardRegistry.Command])(implicit val s
   def save(): Future[ActionPerformed] =
     boardRegistry.ask(Save(_))
 
+  def load(): Future[ActionPerformed] =
+    boardRegistry.ask(Load(_))
 
   lazy val topLevelRoute: Route =
     concat(
@@ -61,6 +63,16 @@ class BoardRoutes(boardRegistry: ActorRef[BoardRegistry.Command])(implicit val s
       path("save") {
         get {
           onComplete(save()) {
+            case Success(response) =>
+              complete(response)
+            case Failure(ex) =>
+              complete((StatusCodes.InternalServerError, s"An error occurred: ${ex.getMessage}"))
+          }
+        }
+      },
+      path("load") {
+        get {
+          onComplete(load()) {
             case Success(response) =>
               complete(response)
             case Failure(ex) =>

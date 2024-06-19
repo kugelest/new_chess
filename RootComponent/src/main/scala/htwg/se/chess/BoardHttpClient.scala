@@ -66,4 +66,11 @@ class BoardHttpClient()(implicit system: ActorSystem[_]) {
       Unmarshal(response.entity).to[String]
     }
   }
+
+  def load() = {
+    val responseFuture = Http().singleRequest(HttpRequest(GET, uri = s"http://0.0.0.0:8081/load"))
+    responseFuture.flatMap { response =>
+      Unmarshal(response.entity).to[String]
+    }
+  }
 }

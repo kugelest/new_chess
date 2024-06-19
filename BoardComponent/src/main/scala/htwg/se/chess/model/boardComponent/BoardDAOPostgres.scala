@@ -16,23 +16,22 @@ import scala.util.{Failure, Success, Try}
 import boardStateTable._
 import boardBaseImpl.Board
 
-class DAO {
+class BoardDAOPostgres()(implicit ec: ExecutionContext) extends BoardDAO {
 
   val db = Database.forConfig("mydb")
 
   val boards = TableQuery[BoardTable]
 
-  def createTable()(implicit ec: ExecutionContext): Future[Unit] = {
-    println("Creating database table")
+  override def createTable(): Future[Unit] = {
     db.run(boards.schema.create).map(_ => ())
   }
 
-  def save(boardsSeq: Seq[Board])(implicit ec: ExecutionContext): Future[Unit] = {
+  override def save(boardsSeq: Seq[Board]): Future[Unit] = {
     val insertQuery = boards ++= boardsSeq
     db.run(insertQuery).map(_ => ())
   }
 
-  def load()(implicit ec: ExecutionContext): Future[Set[Board]] = {
+  override def load(): Future[Set[Board]] = {
     db.run(boards.result).map(_.toSet)
   }
 }

@@ -41,7 +41,7 @@ object BoardRegistry {
   def apply(): Behavior[Command] = Behaviors.setup { context =>
     // Initialize the database table
     implicit val ec: ExecutionContext = context.executionContext
-    val db = DAO()
+    val db = BoardDAOPostgres()
 
     val createTableFuture = db.createTable()
     Await.result(createTableFuture, 10.seconds) // Block until the table is created (only for initialization)
@@ -49,9 +49,9 @@ object BoardRegistry {
     registry(Set.empty, db)(ec)
   }
 
-  val db = DAO()
+  // val db = DAO()
 
-  private def registry(boards: Set[Board], db: DAO)(implicit ec: ExecutionContext): Behavior[Command] =
+  private def registry(boards: Set[Board], db: BoardDAO)(implicit ec: ExecutionContext): Behavior[Command] =
     Behaviors.receiveMessage {
       case GetBoards(replyTo) =>
         replyTo ! Boards(boards.toSeq)

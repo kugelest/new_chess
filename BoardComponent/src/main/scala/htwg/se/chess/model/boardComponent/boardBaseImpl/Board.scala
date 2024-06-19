@@ -11,7 +11,7 @@ import pieces.PieceColor._
 import pieces.PieceType._
 
 import java.util.concurrent.atomic.AtomicInteger
-import scala.collection.immutable.Map
+// import scala.collection.immutable.Map
 import play.api.libs.json._
 
 case class Board(

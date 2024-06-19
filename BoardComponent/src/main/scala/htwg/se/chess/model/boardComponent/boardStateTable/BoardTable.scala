@@ -3,8 +3,11 @@ package model
 package boardComponent
 package boardStateTable
 
-import slick.jdbc.PostgresProfile.api._
-import scala.collection.immutable.Map
+// import slick.jdbc.PostgresProfile.api._
+import MyPostgresProfile.MyAPI._
+// import htwg.se.chess.model.boardComponent.boardStateTable.MyPostgresProfile.MyAPI.strListTypeMapper
+// import htwg.se.chess.model.boardComponent.boardStateTable.MyPostgresProfile.MyAPI.simpleStrListTypeMapper
+// import scala.collection.immutable.Map
 // import spray.json._
 // import spray.json.DefaultJsonProtocol.mapFormat
 // import spray.json.DefaultJsonProtocol.optionFormat
@@ -20,20 +23,6 @@ import htwg.se.chess.model.boardComponent.boardBaseImpl.pieces.PieceColor
 
 
 class BoardTable(tag: Tag) extends Table[Board](tag, "boards") {
-  // implicit val mapStringOptionPieceMapper: BaseColumnType[Map[Coord, Option[Piece]]] = MappedColumnType.base[Map[Coord, Option[Piece]], String](
-  //   map => map.toJson.toString,
-  //   str => str.parseJson.convertTo[Map[Coord, Option[Piece]]]
-  // )
-  //
-  // implicit val listPieceMapper: BaseColumnType[List[Piece]] = MappedColumnType.base[List[Piece], String](
-  //   list => list.toJson.toString,
-  //   str => str.parseJson.convertTo[List[Piece]]
-  // )
-  //
-  // implicit val listStringMapper: BaseColumnType[List[String]] = MappedColumnType.base[List[String], String](
-  //   list => list.toJson.toString,
-  //   str => str.parseJson.convertTo[List[String]]
-  // )
 
   implicit val pieceColorMapper: BaseColumnType[PieceColor] = MappedColumnType.base[PieceColor, String](
     pc => pc.toString,
@@ -60,7 +49,8 @@ class BoardTable(tag: Tag) extends Table[Board](tag, "boards") {
 
   private def serializeSquares(squares: Map[Coord, Option[Piece]]): String = {
     squares.map { case (coord, pieceOpt) =>
-      val pieceStr = pieceOpt.map(piece => s"${piece.getClass.getSimpleName.toUpperCase},${piece.color.toString},${piece.move_count}").getOrElse("None")
+      // val pieceStr = pieceOpt.map(piece => s"${piece.getClass.getSimpleName.toUpperCase},${piece.color.toString},${piece.move_count}").getOrElse("None")
+      val pieceStr = pieceOpt.map(piece => s"hi,${piece.color.toString},${piece.move_count}").getOrElse("None")
       s"${coord.toString}:$pieceStr"
     }.mkString(";")
   }
@@ -98,26 +88,26 @@ class BoardTable(tag: Tag) extends Table[Board](tag, "boards") {
     deserializePieces
   )
 
-  implicit val listStringMapper: BaseColumnType[List[String]] = MappedColumnType.base[List[String], String](
-    list => list.mkString(","),
-    str => str.split(",").toList
-  )
+  // implicit val listStringMapper: BaseColumnType[List[String]] = MappedColumnType.base[List[String], String](
+  //   list => list.mkString(","),
+  //   str => str.split(",").toList
+  // )
 
-
-  def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
-  def squares = column[String]("squares")
-  def turn = column[PieceColor]("turn")
-  def inCheck = column[Boolean]("in_check")
-  def capturedPieces = column[String]("captured_pieces")
-  def moves = column[List[String]]("moves")
-  // def * = (id, squares, turn, inCheck, capturedPieces, moves) <> ((Board.apply _).tupled, Board.unapply)
 
   // def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
-  // def squares = column[Map[Coord, Option[Piece]]]("squares")
-  // // def turn = column[PieceColor]("turn")
-  // def turn = column[String]("turn")
-  // def in_check = column[Boolean]("in_check")
-  // def captured_pieces = column[List[Piece]]("captured_pieces")
+  // def squares = column[String]("squares")
+  // def turn = column[PieceColor]("turn")
+  // def inCheck = column[Boolean]("in_check")
+  // def capturedPieces = column[String]("captured_pieces")
   // def moves = column[List[String]]("moves")
+  // def * = (id, squares, turn, inCheck, capturedPieces, moves) <> ((Board.apply _).tupled, Board.unapply)
+
+  def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
+  def squares = column[Map[Coord, Option[Piece]]]("squares")
+  def turn = column[PieceColor]("turn")
+  // def turn = column[String]("turn")
+  def inCheck = column[Boolean]("in_check")
+  def capturedPieces = column[List[Piece]]("captured_pieces")
+  def moves = column[List[String]]("moves")
   def * = (id, squares, turn, inCheck, capturedPieces, moves).mapTo[Board]
 }

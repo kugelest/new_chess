@@ -18,5 +18,10 @@ docker-compose run rootcomponent
 // if you want to change code, you have to do "sbt docker:publishLocal" again.
 // if you just want to run the program again "docker-compose run rootcomponent" is enaugh.
 
+//Connecting to postgres-cli tool
+docker exec -it new_chess-db-1 psql -U postgres
+
+//Clean up docker images
+docker-compose down -v
 
 

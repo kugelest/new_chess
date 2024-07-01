@@ -21,8 +21,8 @@ lazy val commonDependencies = Seq(
   "org.apache.pekko"     %% "pekko-actor-typed"         % pekkoVersion,
   "org.apache.pekko"     %% "pekko-stream"              % pekkoVersion,
   "org.playframework"    %% "play-json"                 % playJsonVersion,
-  "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion % Test,
-  "io.gatling"            % "gatling-test-framework"    % gatlingVersion % Test
+  "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion % "test,it",
+  "io.gatling"            % "gatling-test-framework"    % gatlingVersion % "test,it",
 )
 
 libraryDependencies ++= commonDependencies

@@ -13,58 +13,11 @@ class BasicItSimulation extends Simulation {
     .acceptLanguageHeader("en-US,en;q=0.5")
     .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:16.0) Gecko/20100101 Firefox/16.0")
 
-  // val init = scenario("Create board")
-  //   .exec(http("request_1").post("/board/create"))
-  //   .pause(2)
-
-  val scn = scenario("Move and save")
-    .exec(
-      http("request_1")
-        .put("/board/1/move")
-        .header("content-type", "application/json")
-        .body(StringBody(""" {
-          "from": "b1",
-          "to": "c3"
-        } """))
-        .asJson
-    )
+  val scn = scenario("Create board and save")
+    .exec(http("request_1").post("/board/create"))
     .pause(5)
-    .exec(
-      http("request_2")
-        .put("/board/1/move")
-        .header("content-type", "application/json")
-        .body(StringBody(""" {
-          "from": "b8",
-          "to": "c6"
-        } """))
-        .asJson
-    )
+    .exec(http("request_3").get("/save"))
     .pause(5)
-    .exec(
-      http("request_1")
-        .put("/board/1/move")
-        .header("content-type", "application/json")
-        .body(StringBody(""" {
-          "from": "c3",
-          "to": "b1"
-        } """))
-        .asJson
-    )
-    .pause(5)
-    .exec(
-      http("request_2")
-        .put("/board/1/move")
-        .header("content-type", "application/json")
-        .body(StringBody(""" {
-          "from": "c6",
-          "to": "b8"
-        } """))
-        .asJson
-    )
-    .pause(5)
-    // .exec(http("request_3").get("/save"))
-    // .pause(5)
 
   setUp(scn.inject(atOnceUsers(10000)).protocols(httpProtocol))
-  // setUp(scn.inject(constantUsersPerSec(2000).during(10))).protocols(httpProtocol);
 }

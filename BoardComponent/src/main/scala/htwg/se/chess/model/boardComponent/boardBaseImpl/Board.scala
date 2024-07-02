@@ -13,6 +13,16 @@ import pieces.PieceType._
 import java.util.concurrent.atomic.AtomicInteger
 // import scala.collection.immutable.Map
 import play.api.libs.json._
+import scala.concurrent.duration._
+import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.util.{Failure, Success}
+
+import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.stream.scaladsl.{Sink, Source}
+import pekko.stream.{ActorMaterializer, Materializer}
+import pekko.NotUsed
+import pekko.stream.scaladsl.{Keep, Flow, Source, Sink, RunnableGraph}
 
 case class Board(
     id: Int,
@@ -22,6 +32,10 @@ case class Board(
     captured_pieces: List[Piece],
     moves: List[String]
 ) extends BoardInterface {
+
+  implicit val system: ActorSystem             = ActorSystem("ChessMoveAnalyzer")
+  implicit val materializer: ActorMaterializer = ActorMaterializer()
+  import system.dispatcher // "thread pool"
 
   def startPos: Board                      = Board()
   val whitePieces: List[Piece]             = occupiedSquares(Some(WHITE)).values.toList
@@ -33,7 +47,9 @@ case class Board(
   val whiteKing: Coord                     = kingCoord(WHITE)
   val blackKing: Coord                     = kingCoord(BLACK)
   val checked: Option[PieceColor]          = if (in_check) Some(turn) else None
-  val checkmate: Boolean                   = moveOptions.values.flatten.isEmpty
+  val checkmate: Boolean                   = Await.result(checkmateFuture, 5.seconds)
+  // val checkmate: Boolean                   = moveOptions.values.flatten.isEmpty
+
   val winner: Option[PieceColor]           = if (checkmate) Some(nextTurn) else None
   val advantage: Int                       = whitePieces.map(_.worth).reduce(_ + _) - blackPieces.map(_.worth).reduce(_ + _)
 
@@ -53,18 +69,50 @@ case class Board(
       None
   }
 
-  lazy val moveOptions: Map[Piece, List[Coord]] = {
-    this
-      .occupiedSquares(Some(this.turn))
-      .map((from, piece) => (piece, Pathing(from, piece, this.squares).moveOptions.filter(to => MoveValidator(Move(from, to), this).move_valid)))
-  }
-
   def moveOptions(from: Coord): List[Coord] = {
     this.squares(from) match {
       case Some(piece) if (piece.color == this.turn) => this.moveOptions(piece)
       case _                                         => Nil
     }
   }
+
+  lazy val moveOptions: Map[Piece, List[Coord]] = {
+    this
+      .occupiedSquares(Some(this.turn))
+      .map((from, piece) => (piece, Pathing(from, piece, this.squares).moveOptions.filter(to => MoveValidator(Move(from, to), this).move_valid)))
+  }
+
+
+
+
+
+  val occupiedSquaresSource: Source[(Coord, Piece), NotUsed] =
+    Source.fromIterator(() => occupiedSquares(Some(this.turn)).iterator)
+
+  val flow: Flow[(Coord, Piece), (Piece, List[Coord]), NotUsed] =
+    Flow[(Coord, Piece)].map((from, piece) =>
+        (piece, Pathing(from, piece, this.squares).moveOptions.filter(to => MoveValidator(Move(from, to), this).move_valid)))
+
+  val sink: Sink[(Piece, List[Coord]), Future[Map[Piece, List[Coord]]]] =
+    Sink.fold[Map[Piece, List[Coord]], (Piece, List[Coord])](Map.empty) { case (acc, (piece, coords)) =>
+      acc + (piece -> (acc.getOrElse(piece, List.empty) ++ coords))
+    }
+
+  val graph: RunnableGraph[Future[Map[Piece, List[Coord]]]] =
+    occupiedSquaresSource
+      .via(flow)
+      .toMat(sink)(Keep.right)
+
+  val moveOptionsFuture: Future[Map[Piece, List[Coord]]] =
+    graph.run()
+
+  val checkmateFuture: Future[Boolean] =
+    moveOptionsFuture.map(_.values.flatten.isEmpty)
+
+
+
+
+
 
   private def nextTurn: PieceColor = {
     this.turn match {
@@ -124,7 +172,6 @@ case class Board(
         )
     Json.toJson(squares)
   }
-
 
   def gameInfoJson(): JsValue = {
     Json.obj(

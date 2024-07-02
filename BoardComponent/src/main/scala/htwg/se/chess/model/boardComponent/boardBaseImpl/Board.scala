@@ -47,8 +47,8 @@ case class Board(
   val whiteKing: Coord                     = kingCoord(WHITE)
   val blackKing: Coord                     = kingCoord(BLACK)
   val checked: Option[PieceColor]          = if (in_check) Some(turn) else None
-  val checkmate: Boolean                   = Await.result(checkmateFuture, 5.seconds)
-  // val checkmate: Boolean                   = moveOptions.values.flatten.isEmpty
+  // val checkmate: Boolean                   = Await.result(checkmateFuture, 5.seconds)
+  val checkmate: Boolean                   = moveOptions.values.flatten.isEmpty
 
   val winner: Option[PieceColor]           = if (checkmate) Some(nextTurn) else None
   val advantage: Int                       = whitePieces.map(_.worth).reduce(_ + _) - blackPieces.map(_.worth).reduce(_ + _)

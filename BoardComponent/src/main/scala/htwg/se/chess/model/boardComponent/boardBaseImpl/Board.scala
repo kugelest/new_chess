@@ -47,11 +47,25 @@ case class Board(
   val whiteKing: Coord                     = kingCoord(WHITE)
   val blackKing: Coord                     = kingCoord(BLACK)
   val checked: Option[PieceColor]          = if (in_check) Some(turn) else None
-  // val checkmate: Boolean                   = Await.result(checkmateFuture, 5.seconds)
-  val checkmate: Boolean                   = moveOptions.values.flatten.isEmpty
+  // val checkmate: Boolean                   = Await.result(checkmateFuture, 1.seconds)
+  // val checkmate: Boolean                   = moveOptions.values.flatten.isEmpty
 
-  val winner: Option[PieceColor]           = if (checkmate) Some(nextTurn) else None
-  val advantage: Int                       = whitePieces.map(_.worth).reduce(_ + _) - blackPieces.map(_.worth).reduce(_ + _)
+  // val winner: Option[PieceColor]           = if (checkmate) Some(nextTurn) else None
+  // val winner: Option[PieceColor] = checkmateFuture.onComplete {
+  //   case Success(checkmate) => if (checkmate) Some(nextTurn) else None
+  //   case Failure(exception) => None
+  // }
+
+  def winner: Future[Option[PieceColor]] = checkmateFuture
+    .map {
+      case true  => Some(nextTurn)
+      case false => None
+    }
+    .recover { case _ =>
+      None
+    }
+
+  val advantage: Int = whitePieces.map(_.worth).reduce(_ + _) - blackPieces.map(_.worth).reduce(_ + _)
 
   def move(move: Move): Option[Board] = {
     val validator = MoveValidator(move, this)
@@ -82,16 +96,11 @@ case class Board(
       .map((from, piece) => (piece, Pathing(from, piece, this.squares).moveOptions.filter(to => MoveValidator(Move(from, to), this).move_valid)))
   }
 
-
-
-
-
   val occupiedSquaresSource: Source[(Coord, Piece), NotUsed] =
     Source.fromIterator(() => occupiedSquares(Some(this.turn)).iterator)
 
   val flow: Flow[(Coord, Piece), (Piece, List[Coord]), NotUsed] =
-    Flow[(Coord, Piece)].map((from, piece) =>
-        (piece, Pathing(from, piece, this.squares).moveOptions.filter(to => MoveValidator(Move(from, to), this).move_valid)))
+    Flow[(Coord, Piece)].map((from, piece) => (piece, Pathing(from, piece, this.squares).moveOptions.filter(to => MoveValidator(Move(from, to), this).move_valid)))
 
   val sink: Sink[(Piece, List[Coord]), Future[Map[Piece, List[Coord]]]] =
     Sink.fold[Map[Piece, List[Coord]], (Piece, List[Coord])](Map.empty) { case (acc, (piece, coords)) =>
@@ -108,11 +117,6 @@ case class Board(
 
   val checkmateFuture: Future[Boolean] =
     moveOptionsFuture.map(_.values.flatten.isEmpty)
-
-
-
-
-
 
   private def nextTurn: PieceColor = {
     this.turn match {
@@ -176,7 +180,12 @@ case class Board(
   def gameInfoJson(): JsValue = {
     Json.obj(
       "turn"          -> this.turn.toString.toLowerCase,
-      "winner"        -> this.winner.getOrElse("").toString.toLowerCase,
+      "winner"        -> "",
+      // "winner"        -> this.winner.getOrElse("").toString.toLowerCase,
+      // "winner"        -> this.winner.map {
+      //   case Some(color) => color.toString.toLowerCase
+      //   case None        => ""
+      // },
       "capture_stack" -> Json.obj("white" -> whiteCapturedPiecesStr, "black" -> blackCapturedPiecesStr),
       "advantage"     -> this.advantage,
       "undo_moves"    -> Json.toJson(this.moves)
@@ -188,7 +197,12 @@ case class Board(
       "board" -> Json.obj(
         "turn"          -> this.turn.toString.toLowerCase,
         "checked"       -> this.kingCheckedCoord.getOrElse("").toString.toLowerCase,
-        "winner"        -> this.winner.getOrElse("").toString.toLowerCase,
+        // "winner"        -> this.winner.getOrElse("").toString.toLowerCase,
+        "winner"        -> "",
+        // "winner"        -> this.winner.map {
+        //   case Some(color) => color.toString.toLowerCase
+        //   case None        => ""
+        // },
         "capture_stack" -> Json.obj("white" -> whiteCapturedPiecesStr, "black" -> blackCapturedPiecesStr),
         "advantage"     -> this.advantage,
         "squares"       -> Json.toJson(
@@ -206,19 +220,29 @@ case class Board(
   }
 
   override def toString(): String = {
-    val board   =
+    val board        =
       this.squares.toSeq
         .sortBy(_._1.print_ord)
         .map(_._2.getOrElse("-"))
         .grouped(Coord.len)
         .map(_.mkString(" "))
         .mkString("\n")
-    val adv     = "adv: " + advantage
-    val stacks  = "white_stack: " + whiteCapturedPiecesStr.mkString + "\n" + "black_stack: " + blackCapturedPiecesStr.mkString
-    val checked = "checked: " + this.checked.getOrElse("").toString
-    val winner  = "winner: " + this.winner.getOrElse("").toString
-    val turn    = "turn: " + this.turn.toString
-    val moves   = "moves: " + this.moves.mkString(" ")
+    val adv          = "adv: " + advantage
+    val stacks       = "white_stack: " + whiteCapturedPiecesStr.mkString + "\n" + "black_stack: " + blackCapturedPiecesStr.mkString
+    val checked      = "checked: " + this.checked.getOrElse("").toString
+    // val winner  = "winner: " + this.winner.getOrElse("").toString
+    val winnerString =
+      try {
+        Await.result(this.winner, 5.seconds) match {
+          case Some(color) => color.toString
+          case None        => ""
+        }
+      } catch {
+        case _: Exception => "Unknown" // Handle any potential exceptions
+      }
+    val winner       = "winner: " + winnerString
+    val turn         = "turn: " + this.turn.toString
+    val moves        = "moves: " + this.moves.mkString(" ")
     board + "\n" + turn + "\n" + stacks + "\n" + adv + "\n" + checked + "\n" + winner + "\n" + moves + "\n"
   }
 
